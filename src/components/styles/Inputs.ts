@@ -30,7 +30,7 @@ export const TextInputStyles = styled.div`
 export const TitleInputStyles = styled(TextInputStyles)`
   border: none;
   input {
-    font-size: var(--lengthLg1);
+    font-size: var(--lengthMd3);
     font-weight: 600;
     padding-top: var(--lengthSm3);
   }

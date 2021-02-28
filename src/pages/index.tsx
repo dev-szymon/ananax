@@ -19,7 +19,7 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <h1>Hey there!</h1>
-        {!user && (
+        {!user ? (
           <>
             <BtnFilledStyles>
               <Link href="/signup">Sign Up!</Link>
@@ -27,6 +27,12 @@ export default function Home() {
             <BtnBorderStyles>
               <Link href="/signin">Sign in</Link>
             </BtnBorderStyles>
+          </>
+        ) : (
+          <>
+            <p>Logged in as:</p>
+            <h3>{user.username}</h3>
+            <p>id: {user.id}</p>
           </>
         )}
       </div>

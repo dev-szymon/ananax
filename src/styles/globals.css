@@ -42,4 +42,9 @@ a {
 fieldset {
   background-color: none;
   border: none;
+  max-width: 100%;
+}
+
+fieldset:disabled {
+  opacity: 0.5;
 }

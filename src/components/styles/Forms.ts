@@ -11,18 +11,3 @@ export const Caption = styled.div`
     font-weight: 600;
   }
 `;
-
-export const NumericInput = styled.div`
-  display: flex;
-  width: var(--lengthLg3);
-  label: {
-    color: var(--colorText);
-  }
-  input {
-    background-color: none;
-    border: none;
-  }
-  input:focus {
-    box-shadow: var(--boxShadowOutline);
-  }
-`;

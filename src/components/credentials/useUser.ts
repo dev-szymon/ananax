@@ -11,13 +11,9 @@ export const CURRENT_USER = gql`
 `;
 
 interface MeQuery {
-  data: {
-    me: {
-      id: string;
-      username: string;
-      email: string;
-    };
-  };
+  id: string;
+  username: string;
+  email: string;
 }
 
 interface UseUser {
