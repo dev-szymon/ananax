@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import { useUser } from '../components/credentials/useUser';
+import { BtnBorderStyles, BtnFilledStyles } from '../components/styles/Buttons';
 
 export default function Home() {
   const { user, loading } = useUser();
@@ -20,8 +21,12 @@ export default function Home() {
         <h1>Hey there!</h1>
         {!user && (
           <>
-            <Link href="/signup">Sign Up!</Link>
-            <Link href="/signin">Sign in</Link>
+            <BtnFilledStyles>
+              <Link href="/signup">Sign Up!</Link>
+            </BtnFilledStyles>
+            <BtnBorderStyles>
+              <Link href="/signin">Sign in</Link>
+            </BtnBorderStyles>
           </>
         )}
       </div>

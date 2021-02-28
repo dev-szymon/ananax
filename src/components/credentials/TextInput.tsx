@@ -1,6 +1,7 @@
 import { Field, ErrorMessage } from 'formik';
+import { TextInputStyles } from '../styles/Inputs';
 
-export default function InputField({
+export default function TextInput({
   type,
   className,
   name,
@@ -13,10 +14,10 @@ export default function InputField({
   label: string;
 }) {
   return (
-    <div className={`${className}`}>
+    <TextInputStyles>
       <label htmlFor={name}>{label}</label>
-      <Field id={name} name={name} {...rest} />
+      <Field id={name} type={type} name={name} {...rest} />
       <ErrorMessage name={name} />
-    </div>
+    </TextInputStyles>
   );
 }

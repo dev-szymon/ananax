@@ -1,10 +1,13 @@
 import { Formik, Form } from 'formik';
-import InputField from './InputFeld';
+import InputField from './TextInput';
 import Router from 'next/router';
+import Link from 'next/link';
 import { gql, useMutation } from '@apollo/client';
-import SubmitButton from './buttons/SubmitButton';
+import { BtnFilledStyles } from '../styles/Buttons';
 import { useDispatchUser } from '../../context/context';
 import { useUser } from './useUser';
+import { RadiusShadow } from '../styles/Containers';
+import { Caption } from '../styles/Forms';
 
 interface SignInInterface {
   email: string;
@@ -12,7 +15,7 @@ interface SignInInterface {
 }
 
 export default function SignIn() {
-  const { user, loading } = useUser();
+  const { user } = useUser();
 
   if (user) {
     Router.push('/');
@@ -30,7 +33,7 @@ export default function SignIn() {
   `;
 
   const dispatch = useDispatchUser();
-  const [SignInMutation] = useMutation(SIGN_IN, {
+  const [SignInMutation, loading] = useMutation(SIGN_IN, {
     onCompleted: (data) => {
       dispatch({ type: 'SIGN_IN', user: data.logIn });
       Router.push('/');
@@ -38,21 +41,31 @@ export default function SignIn() {
   });
 
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={(values) => {
-        try {
-          SignInMutation({ variables: values });
-        } catch (error) {
-          console.log(error);
-        }
-      }}
-    >
-      <Form>
-        <InputField type="email" name="email" label="email" />
-        <InputField type="password" name="password" label="password" />
-        <SubmitButton text="sign in" />
-      </Form>
-    </Formik>
+    <RadiusShadow>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values) => {
+          try {
+            SignInMutation({ variables: values });
+          } catch (error) {
+            console.log(error);
+          }
+        }}
+      >
+        <Form autoComplete="off">
+          <fieldset aria-busy={loading && true}>
+            <InputField type="email" name="email" label="email" />
+            <InputField type="password" name="password" label="password" />
+            <BtnFilledStyles style={{ marginTop: '1rem' }} type="submit">
+              sign in
+            </BtnFilledStyles>
+          </fieldset>
+          <Caption>
+            <p>Don't have an account yet?</p>
+            <Link href="/signup">Sign up!</Link>
+          </Caption>
+        </Form>
+      </Formik>
+    </RadiusShadow>
   );
 }

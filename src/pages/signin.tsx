@@ -1,10 +1,14 @@
 import Layout from '../components/Layout';
 import SignIn from '../components/credentials/SignIn';
 
+import { CenterContent } from '../components/styles/Containers';
+
 export default function SignInPage() {
   return (
     <Layout>
-      <SignIn />
+      <CenterContent style={{ minHeight: '80vh' }}>
+        <SignIn />
+      </CenterContent>
     </Layout>
   );
 }

@@ -1,9 +1,12 @@
 import { Formik, Form } from 'formik';
-import InputField from './InputFeld';
+import InputField from './TextInput';
 import Router from 'next/router';
+import Link from 'next/link';
 import { gql, useMutation } from '@apollo/client';
-import SubmitButton from './buttons/SubmitButton';
+import { BtnFilledStyles } from '../styles/Buttons';
 import { useDispatchUser } from '../../context/context';
+import { RadiusShadow } from '../styles/Containers';
+import { Caption } from '../styles/Forms';
 
 interface SignUpInterface {
   username: string;
@@ -33,22 +36,32 @@ export default function SignIn() {
   });
 
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={(values) => {
-        try {
-          SignUpMutation({ variables: values });
-        } catch (error) {
-          console.log(error);
-        }
-      }}
-    >
-      <Form>
-        <InputField type="text" name="username" label="username" />
-        <InputField type="email" name="email" label="email" />
-        <InputField type="password" name="password" label="password" />
-        <SubmitButton text="sign up" />
-      </Form>
-    </Formik>
+    <RadiusShadow>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values) => {
+          try {
+            SignUpMutation({ variables: values });
+          } catch (error) {
+            console.log(error);
+          }
+        }}
+      >
+        <Form autoComplete="off">
+          <fieldset>
+            <InputField type="text" name="username" label="username" />
+            <InputField type="email" name="email" label="email" />
+            <InputField type="password" name="password" label="password" />
+            <BtnFilledStyles style={{ marginTop: '1rem' }} type="submit">
+              sign up
+            </BtnFilledStyles>
+          </fieldset>
+          <Caption>
+            <p>Already have an account?</p>
+            <Link href="/signin">sign in!</Link>
+          </Caption>
+        </Form>
+      </Formik>
+    </RadiusShadow>
   );
 }
