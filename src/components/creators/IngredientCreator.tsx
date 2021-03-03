@@ -6,6 +6,7 @@ import { BtnFilledStyles } from '../styles/Buttons';
 import { gql, useMutation } from '@apollo/client';
 import { useDropzone } from 'react-dropzone';
 import { DropzoneStyles, Notice } from '../styles/Forms';
+import Router from 'next/router';
 
 interface FormikValues {
   name: string;
@@ -38,15 +39,14 @@ export default function IngredientCreator() {
     mutation newIngredient($ingredient: ingredientInput!) {
       newIngredient(ingredient: $ingredient) {
         id
-        images
       }
     }
   `;
 
   const [newIngredient] = useMutation(NEW_INGREDIENT, {
     onCompleted: (data) => {
+      Router.push(`/ingredients/${data.newIngredient.id}`);
       setLoading(false);
-      console.log(data);
     },
   });
   const [files, setFiles] = useState<File[]>([]);
