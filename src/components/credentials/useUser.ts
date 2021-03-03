@@ -22,5 +22,5 @@ interface UseUser {
 
 export function useUser(): UseUser {
   const { data, loading } = useQuery(CURRENT_USER);
-  return { user: data.me, loading: loading };
+  return { user: data?.me, loading: loading };
 }

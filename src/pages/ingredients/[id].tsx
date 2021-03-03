@@ -1,6 +1,10 @@
 import { gql, useQuery } from '@apollo/client';
 import Layout from '../../components/Layout';
-import { SingleIngredient } from '../../components/styles/Ingredient';
+import {
+  SingleIngredient,
+  NutrientStyles,
+  IngredientImage,
+} from '../../components/styles/Ingredient';
 
 interface Props {
   query: {
@@ -36,10 +40,35 @@ export default function SingleIngredientPage({ query }: Props) {
     return <p>loading...</p>;
   }
   if (data) {
+    const ingredient = data.getIngredient;
+    console.log(ingredient);
     return (
       <Layout>
         <SingleIngredient>
-          <h2>{data.getIngredient.name}</h2>
+          <h2>{ingredient.name}</h2>
+          <IngredientImage src={ingredient.images[0]} />
+          <>
+            <NutrientStyles>
+              <span className="label">kcal</span>
+              <span className="value">{ingredient.kcal}</span>
+            </NutrientStyles>
+            <NutrientStyles>
+              <span className="label">carbs</span>
+              <span className="value">{ingredient.carbs}</span>
+            </NutrientStyles>
+            <NutrientStyles>
+              <span className="label">protein</span>
+              <span className="value">{ingredient.protein}</span>
+            </NutrientStyles>
+            <NutrientStyles>
+              <span className="label">fats</span>
+              <span className="value">{ingredient.fats}</span>
+            </NutrientStyles>
+            <NutrientStyles>
+              <span className="label">glycemic index</span>
+              <span className="value">{ingredient.glycemicIndex}</span>
+            </NutrientStyles>
+          </>
         </SingleIngredient>
       </Layout>
     );

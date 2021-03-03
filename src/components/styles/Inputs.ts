@@ -59,6 +59,7 @@ export const NumericInputStyles = styled.div`
     border-radius: var(--lengthSm3);
     padding: var(--lengthSm3);
     padding-left: var(--lengthLg2);
+    font-size: var(--lengthMd1);
     font-weight: 600;
     width: 100%;
     height: 100%;

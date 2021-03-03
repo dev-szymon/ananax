@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import {
   ApolloClient,
   HttpLink,
-  NormalizedCacheObject,
   InMemoryCache,
+  NormalizedCacheObject,
 } from '@apollo/client';
 import { concatPagination } from '@apollo/client/utilities';
 import merge from 'deepmerge';
@@ -11,7 +11,7 @@ import isEqual from 'lodash/isEqual';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
-let apolloClient: ApolloClient<NormalizedCacheObject> | null;
+let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 function createApolloClient() {
   return new ApolloClient({
@@ -64,7 +64,7 @@ export function initializeApollo(initialState: NormalizedCacheObject = null) {
 }
 
 export function addApolloState(
-  client: ApolloClient<NormalizedCacheObject> | null,
+  client: ApolloClient<NormalizedCacheObject>,
   pageProps: any
 ) {
   if (pageProps?.props) {
