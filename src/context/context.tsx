@@ -4,7 +4,9 @@ import React, {
   useContext,
   ReactNode,
   Dispatch,
+  useEffect,
 } from 'react';
+import { useUser } from '../components/credentials/useUser';
 
 interface Action {
   type: string;
@@ -35,6 +37,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     UserStateContext,
     Dispatch<Action>
   ] = useReducer(reducer, { user: null });
+
+  useEffect(() => {
+    const { user } = useUser();
+    console.log(user);
+  });
 
   return (
     <UserDispatchContext.Provider value={dispatch}>

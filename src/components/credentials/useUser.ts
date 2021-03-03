@@ -1,5 +1,4 @@
 import { useQuery, gql } from '@apollo/client';
-import { useDispatchUser } from '../../context/context';
 export const CURRENT_USER = gql`
   query {
     me {
@@ -22,11 +21,6 @@ interface UseUser {
 }
 
 export function useUser(): UseUser {
-  const { data, loading } = useQuery(CURRENT_USER, {
-    onCompleted: (data) => {
-      const dispatch = useDispatchUser();
-      dispatch({ type: 'SIGN_IN', user: data.me });
-    },
-  });
+  const { data, loading } = useQuery(CURRENT_USER);
   return { user: data.me, loading: loading };
 }
