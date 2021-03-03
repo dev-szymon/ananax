@@ -19,7 +19,8 @@
   --secondaryFont: Texturina, Georgia, 'Times New Roman', Times, serif;
   --boxShadow: 0 8px 16px 0px rgba(0, 0, 0, 0.2);
   --boxShadowAccent: 0 8px 16px 0px rgba(21, 201, 110, 0.4);
-  --boxShadowOutline: 0 0px 4px 4px rgba(96, 128, 244, 1);
+  --boxShadowSmoothOutline: 0 8px 16px 0px rgba(96, 128, 244, 0.2);
+  --boxShadowOutline: 0 0px 4px 4px rgba(96, 128, 244, 0.6);
 }
 
 html,

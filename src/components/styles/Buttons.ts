@@ -22,27 +22,13 @@ export const BtnBorderStyles = styled.button`
   cursor: pointer;
 `;
 
-export const ActionMenu = styled.button`
-  background-color: var(--colorAccent);
-  width: var(--lengthLg2);
-  position: fixed;
-  right: var(--lengthMd1);
-  bottom: var(--lengthMd1);
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border-radius: 50%;
-  height: var(--lengthLg2);
-  color: var(--colorPrimary);
-  outline: none;
+export const GuestButton = styled(BtnFilledStyles)`
+  background-color: var(--colorOutline);
+  box-shadow: var(--boxShadowSmoothOutline);
+`;
+
+export const PlainButton = styled.button`
+  background-color: inherit;
   cursor: pointer;
-  box-shadow: var(--boxShadow);
-  @media (min-width: 640px) {
-    right: calc((100vw - 640px) / 2);
-  }
-  :focus {
-    box-shadow: var(--boxShadowOutline);
-  }
+  border: none;
 `;

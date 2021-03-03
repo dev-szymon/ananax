@@ -1,13 +1,21 @@
 import Layout from '../components/Layout';
 import SignUp from '../components/credentials/SignUp';
-import { CenterContent } from '../components/styles/Containers';
+import Guest from '../components/credentials/Guest';
 
 export default function SignUpPage() {
   return (
     <Layout>
-      <CenterContent style={{ minHeight: '80vh' }}>
+      <Guest />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
         <SignUp />
-      </CenterContent>
+      </div>
     </Layout>
   );
 }

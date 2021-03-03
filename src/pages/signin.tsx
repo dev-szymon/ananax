@@ -1,14 +1,20 @@
 import Layout from '../components/Layout';
 import SignIn from '../components/credentials/SignIn';
-
-import { CenterContent } from '../components/styles/Containers';
-
+import Guest from '../components/credentials/Guest';
 export default function SignInPage() {
   return (
     <Layout>
-      <CenterContent style={{ minHeight: '80vh' }}>
+      <Guest />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
         <SignIn />
-      </CenterContent>
+      </div>
     </Layout>
   );
 }

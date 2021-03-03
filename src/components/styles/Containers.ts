@@ -9,14 +9,6 @@ export const RadiusShadow = styled.div`
   box-shadow: var(--boxShadow);
 `;
 
-export const CenterContent = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 export const BorderBottom = styled.div`
   width: 100%;
   border-bottom: 1px solid var(--colorGray);

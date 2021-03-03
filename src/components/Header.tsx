@@ -14,6 +14,9 @@ const HeaderStyles = styled.header`
     align-items: center;
     width: 100%;
     max-width: 640px;
+    h2 {
+      cursor: pointer;
+    }
   }
 `;
 

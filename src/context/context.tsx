@@ -8,10 +8,10 @@ import React, {
 
 interface Action {
   type: string;
-  user: string;
+  user?: { id: string; email: string; username: string };
 }
 interface UserStateContext {
-  user: string | null;
+  user: { id: string; email: string; username: string } | null;
 }
 
 const UserStateContext: React.Context<UserStateContext> = createContext({
@@ -45,5 +45,5 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useUser = () => useContext(UserStateContext);
+export const useUserContext = () => useContext(UserStateContext);
 export const useDispatchUser = () => useContext(UserDispatchContext);

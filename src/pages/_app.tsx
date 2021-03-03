@@ -9,11 +9,11 @@ import { ParsedUrlQuery } from 'querystring';
 function App({ Component, pageProps }: AppProps) {
   const client = useApollo(pageProps.initialApolloState);
   return (
-    <ApolloProvider client={client}>
-      <UserProvider>
+    <UserProvider>
+      <ApolloProvider client={client}>
         <Component {...pageProps} />
-      </UserProvider>
-    </ApolloProvider>
+      </ApolloProvider>
+    </UserProvider>
   );
 }
 

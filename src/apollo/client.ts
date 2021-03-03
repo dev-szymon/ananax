@@ -3,23 +3,47 @@ import {
   ApolloClient,
   InMemoryCache,
   NormalizedCacheObject,
+  ApolloLink,
   HttpLink,
 } from '@apollo/client';
 import merge from 'deepmerge';
+import { onError } from '@apollo/link-error';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null;
 
 function createIsomorphLink() {
-  return new HttpLink({
-    uri: 'http://localhost:5000/graphql',
-    credentials: 'include',
-  });
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  // This sets up the connection to your endpoint, will vary widely.
+  else {
+    return new HttpLink({
+      uri: 'http://localhost:5000/graphql',
+      credentials: 'include',
+    });
+  }
 }
 
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: createIsomorphLink(),
+    link:
+      // ApolloLink.from([
+      // onError(({ graphQLErrors, networkError }) => {
+      //   if (graphQLErrors)
+      //     graphQLErrors.forEach(({ message, locations, path }) =>
+      //       console.log(
+      //         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      //       )
+      //     );
+      //   if (networkError)
+      //     console.log(
+      //       `[Network error]: ${networkError}. Backend is unreachable. Is it running?`
+      //     );
+      // }),
+      // this uses apollo-link-http under the hood, so all the options here come from that package
+      createIsomorphLink(),
+    // ]),
     cache: new InMemoryCache(),
   });
 }

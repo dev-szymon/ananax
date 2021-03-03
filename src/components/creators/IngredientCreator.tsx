@@ -5,6 +5,7 @@ import { Formik, Form } from 'formik';
 import { BtnFilledStyles } from '../styles/Buttons';
 import { gql, useMutation } from '@apollo/client';
 import { useDropzone } from 'react-dropzone';
+import { DropzoneStyles, Notice } from '../styles/Forms';
 
 interface FormikValues {
   name: string;
@@ -19,11 +20,11 @@ interface FormikValues {
 const initialValues: FormikValues = {
   name: '',
   images: [],
-  kcal: 0,
-  carbs: 0,
-  protein: 0,
-  fats: 0,
-  glycemicIndex: 0,
+  kcal: null,
+  carbs: null,
+  protein: null,
+  fats: null,
+  glycemicIndex: null,
 };
 
 export default function IngredientCreator() {
@@ -56,22 +57,33 @@ export default function IngredientCreator() {
       initialValues={initialValues}
       onSubmit={async (values) => {
         setLoading(true);
-        const data = new FormData();
-        data.append('file', files[0]);
-        data.append('upload_preset', 'fwwd2pmr');
-        const res = await fetch(
-          `https://api.cloudinary.com/v1_1/dq104qc4m/image/upload`,
-          {
-            method: 'POST',
-            body: data,
+        try {
+          const data = new FormData();
+          data.append('file', files[0]);
+          data.append('upload_preset', 'fwwd2pmr');
+          const res = await fetch(
+            `https://api.cloudinary.com/v1_1/dq104qc4m/image/upload`,
+            {
+              method: 'POST',
+              body: data,
+            }
+          );
+          const resCloudinary = await res.json();
+          try {
+            newIngredient({
+              variables: {
+                ingredient: { ...values, images: [resCloudinary.secure_url] },
+              },
+            });
+          } catch (error) {
+            // remove uploaded cloudinary asset if there is error creating ingredient
+            // set error state and display msg
+            console.log(error);
           }
-        );
-        const resCloudinary = await res.json();
-        newIngredient({
-          variables: {
-            ingredient: { ...values, images: [resCloudinary.secure_url] },
-          },
-        });
+        } catch (error) {
+          // set error state and display msg
+          console.log(error);
+        }
       }}
     >
       <Form>
@@ -85,7 +97,7 @@ export default function IngredientCreator() {
             placeholder="Ingredient name..."
             name="name"
           />
-          <div className="img-input" {...getRootProps()}>
+          <DropzoneStyles {...getRootProps()}>
             {files[0] ? (
               <img
                 style={{ width: '60%' }}
@@ -93,21 +105,20 @@ export default function IngredientCreator() {
                 alt="upload preview"
               ></img>
             ) : (
-              <span>+</span>
+              <Notice>Upload image...</Notice>
             )}
             <input type="file" {...getInputProps()} multiple={false} />
-          </div>
-          <NumericInput name="kcal" label="kcal" />
-          <NumericInput name="carbs" label="carbs" />
-          <NumericInput name="protein" label="protein" />
-          <NumericInput name="fats" label="fats" />
-          <NumericInput name="glycemicIndex" label="glycemic index" />
-          <BtnFilledStyles
-            style={{ float: 'right', marginRight: '7rem' }}
-            type="submit"
-          >
-            create ingredient
-          </BtnFilledStyles>
+          </DropzoneStyles>
+          <NumericInput name="kcal" label="kcal" placeholder={0} />
+          <NumericInput name="carbs" label="carbs" placeholder={0} />
+          <NumericInput name="protein" label="protein" placeholder={0} />
+          <NumericInput name="fats" label="fats" placeholder={0} />
+          <NumericInput
+            name="glycemicIndex"
+            label="glycemic index"
+            placeholder={0}
+          />
+          <BtnFilledStyles type="submit">create ingredient</BtnFilledStyles>
         </fieldset>
       </Form>
     </Formik>

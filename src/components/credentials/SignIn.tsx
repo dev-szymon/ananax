@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { gql, useMutation } from '@apollo/client';
 import { BtnFilledStyles } from '../styles/Buttons';
 import { useDispatchUser } from '../../context/context';
-import { useUser } from './useUser';
 import { RadiusShadow } from '../styles/Containers';
 import { Caption } from '../styles/Forms';
 
@@ -15,12 +14,6 @@ interface SignInInterface {
 }
 
 export default function SignIn() {
-  const { user } = useUser();
-
-  if (user) {
-    Router.push('/');
-  }
-
   const initialValues: SignInInterface = {
     email: '',
     password: '',
