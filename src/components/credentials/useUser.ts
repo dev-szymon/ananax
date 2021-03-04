@@ -1,4 +1,4 @@
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, ApolloError } from '@apollo/client';
 export const CURRENT_USER = gql`
   query {
     me {
@@ -18,9 +18,10 @@ interface User {
 interface UseUser {
   user: User | undefined;
   loading: boolean;
+  error: ApolloError;
 }
 
 export function useUser(): UseUser {
-  const { data, loading } = useQuery(CURRENT_USER);
-  return { user: data?.me, loading: loading };
+  const { data, loading, error } = useQuery(CURRENT_USER);
+  return { user: data?.me, loading: loading, error: error };
 }

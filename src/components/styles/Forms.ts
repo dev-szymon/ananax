@@ -19,9 +19,9 @@ export const Notice = styled.p`
 `;
 
 export const DropzoneStyles = styled.div`
-  margin: 0 var(--lengthMd1);
   margin-bottom: var(--lengthMd3);
-  width: 80%;
+  padding: var(--lengthSm3);
+  width: 100%;
   cursor: pointer;
   display: flex;
   justify-content: center;

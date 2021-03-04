@@ -4,9 +4,10 @@ import Layout from '../components/Layout';
 import { useUser } from '../components/credentials/useUser';
 import { BtnBorderStyles, BtnFilledStyles } from '../components/styles/Buttons';
 import styled from 'styled-components';
+import { useEffect } from 'react';
 
 const ActionButtonsWrapper = styled.div`
-  width: 100%;
+  width: 60%;
   padding: var(--lengthMd1);
   display: flex;
   justify-content: space-around;
@@ -14,7 +15,11 @@ const ActionButtonsWrapper = styled.div`
 `;
 
 export default function Home() {
-  const { user } = useUser();
+  const { user, loading, error } = useUser();
+
+  if (loading) {
+    return <p>loading...</p>;
+  }
 
   if (user) {
     return (
@@ -33,23 +38,25 @@ export default function Home() {
     );
   }
 
-  return (
-    <Layout>
-      <Head>
-        <title>Ananax</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <h1 style={{ padding: '0 1rem' }}>Manage your diet!</h1>
-      <>
-        <ActionButtonsWrapper>
-          <BtnFilledStyles>
-            <Link href="/signup">Sign Up!</Link>
-          </BtnFilledStyles>
-          <BtnBorderStyles>
-            <Link href="/signin">Sign in</Link>
-          </BtnBorderStyles>
-        </ActionButtonsWrapper>
-      </>
-    </Layout>
-  );
+  if (error) {
+    return (
+      <Layout>
+        <Head>
+          <title>Ananax</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <h1 style={{ padding: '0 1rem' }}>Manage your diet!</h1>
+        <>
+          <ActionButtonsWrapper>
+            <Link href="/signup">
+              <BtnFilledStyles>Sign Up! </BtnFilledStyles>
+            </Link>
+            <Link href="/signin">
+              <BtnBorderStyles>Sign in</BtnBorderStyles>
+            </Link>
+          </ActionButtonsWrapper>
+        </>
+      </Layout>
+    );
+  }
 }
