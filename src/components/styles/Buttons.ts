@@ -10,6 +10,10 @@ export const BtnFilledStyles = styled.button`
   padding: var(--lengthSm2) var(--lengthMd2);
   cursor: pointer;
   box-shadow: var(--boxShadowAccent);
+  :disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
 `;
 
 export const BtnBorderStyles = styled.button`

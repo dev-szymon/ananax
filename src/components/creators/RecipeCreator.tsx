@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import NumericInput from '../credentials/NumericInput';
-import TitleInput from '../credentials/TitleInput';
-import { Formik, Form } from 'formik';
-import { BtnFilledStyles } from '../styles/Buttons';
-import { gql, useMutation } from '@apollo/client';
-import { useDropzone } from 'react-dropzone';
-import { DropzoneStyles, Notice } from '../styles/Forms';
 import Router from 'next/router';
+import { useDropzone } from 'react-dropzone';
+import { Formik, Form } from 'formik';
+import { gql, useMutation } from '@apollo/client';
+
+import TitleInput from '../credentials/TitleInput';
+import { BtnFilledStyles } from '../styles/Buttons';
+import { DropzoneStyles, Notice } from '../styles/Forms';
+import NumericInput from '../credentials/NumericInput';
+import Checkbox from '../credentials/Checkbox';
+import Textarea from '../credentials/Textarea';
 import {
   SkeletonContainerStyles,
   SkeletonRowStyles,
@@ -15,38 +18,34 @@ import {
 interface FormikValues {
   name: string;
   images: string[] | [];
-  kcal: number | '';
-  carbs: number | '';
-  protein: number | '';
-  fats: number | '';
-  glycemicIndex: number | '';
+  private: boolean;
+  ingredients: string[];
+  description: string[];
+  prepTime: number | '';
 }
 
 const initialValues: FormikValues = {
   name: '',
   images: [],
-  kcal: '',
-  carbs: '',
-  protein: '',
-  fats: '',
-  glycemicIndex: '',
+  private: false,
+  ingredients: [],
+  description: [],
+  prepTime: '',
 };
 
-export const IngredientCreatorSkeleton = () => {
+export const RecipeCreatorSkeleton = () => {
   return (
     <SkeletonContainerStyles>
       <SkeletonRowStyles width="100%" height="52px" />
       <SkeletonRowStyles width="100%" height="100px" />
       <SkeletonRowStyles width="150px" height="42px" />
       <SkeletonRowStyles width="150px" height="42px" />
-      <SkeletonRowStyles width="150px" height="42px" />
-      <SkeletonRowStyles width="150px" height="42px" />
-      <SkeletonRowStyles width="150px" height="42px" />
+      <SkeletonRowStyles width="100%" height="150px" />
     </SkeletonContainerStyles>
   );
 };
 
-export default function IngredientCreator() {
+export default function RecipeCreator() {
   const onDrop = (acceptedFiles: File[]) => {
     return setFiles(acceptedFiles);
   };
@@ -54,16 +53,16 @@ export default function IngredientCreator() {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const NEW_INGREDIENT = gql`
-    mutation newIngredient($ingredient: ingredientInput!) {
-      newIngredient(ingredient: $ingredient) {
+    mutation newRecipe($recipe: recipeInput!) {
+      newRecipe(recipe: $recipe) {
         id
       }
     }
   `;
 
-  const [newIngredient] = useMutation(NEW_INGREDIENT, {
+  const [newRecipe] = useMutation(NEW_INGREDIENT, {
     onCompleted: (data) => {
-      Router.push(`/ingredients/${data.newIngredient.id}`);
+      Router.push(`/recipes/${data.newIngredient.id}`);
       setLoading(false);
     },
   });
@@ -89,7 +88,7 @@ export default function IngredientCreator() {
           );
           const resCloudinary = await res.json();
           try {
-            newIngredient({
+            newRecipe({
               variables: {
                 ingredient: { ...values, images: [resCloudinary.secure_url] },
               },
@@ -111,11 +110,7 @@ export default function IngredientCreator() {
           disabled={loading}
           style={{ padding: '1rem' }}
         >
-          <TitleInput
-            type="text"
-            placeholder="Ingredient name..."
-            name="name"
-          />
+          <TitleInput type="text" placeholder="Recipe name..." name="name" />
           <DropzoneStyles {...getRootProps()}>
             {files[0] ? (
               <img
@@ -128,17 +123,20 @@ export default function IngredientCreator() {
             )}
             <input type="file" {...getInputProps()} multiple={false} />
           </DropzoneStyles>
-          <NumericInput name="kcal" label="kcal" placeholder={0} />
-          <NumericInput name="carbs" label="carbs" placeholder={0} />
-          <NumericInput name="protein" label="protein" placeholder={0} />
-          <NumericInput name="fats" label="fats" placeholder={0} />
           <NumericInput
-            name="glycemicIndex"
-            label="glycemic index"
+            label="preparation time"
+            name="prepTime"
             placeholder={0}
           />
+          <Checkbox label="private recipe" name="private" />
+          <Textarea
+            name="description"
+            label="preparation"
+            placeholder="Recipe preparation..."
+          />
+
           <BtnFilledStyles type="submit" disabled={!isFile}>
-            create ingredient
+            create recipe
           </BtnFilledStyles>
         </fieldset>
       </Form>

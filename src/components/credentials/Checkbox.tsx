@@ -1,23 +1,21 @@
 import { Field, ErrorMessage } from 'formik';
-import { TextInputStyles } from '../styles/Inputs';
+import { CheckboxStyles } from '../styles/Inputs';
 
-export default function TextInput({
-  type,
+export default function NumericInput({
   className,
   name,
   label,
   ...rest
 }: {
-  type: string;
   className?: string;
   name: string;
   label: string;
 }) {
   return (
-    <TextInputStyles className={className}>
+    <CheckboxStyles className={className}>
       <label htmlFor={name}>{label}</label>
-      <Field id={name} type={type} name={name} {...rest} />
+      <Field id={name} type="checkbox" name={name} {...rest} />
       <ErrorMessage name={name} />
-    </TextInputStyles>
+    </CheckboxStyles>
   );
 }

@@ -1,18 +1,18 @@
 import { gql, useQuery } from '@apollo/client';
 import Layout from '../../components/Layout';
+import { useRouter } from 'next/router';
 import {
   SingleIngredient,
   NutrientStyles,
   IngredientImage,
 } from '../../components/styles/Ingredient';
 
-interface Props {
-  query: {
-    id: string;
-  };
-}
+export default function SingleIngredientPage() {
+  const router = useRouter();
+  const { id } = router.query;
 
-export default function SingleIngredientPage({ query }: Props) {
+  console.log(id);
+
   const SINGLE_INGREDIENT_QUERY = gql`
     query getIngredient($id: ID!) {
       getIngredient(id: $id) {
@@ -29,7 +29,7 @@ export default function SingleIngredientPage({ query }: Props) {
   `;
 
   const { data, error, loading } = useQuery(SINGLE_INGREDIENT_QUERY, {
-    variables: { id: query.id },
+    variables: { id: id },
   });
 
   if (error) {
@@ -41,7 +41,6 @@ export default function SingleIngredientPage({ query }: Props) {
   }
   if (data) {
     const ingredient = data.getIngredient;
-    console.log(ingredient);
     return (
       <Layout>
         <SingleIngredient>

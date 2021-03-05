@@ -1,5 +1,5 @@
 import { Field, ErrorMessage } from 'formik';
-import { NumericInputStyles } from '../styles/Inputs';
+import { TextareaStyles } from '../styles/Inputs';
 
 export default function NumericInput({
   className,
@@ -8,22 +8,22 @@ export default function NumericInput({
   placeholder,
   ...rest
 }: {
-  placeholder?: number;
   className?: string;
   name: string;
   label: string;
+  placeholder: string;
 }) {
   return (
-    <NumericInputStyles className={className}>
+    <TextareaStyles className={className}>
       <label htmlFor={name}>{label}</label>
       <Field
         id={name}
-        type="number"
+        as="textarea"
         name={name}
         {...rest}
         placeholder={placeholder}
       />
       <ErrorMessage name={name} />
-    </NumericInputStyles>
+    </TextareaStyles>
   );
 }
