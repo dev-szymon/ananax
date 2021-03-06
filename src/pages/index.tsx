@@ -13,19 +13,29 @@ import { RadiusShadow } from '../components/styles/Containers';
 import { Caption } from '../components/styles/Forms';
 import SignIn from '../components/credentials/SignIn';
 import SignUp from '../components/credentials/SignUp';
+// import { ReactComponent as SVGIcon } from '../images/greylogo.svg';
+import styled from 'styled-components';
+import { Greylogo } from '../images/greylogo';
+
+const LoadingLogo = styled.div`
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    width: 150px;
+  }
+`;
 
 export default function Home() {
   const [signin, setSignin] = useState(false);
   const { user, loading } = useUser();
   if (loading) {
     return (
-      <Layout>
-        <SkeletonContainerStyles>
-          <SkeletonRowStyles width="100%" height="150px" />
-          <SkeletonRowStyles width="150px" height="42px" />
-          <SkeletonRowStyles width="150px" height="42px" />
-        </SkeletonContainerStyles>
-      </Layout>
+      <LoadingLogo>
+        <Greylogo />
+      </LoadingLogo>
     );
   }
 

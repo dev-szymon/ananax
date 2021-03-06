@@ -8,7 +8,7 @@ import Navigation from '../components/Navigation';
 import { PlainButton } from './styles/Buttons';
 import { useUser } from '../components/credentials/useUser';
 import { useDispatchUser } from '../context/context';
-
+import { Colorlogo } from '../images/colorlogo';
 const Main = styled.main`
   max-width: 640px;
   margin: 0 auto;
@@ -29,7 +29,9 @@ export default function Layout({ children }: { children: ReactNode }) {
       <Header>
         <div className="header-inner">
           <Link href="/">
-            <h2>Ananax</h2>
+            <h2>
+              <Colorlogo />
+            </h2>
           </Link>
           <Hamburger open={nav} handler={setNav} />
         </div>
