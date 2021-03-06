@@ -14,3 +14,22 @@ export const BorderBottom = styled.div`
   border-bottom: 1px solid var(--colorGray);
   padding: var(--lengthLg1) 0;
 `;
+
+interface SkeletonRowProps {
+  width: string;
+  height: string;
+}
+
+export const SkeletonRowStyles = styled.div`
+  width: ${(props: SkeletonRowProps) => props.width};
+  height: ${(props: SkeletonRowProps) => props.height};
+  background-color: var(--colorDisabled);
+  border-radius: var(--lengthSm3);
+  margin-bottom: var(--lengthSm3);
+`;
+
+export const SkeletonContainerStyles = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+`;

@@ -1,20 +1,69 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useState } from 'react';
 import Layout from '../components/Layout';
 import { useUser } from '../components/credentials/useUser';
-import { BtnBorderStyles, BtnFilledStyles } from '../components/styles/Buttons';
+import { BtnFilledStyles } from '../components/styles/Buttons';
+import {
+  SkeletonContainerStyles,
+  SkeletonRowStyles,
+} from '../components/styles/Containers';
+import Guest from '../components/credentials/Guest';
+import { RadiusShadow } from '../components/styles/Containers';
+import { Caption } from '../components/styles/Forms';
+import SignIn from '../components/credentials/SignIn';
+import SignUp from '../components/credentials/SignUp';
+// import { ReactComponent as SVGIcon } from '../images/greylogo.svg';
 import styled from 'styled-components';
+import { Greylogo } from '../images/greylogo';
 
-const ActionButtonsWrapper = styled.div`
+const LoadingLogo = styled.div`
   width: 100%;
-  padding: var(--lengthMd1);
+  height: 90vh;
   display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
+  svg {
+    width: 150px;
+  }
 `;
 
 export default function Home() {
-  const { user } = useUser();
+  const [signin, setSignin] = useState(false);
+  const { user, loading } = useUser();
+  if (loading) {
+    return (
+      <LoadingLogo>
+        <Greylogo />
+      </LoadingLogo>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Layout>
+        <Head>
+          <title>Ananax</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <h1 style={{ padding: '0 1rem' }}>Manage your diet!</h1>
+        <Guest />
+        <RadiusShadow style={{ margin: '0 auto' }}>
+          {signin ? <SignIn /> : <SignUp />}
+          <Caption>
+            <p>
+              {signin
+                ? `Don't have an account yet?`
+                : `Already have an account?`}
+            </p>
+            <button onClick={() => setSignin(!signin)}>
+              {signin ? `sign up!` : `sign in!`}
+            </button>
+          </Caption>
+        </RadiusShadow>
+      </Layout>
+    );
+  }
 
   if (user) {
     return (
@@ -24,32 +73,15 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <p>Logged in as:</p>
-        <h3>{user.username}</h3>
-        <p>id: {user.id}</p>
-        <BtnFilledStyles>
-          <Link href="/create-ingredient">new ingredient</Link>
-        </BtnFilledStyles>
+        <h3>{user}</h3>
+        <p>id: {user}</p>
+        <Link href="/create-ingredient">
+          <BtnFilledStyles>new ingredient</BtnFilledStyles>
+        </Link>
+        <Link href="/create-recipe">
+          <BtnFilledStyles>new recipe</BtnFilledStyles>
+        </Link>
       </Layout>
     );
   }
-
-  return (
-    <Layout>
-      <Head>
-        <title>Ananax</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <h1 style={{ padding: '0 1rem' }}>Manage your diet!</h1>
-      <>
-        <ActionButtonsWrapper>
-          <BtnFilledStyles>
-            <Link href="/signup">Sign Up!</Link>
-          </BtnFilledStyles>
-          <BtnBorderStyles>
-            <Link href="/signin">Sign in</Link>
-          </BtnBorderStyles>
-        </ActionButtonsWrapper>
-      </>
-    </Layout>
-  );
 }

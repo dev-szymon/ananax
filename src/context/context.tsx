@@ -7,24 +7,22 @@ import React, {
 } from 'react';
 
 interface Action {
-  type: string;
-  user?: { id: string; email: string; username: string };
+  type: 'SET_CURRENT_USER';
+  currentUser: string | null;
 }
 interface UserStateContext {
-  user: { id: string; email: string; username: string } | null;
+  currentUser: string | null;
 }
 
 const UserStateContext: React.Context<UserStateContext> = createContext({
-  user: null,
+  currentUser: null,
 });
 const UserDispatchContext = createContext((action: Action): void => {});
 
 const reducer = (state: UserStateContext, action: Action) => {
   switch (action.type) {
-    case 'SIGN_IN':
-      return { user: action.user };
-    case 'LOG_OUT':
-      return { user: null };
+    case 'SET_CURRENT_USER':
+      return { ...state, currentUser: action.currentUser };
     default:
       throw new Error(`unknown action ${action.type}`);
   }
@@ -34,7 +32,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch]: [
     UserStateContext,
     Dispatch<Action>
-  ] = useReducer(reducer, { user: null });
+  ] = useReducer(reducer, { currentUser: null });
 
   return (
     <UserDispatchContext.Provider value={dispatch}>

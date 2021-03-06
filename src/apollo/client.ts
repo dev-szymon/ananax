@@ -4,8 +4,9 @@ import {
   HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
+  ApolloLink,
 } from '@apollo/client';
-import { concatPagination } from '@apollo/client/utilities';
+import { onError } from '@apollo/link-error';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
 
@@ -16,19 +17,24 @@ let apolloClient: ApolloClient<NormalizedCacheObject>;
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: new HttpLink({
-      uri: 'http://localhost:5000/graphql', // Server URL (must be absolute)
-      credentials: 'include', // Additional fetch() options like `credentials` or `headers`
-    }),
-    cache: new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            allPosts: concatPagination(),
-          },
-        },
-      },
-    }),
+    link: ApolloLink.from([
+      onError(({ graphQLErrors, networkError }) => {
+        if (graphQLErrors)
+          graphQLErrors.forEach(({ message, locations, path }) => {
+            console.log(
+              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+            );
+          });
+        if (networkError) {
+          console.log(`[Network error]: ${networkError}.`);
+        }
+      }),
+      new HttpLink({
+        uri: 'http://localhost:5000/graphql', // Server URL (must be absolute)
+        credentials: 'include', // Additional fetch() options like `credentials` or `headers`
+      }),
+    ]),
+    cache: new InMemoryCache(),
   });
 }
 

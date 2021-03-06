@@ -1,12 +1,9 @@
 import { Formik, Form } from 'formik';
 import InputField from './TextInput';
 import Router from 'next/router';
-import Link from 'next/link';
 import { gql, useMutation } from '@apollo/client';
 import { BtnFilledStyles } from '../styles/Buttons';
 import { useDispatchUser } from '../../context/context';
-import { RadiusShadow } from '../styles/Containers';
-import { Caption } from '../styles/Forms';
 
 interface SignUpInterface {
   username: string;
@@ -26,17 +23,18 @@ export default function SignIn() {
       newUser(username: $username, email: $email, password: $password)
     }
   `;
+
   const dispatch = useDispatchUser();
 
   const [SignUpMutation] = useMutation(SIGN_UP, {
     onCompleted: (data) => {
-      dispatch({ type: 'SIGN_IN', user: data.newUser });
+      dispatch({ type: 'SET_CURRENT_USER', currentUser: data.newUser });
       Router.push('/');
     },
   });
 
   return (
-    <RadiusShadow>
+    <>
       <Formik
         initialValues={initialValues}
         onSubmit={(values) => {
@@ -56,12 +54,8 @@ export default function SignIn() {
               sign up
             </BtnFilledStyles>
           </fieldset>
-          <Caption>
-            <p>Already have an account?</p>
-            <Link href="/signin">sign in!</Link>
-          </Caption>
         </Form>
       </Formik>
-    </RadiusShadow>
+    </>
   );
 }

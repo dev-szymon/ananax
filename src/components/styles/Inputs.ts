@@ -58,7 +58,6 @@ export const NumericInputStyles = styled.div`
     color: var(--colorText);
     border-radius: var(--lengthSm3);
     padding: var(--lengthSm3);
-    padding-left: var(--lengthLg2);
     font-size: var(--lengthMd1);
     font-weight: 600;
     width: 100%;
@@ -66,6 +65,50 @@ export const NumericInputStyles = styled.div`
     outline: none;
   }
   input:focus {
+    box-shadow: var(--boxShadowOutline);
+  }
+`;
+
+export const CheckboxStyles = styled.div`
+  position: relative;
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--lengthSm3);
+  margin-left: var(--lengthSm3);
+  label {
+    height: 100%;
+    display: flex;
+    font-size: var(--lengthSm3);
+    align-items: center;
+    color: var(--colorText);
+  }
+  input {
+    width: var(--lengthMd1);
+    height: var(--lengthMd1);
+    cursor: pointer;
+  }
+`;
+
+export const TextareaStyles = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--lengthSm3) + var(--lengthSm3));
+  label {
+    font-size: var(--lengthSm3);
+    margin-bottom: var(--lengthSm2);
+  }
+  textarea {
+    width: 100%;
+    border-radius: var(--lengthSm3);
+    padding: var(--lengthSm3);
+    resize: none;
+    height: 150px;
+    min-height: 150px;
+    outline: none;
+  }
+  textarea:focus {
     box-shadow: var(--boxShadowOutline);
   }
 `;

@@ -1,6 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import Router from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatchUser } from '../../context/context';
 import { GuestButton } from '../styles/Buttons';
@@ -19,14 +18,14 @@ export default function Guest() {
       logIn(email: $email, password: $password)
     }
   `;
-
   const dispatch = useDispatchUser();
+
   const [SignInMutation] = useMutation(SIGN_IN, {
     onCompleted: (data) => {
-      dispatch({ type: 'SIGN_IN', user: data.logIn });
-      Router.push('/');
+      dispatch({ type: 'SET_CURRENT_USER', currentUser: data.logIn });
     },
   });
+
   const SignInGuest = () => {
     SignInMutation({
       variables: {
