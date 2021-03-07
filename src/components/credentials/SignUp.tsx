@@ -3,7 +3,6 @@ import InputField from './TextInput';
 import Router from 'next/router';
 import { gql, useMutation } from '@apollo/client';
 import { BtnFilledStyles } from '../styles/Buttons';
-import { useDispatchUser } from '../../context/context';
 
 interface SignUpInterface {
   username: string;
@@ -24,11 +23,8 @@ export default function SignIn() {
     }
   `;
 
-  const dispatch = useDispatchUser();
-
   const [SignUpMutation] = useMutation(SIGN_UP, {
     onCompleted: (data) => {
-      dispatch({ type: 'SET_CURRENT_USER', currentUser: data.newUser });
       Router.push('/');
     },
   });
