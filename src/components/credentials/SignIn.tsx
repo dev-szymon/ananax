@@ -1,9 +1,9 @@
 import { Formik, Form } from 'formik';
 import InputField from './TextInput';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { gql, useMutation } from '@apollo/client';
 import { BtnFilledStyles } from '../styles/Buttons';
-import { useDispatchUser } from '../../context/context';
+import { ME_QUERY } from '../../lib/queries/MeQuery';
 
 interface SignInInterface {
   email: string;
@@ -15,29 +15,51 @@ export default function SignIn() {
     email: '',
     password: '',
   };
+  const router = useRouter();
 
   const SIGN_IN = gql`
     mutation logIn($email: String!, $password: String!) {
-      logIn(email: $email, password: $password)
+      logIn(email: $email, password: $password) {
+        id
+        username
+        email
+      }
     }
   `;
 
-  const dispatch = useDispatchUser();
-
-  const [SignInMutation, loading] = useMutation(SIGN_IN, {
-    onCompleted: (data) => {
-      dispatch({ type: 'SET_CURRENT_USER', currentUser: data.logIn });
-      Router.push('/');
-    },
-  });
+  const [SignInMutation, loading] = useMutation(SIGN_IN);
 
   return (
     <>
       <Formik
         initialValues={initialValues}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
           try {
-            SignInMutation({ variables: values });
+            const res = await SignInMutation({
+              variables: values,
+              update: (cache, { data }) => {
+                cache.writeQuery({
+                  query: ME_QUERY,
+                  data: {
+                    __typename: 'Query',
+                    me: data?.logIn.user,
+                  },
+                });
+                // cache.evict({ fieldName: 'posts:{}' });
+              },
+            });
+            // if (res.data?.logIn.errors) {
+            //   return <p>error</p>;
+            //   setErrors(toErrorMap(response.data.login.errors));
+            // } else
+            if (res.data?.logIn.username) {
+              if (typeof router.query.next === 'string') {
+                router.push(router.query.next);
+              } else {
+                // worked
+                router.push('/');
+              }
+            }
           } catch (error) {
             console.log(error);
           }

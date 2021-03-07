@@ -1,31 +1,39 @@
-import RecipeCreator, {
-  RecipeCreatorSkeleton,
-} from '../components/creators/RecipeCreator';
-import Layout from '../components/Layout';
-import { useEffect } from 'react';
+import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { useUser } from '../components/credentials/useUser';
+import React from 'react';
+import RecipeCreator from '../components/creators/RecipeCreator';
+import Layout from '../components/Layout';
+import Loader from '../components/Loader';
+import { isServer } from '../lib/isServer';
+import { ME_QUERY } from '../lib/queries/MeQuery';
 
-export default function CreateIngredient() {
-  const { user, loading } = useUser();
+export default function CreateRecipe() {
+  const { data, loading } = useQuery(ME_QUERY, {
+    skip: typeof window === 'undefined',
+  });
   const router = useRouter();
-  useEffect(() => {
-    if (!(user || loading)) {
-      router.push('/');
-    }
-  }, [user, loading]);
 
-  if (user) {
+  if (loading || isServer) {
+    return (
+      <Layout>
+        <Loader />
+      </Layout>
+    );
+  }
+
+  if (data?.me) {
     return (
       <Layout>
         <RecipeCreator />
       </Layout>
     );
   }
-
-  return (
-    <Layout>
-      <RecipeCreatorSkeleton />
-    </Layout>
-  );
+  if (!loading && !data?.me) {
+    router.replace('/login?next=' + router.pathname);
+    return (
+      <Layout>
+        <Loader />
+      </Layout>
+    );
+  }
 }

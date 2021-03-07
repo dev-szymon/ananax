@@ -1,7 +1,8 @@
 import { gql, useMutation } from '@apollo/client';
-import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import React from 'react';
 import styled from 'styled-components';
-import { useDispatchUser } from '../../context/context';
+import { ME_QUERY } from '../../lib/queries/MeQuery';
 import { GuestButton } from '../styles/Buttons';
 
 const GuestWrapper = styled.div`
@@ -15,24 +16,49 @@ const GuestWrapper = styled.div`
 export default function Guest() {
   const SIGN_IN = gql`
     mutation logIn($email: String!, $password: String!) {
-      logIn(email: $email, password: $password)
+      logIn(email: $email, password: $password) {
+        id
+        username
+        email
+      }
     }
   `;
-  const dispatch = useDispatchUser();
+  const router = useRouter();
 
-  const [SignInMutation] = useMutation(SIGN_IN, {
-    onCompleted: (data) => {
-      dispatch({ type: 'SET_CURRENT_USER', currentUser: data.logIn });
-    },
-  });
+  const [SignInMutation] = useMutation(SIGN_IN);
 
-  const SignInGuest = () => {
-    SignInMutation({
-      variables: {
-        email: 'guest@guest.com',
-        password: 'signinasaguest123',
-      },
-    });
+  const SignInGuest = async () => {
+    try {
+      const res = await SignInMutation({
+        variables: {
+          email: 'guest@guest.com',
+          password: 'signinasaguest123',
+        },
+        update: (cache, { data }) => {
+          cache.writeQuery({
+            query: ME_QUERY,
+            data: {
+              __typename: 'Query',
+              me: data?.logIn.user,
+            },
+          });
+          // cache.evict({ fieldName: 'posts:{}' });
+        },
+      });
+      // if (res.data?.login.errors) {
+      //   setErrors(toErrorMap(response.data.login.errors));
+      // } else
+      if (res.data?.logIn.username) {
+        if (typeof router.query.next === 'string') {
+          router.push(router.query.next);
+        } else {
+          // worked
+          router.push('/');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <GuestWrapper>

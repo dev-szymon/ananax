@@ -3,12 +3,13 @@ import { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import Hamburger from './Hamburger';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation, gql, useApolloClient, useQuery } from '@apollo/client';
 import Navigation from '../components/Navigation';
 import { PlainButton } from './styles/Buttons';
-import { useUser } from '../components/credentials/useUser';
-import { useDispatchUser } from '../context/context';
 import { Colorlogo } from '../images/colorlogo';
+import { ME_QUERY } from '../lib/queries/MeQuery';
+import { useRouter } from 'next/router';
+
 const Main = styled.main`
   max-width: 640px;
   margin: 0 auto;
@@ -21,9 +22,13 @@ export default function Layout({ children }: { children: ReactNode }) {
       logOut
     }
   `;
-  const { user } = useUser();
+
+  const { data, loading } = useQuery(ME_QUERY, {
+    skip: typeof window === 'undefined',
+  });
   const [logOut] = useMutation(LOG_OUT);
-  const dispatch = useDispatchUser();
+  const apolloClient = useApolloClient();
+  const router = useRouter();
   return (
     <>
       <Header>
@@ -39,12 +44,16 @@ export default function Layout({ children }: { children: ReactNode }) {
       {nav && (
         <Navigation>
           <ul>
-            {user && (
+            {data && (
               <li>
                 <PlainButton
-                  onClick={() => {
-                    logOut();
-                    dispatch({ type: 'SET_CURRENT_USER', currentUser: null });
+                  onClick={async () => {
+                    await logOut();
+                    await apolloClient.clearStore();
+                    router.pathname === '/'
+                      ? router.reload()
+                      : router.push('/');
+
                     setNav(false);
                   }}
                 >
