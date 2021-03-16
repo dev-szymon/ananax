@@ -2,7 +2,7 @@ import { Formik, Form } from 'formik';
 import InputField from './TextInput';
 import Router from 'next/router';
 import { gql, useMutation } from '@apollo/client';
-import { BtnFilledStyles } from '../styles/Buttons';
+import { BtnFilledStyles } from '../styles';
 
 interface SignUpInterface {
   username: string;

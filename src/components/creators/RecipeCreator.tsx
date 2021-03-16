@@ -3,17 +3,18 @@ import Router from 'next/router';
 import { useDropzone } from 'react-dropzone';
 import { Formik, Form } from 'formik';
 import { gql, useMutation } from '@apollo/client';
-
 import TitleInput from '../credentials/TitleInput';
-import { BtnFilledStyles } from '../styles/Buttons';
-import { DropzoneStyles, Notice } from '../styles/Forms';
+import {
+  BtnFilledStyles,
+  DropzoneStyles,
+  Notice,
+  SkeletonContainerStyles,
+  SkeletonRowStyles,
+} from '../styles';
 import NumericInput from '../credentials/NumericInput';
 import Checkbox from '../credentials/Checkbox';
 import Textarea from '../credentials/Textarea';
-import {
-  SkeletonContainerStyles,
-  SkeletonRowStyles,
-} from '../styles/Containers';
+import IngredientSelector from './IngredientsSelector';
 
 interface FormikValues {
   name: string;
@@ -94,7 +95,7 @@ export default function RecipeCreator() {
               },
             });
           } catch (error) {
-            // remove uploaded cloudinary asset if there is error creating ingredient
+            // remove uploaded cloudinary asset if there is error creating recipe
             // set error state and display msg
             console.log(error);
           }
@@ -126,9 +127,11 @@ export default function RecipeCreator() {
           <NumericInput
             label="preparation time"
             name="prepTime"
+            step="1"
             placeholder={0}
           />
           <Checkbox label="private recipe" name="private" />
+          <IngredientSelector />
           <Textarea
             name="description"
             label="preparation"

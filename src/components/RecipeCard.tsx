@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BorderBottom } from './styles/Containers';
+import { BorderBottom } from './styles';
 
 const RecipeDataStyles = styled.div``;
 

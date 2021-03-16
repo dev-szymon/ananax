@@ -2,7 +2,7 @@ import React from 'react';
 import IngredientCreator from '../components/creators/IngredientCreator';
 import Layout from '../components/Layout';
 import { useQuery } from '@apollo/client';
-import { ME_QUERY } from '../lib/queries/MeQuery';
+import { ME_QUERY } from '../lib/queries';
 import Loader from '../components/Loader';
 import { useRouter } from 'next/router';
 import { isServer } from '../lib/isServer';

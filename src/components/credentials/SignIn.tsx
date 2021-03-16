@@ -2,8 +2,8 @@ import { Formik, Form } from 'formik';
 import InputField from './TextInput';
 import { useRouter } from 'next/router';
 import { gql, useMutation } from '@apollo/client';
-import { BtnFilledStyles } from '../styles/Buttons';
-import { ME_QUERY } from '../../lib/queries/MeQuery';
+import { BtnFilledStyles } from '../styles';
+import { ME_QUERY } from '../../lib/queries';
 
 interface SignInInterface {
   email: string;

@@ -33,3 +33,15 @@ export const SkeletonContainerStyles = styled.div`
   width: 100%;
   flex-direction: column;
 `;
+
+export const BottomBar = styled.nav`
+  height: var(--lengthLg3);
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: var(--lengthSm1) var(--lengthSm2);
+  border-top: 0.5px solid var(--colorDisabled);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;

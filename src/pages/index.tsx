@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import { BtnFilledStyles } from '../components/styles/Buttons';
+import { BtnFilledStyles } from '../components/styles';
 import { useAuth } from '../lib/useAuth';
 
 export default function Home() {
