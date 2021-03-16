@@ -1,5 +1,5 @@
 import { Field, ErrorMessage } from 'formik';
-import { TextareaStyles } from '../styles/Inputs';
+import { TextareaStyles } from '../styles';
 
 export default function NumericInput({
   className,

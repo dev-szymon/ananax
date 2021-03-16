@@ -1,5 +1,5 @@
 import { Field, ErrorMessage } from 'formik';
-import { CheckboxStyles } from '../styles/Inputs';
+import { CheckboxStyles } from '../styles';
 
 export default function NumericInput({
   className,

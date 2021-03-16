@@ -5,7 +5,7 @@ import RecipeCreator from '../components/creators/RecipeCreator';
 import Layout from '../components/Layout';
 import Loader from '../components/Loader';
 import { isServer } from '../lib/isServer';
-import { ME_QUERY } from '../lib/queries/MeQuery';
+import { ME_QUERY } from '../lib/queries';
 
 export default function CreateRecipe() {
   const { data, loading } = useQuery(ME_QUERY, {

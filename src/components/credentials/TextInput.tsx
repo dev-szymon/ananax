@@ -1,5 +1,5 @@
 import { Field, ErrorMessage } from 'formik';
-import { TextInputStyles } from '../styles/Inputs';
+import { TextInputStyles } from '../styles';
 
 export default function TextInput({
   type,

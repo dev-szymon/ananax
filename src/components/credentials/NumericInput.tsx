@@ -1,15 +1,17 @@
 import { Field, ErrorMessage } from 'formik';
-import { NumericInputStyles } from '../styles/Inputs';
+import { NumericInputStyles } from '../styles';
 
 export default function NumericInput({
   className,
   name,
   label,
   placeholder,
+  step = '0.1',
   ...rest
 }: {
   placeholder?: number;
   className?: string;
+  step?: string;
   name: string;
   label: string;
 }) {
@@ -20,6 +22,8 @@ export default function NumericInput({
         id={name}
         type="number"
         name={name}
+        min={0}
+        step={step}
         {...rest}
         placeholder={placeholder}
       />

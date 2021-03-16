@@ -2,8 +2,8 @@ import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
-import { ME_QUERY } from '../../lib/queries/MeQuery';
-import { GuestButton } from '../styles/Buttons';
+import { ME_QUERY } from '../../lib/queries';
+import { GuestButton } from '../styles';
 
 const GuestWrapper = styled.div`
   width: 100%;

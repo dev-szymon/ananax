@@ -2,8 +2,7 @@ import Layout from '../components/Layout';
 import SignIn from '../components/credentials/SignIn';
 import Guest from '../components/credentials/Guest';
 import React from 'react';
-import { RadiusShadow } from '../components/styles/Containers';
-import { Caption } from '../components/styles/Forms';
+import { RadiusShadow, Caption } from '../components/styles';
 import Link from 'next/link';
 
 export default function SignInPage() {

@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import NumericInput from '../credentials/NumericInput';
 import TitleInput from '../credentials/TitleInput';
 import { Formik, Form } from 'formik';
-import { BtnFilledStyles } from '../styles/Buttons';
 import { gql, useMutation } from '@apollo/client';
 import { useDropzone } from 'react-dropzone';
-import { DropzoneStyles, Notice } from '../styles/Forms';
-import Router from 'next/router';
 import {
+  DropzoneStyles,
+  Notice,
   SkeletonContainerStyles,
   SkeletonRowStyles,
-} from '../styles/Containers';
+  BtnFilledStyles,
+} from '../styles';
+import Router from 'next/router';
 
 interface FormikValues {
   name: string;

@@ -1,75 +1,74 @@
-import { gql, useQuery } from '@apollo/client';
 import Layout from '../../components/Layout';
-import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 import {
   SingleIngredient,
   NutrientStyles,
   IngredientImage,
-} from '../../components/styles/Ingredient';
+} from '../../components/styles';
+import { SINGLE_INGREDIENT_QUERY } from '../../lib/queries';
+import { initializeApollo, addApolloState } from '../../lib/apolloClient';
 
-export default function SingleIngredientPage() {
-  const router = useRouter();
-  const { id } = router.query;
+interface SingleIngredientProps {
+  ingredient: {
+    id: string;
+    name: string;
+    images: string[];
+    kcal: number;
+    carbs: number;
+    protein: number;
+    fats: number;
+    glycemicIndex: number;
+  };
+}
 
-  console.log(id);
+export default function SingleIngredientPage({
+  ingredient,
+}: SingleIngredientProps) {
+  return (
+    <Layout>
+      <SingleIngredient>
+        <h2>{ingredient.name}</h2>
+        <IngredientImage src={ingredient.images[0]} />
+        <>
+          <NutrientStyles>
+            <span className="label">kcal</span>
+            <span className="value">{ingredient.kcal}</span>
+          </NutrientStyles>
+          <NutrientStyles>
+            <span className="label">carbs</span>
+            <span className="value">{ingredient.carbs}</span>
+          </NutrientStyles>
+          <NutrientStyles>
+            <span className="label">protein</span>
+            <span className="value">{ingredient.protein}</span>
+          </NutrientStyles>
+          <NutrientStyles>
+            <span className="label">fats</span>
+            <span className="value">{ingredient.fats}</span>
+          </NutrientStyles>
+          <NutrientStyles>
+            <span className="label">glycemic index</span>
+            <span className="value">{ingredient.glycemicIndex}</span>
+          </NutrientStyles>
+        </>
+      </SingleIngredient>
+    </Layout>
+  );
+}
 
-  const SINGLE_INGREDIENT_QUERY = gql`
-    query getIngredient($id: ID!) {
-      getIngredient(id: $id) {
-        id
-        name
-        images
-        kcal
-        carbs
-        protein
-        fats
-        glycemicIndex
-      }
-    }
-  `;
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const apolloClient = initializeApollo();
 
-  const { data, error, loading } = useQuery(SINGLE_INGREDIENT_QUERY, {
-    variables: { id: id },
+  const {
+    data: { getIngredient: ingredient },
+  } = await apolloClient.query({
+    query: SINGLE_INGREDIENT_QUERY,
+    variables: {
+      id: params.id,
+    },
   });
 
-  if (error) {
-    console.log(error);
-    return <p>error</p>;
-  }
-  if (loading) {
-    return <p>loading...</p>;
-  }
-  if (data) {
-    const ingredient = data.getIngredient;
-    return (
-      <Layout>
-        <SingleIngredient>
-          <h2>{ingredient.name}</h2>
-          <IngredientImage src={ingredient.images[0]} />
-          <>
-            <NutrientStyles>
-              <span className="label">kcal</span>
-              <span className="value">{ingredient.kcal}</span>
-            </NutrientStyles>
-            <NutrientStyles>
-              <span className="label">carbs</span>
-              <span className="value">{ingredient.carbs}</span>
-            </NutrientStyles>
-            <NutrientStyles>
-              <span className="label">protein</span>
-              <span className="value">{ingredient.protein}</span>
-            </NutrientStyles>
-            <NutrientStyles>
-              <span className="label">fats</span>
-              <span className="value">{ingredient.fats}</span>
-            </NutrientStyles>
-            <NutrientStyles>
-              <span className="label">glycemic index</span>
-              <span className="value">{ingredient.glycemicIndex}</span>
-            </NutrientStyles>
-          </>
-        </SingleIngredient>
-      </Layout>
-    );
-  }
-}
+  return addApolloState(apolloClient, {
+    props: { ingredient: ingredient },
+  });
+};

@@ -3,8 +3,7 @@ import SignUp from '../components/credentials/SignUp';
 import Guest from '../components/credentials/Guest';
 import React from 'react';
 import Link from 'next/link';
-import { RadiusShadow } from '../components/styles/Containers';
-import { Caption } from '../components/styles/Forms';
+import { RadiusShadow, Caption } from '../components/styles';
 
 export default function SignUpPage() {
   return (
@@ -14,7 +13,7 @@ export default function SignUpPage() {
         <SignUp />
         <Caption>
           <p>Already have an account?</p>
-          <Link href="/login">sign inp!</Link>
+          <Link href="/login">sign in!</Link>
         </Caption>
       </RadiusShadow>
     </Layout>

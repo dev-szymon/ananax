@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import Hamburger from './Hamburger';
 import { useMutation, gql, useApolloClient, useQuery } from '@apollo/client';
 import Navigation from '../components/Navigation';
-import { PlainButton } from './styles/Buttons';
-import { Colorlogo } from '../images/colorlogo';
-import { ME_QUERY } from '../lib/queries/MeQuery';
+import { PlainButton, BottomBar } from './styles';
+import { Colorlogo, CalendarDates, Home, Book } from '../images';
+import { ME_QUERY } from '../lib/queries';
 import { useRouter } from 'next/router';
 
 const Main = styled.main`
@@ -53,8 +53,6 @@ export default function Layout({ children }: { children: ReactNode }) {
                     router.pathname === '/'
                       ? router.reload()
                       : router.push('/');
-
-                    setNav(false);
                   }}
                 >
                   logout
@@ -65,6 +63,11 @@ export default function Layout({ children }: { children: ReactNode }) {
         </Navigation>
       )}
       <Main>{children}</Main>
+      <BottomBar>
+        <Home />
+        <CalendarDates />
+        <Book />
+      </BottomBar>
     </>
   );
 }
