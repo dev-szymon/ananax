@@ -13,6 +13,7 @@ export const BtnFilledStyles = styled.button`
   :disabled {
     opacity: 0.6;
     pointer-events: none;
+    box-shadow: none;
   }
 `;
 

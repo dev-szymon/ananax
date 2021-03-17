@@ -43,3 +43,25 @@ export const IngredientImage = styled.img`
   width: 100%;
   height: 100%;
 `;
+
+export const IngredientSearchResult = styled.div`
+  font-size: 1rem;
+  border-bottom: 0.5px solid var(--colorDisabled);
+  padding-top: var(--lengthSm3);
+  padding-bottom: var(--lengthSm2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const SelectedIngredientStyles = styled.div`
+  background-color: var(--colorOutline);
+  border-radius: var(--lengthSm2);
+  margin-bottom: var(--lengthSm2);
+  color: white;
+  font-size: var(--lengthSm3);
+  padding: var(--lengthSm1) var(--lengthSm3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;

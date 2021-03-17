@@ -2,16 +2,11 @@ import React, { useState } from 'react';
 import NumericInput from '../credentials/NumericInput';
 import TitleInput from '../credentials/TitleInput';
 import { Formik, Form } from 'formik';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useDropzone } from 'react-dropzone';
-import {
-  DropzoneStyles,
-  Notice,
-  SkeletonContainerStyles,
-  SkeletonRowStyles,
-  BtnFilledStyles,
-} from '../styles';
+import { DropzoneStyles, Notice, BtnFilledStyles } from '../styles';
 import Router from 'next/router';
+import { NEW_INGREDIENT } from '../../lib/queries';
 
 interface FormikValues {
   name: string;
@@ -33,34 +28,12 @@ const initialValues: FormikValues = {
   glycemicIndex: '',
 };
 
-export const IngredientCreatorSkeleton = () => {
-  return (
-    <SkeletonContainerStyles>
-      <SkeletonRowStyles width="100%" height="52px" />
-      <SkeletonRowStyles width="100%" height="100px" />
-      <SkeletonRowStyles width="150px" height="42px" />
-      <SkeletonRowStyles width="150px" height="42px" />
-      <SkeletonRowStyles width="150px" height="42px" />
-      <SkeletonRowStyles width="150px" height="42px" />
-      <SkeletonRowStyles width="150px" height="42px" />
-    </SkeletonContainerStyles>
-  );
-};
-
 export default function IngredientCreator() {
   const onDrop = (acceptedFiles: File[]) => {
     return setFiles(acceptedFiles);
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
-  const NEW_INGREDIENT = gql`
-    mutation newIngredient($ingredient: ingredientInput!) {
-      newIngredient(ingredient: $ingredient) {
-        id
-      }
-    }
-  `;
 
   const [newIngredient] = useMutation(NEW_INGREDIENT, {
     onCompleted: (data) => {

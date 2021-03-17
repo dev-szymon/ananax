@@ -20,8 +20,8 @@ export default function NumericInput({
         id={name}
         as="textarea"
         name={name}
-        {...rest}
         placeholder={placeholder}
+        {...rest}
       />
       <ErrorMessage name={name} />
     </TextareaStyles>
