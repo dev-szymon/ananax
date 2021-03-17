@@ -1,8 +1,8 @@
 export const Colorlogo = () => {
   return (
     <svg
-      width="25"
-      height="41"
+      width="20"
+      height="36"
       viewBox="0 0 196 330"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

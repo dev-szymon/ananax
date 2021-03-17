@@ -20,7 +20,7 @@
 
 .hamburgercontainer {
   position: relative;
-  width: 14px;
+  width: 18px;
   height: 18px;
   padding: 0;
   border: none;
@@ -42,7 +42,7 @@
   content: '';
   left: 0;
   width: 100%;
-  top: -5px;
+  top: -7px;
   height: 2px;
   background-color: var(--colorText);
 }
@@ -51,7 +51,7 @@
   content: '';
   left: 0;
   width: 100%;
-  top: 5px;
+  top: 7px;
   height: 2px;
   background-color: var(--colorText);
 }
@@ -61,8 +61,8 @@
 }
 
 .open.hamburgerbar::before {
-  transform: translateY(5px) rotate(45deg);
+  transform: translateY(7px) rotate(47deg);
 }
 .open.hamburgerbar::after {
-  transform: translateY(-5px) rotate(-45deg);
+  transform: translateY(-7px) rotate(-45deg);
 }

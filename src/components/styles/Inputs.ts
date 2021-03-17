@@ -94,21 +94,40 @@ export const TextareaStyles = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: calc(var(--lengthSm3) + var(--lengthSm3));
+  padding: calc(var(--lengthSm3) * 2);
   label {
     font-size: var(--lengthSm3);
     margin-bottom: var(--lengthSm2);
   }
   textarea {
     width: 100%;
-    border-radius: var(--lengthSm3);
+    border-radius: var(--lengthSm2);
     padding: var(--lengthSm3);
+    border: 1px solid var(--colorText);
     resize: none;
     height: 150px;
     min-height: 150px;
     outline: none;
   }
   textarea:focus {
+    box-shadow: var(--boxShadowOutline);
+  }
+`;
+
+export const SearchBarStyles = styled.div`
+  width: 100%;
+  max-width: 375px;
+  border: 1px solid var(--colorText);
+  border-radius: var(--lengthSm2);
+  input {
+    width: 100%;
+    outline: none;
+    border: none;
+    outline: none;
+    border-radius: var(--lengthSm2);
+    padding: var(--lengthSm3) var(--lengthMd2);
+  }
+  input:focus {
     box-shadow: var(--boxShadowOutline);
   }
 `;

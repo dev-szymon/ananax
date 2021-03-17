@@ -11,6 +11,7 @@ import { ME_QUERY } from '../lib/queries';
 import { useRouter } from 'next/router';
 
 const Main = styled.main`
+  padding: var(--lengthLg3) 0;
   max-width: 640px;
   margin: 0 auto;
 `;
@@ -38,7 +39,6 @@ export default function Layout({ children }: { children: ReactNode }) {
               <Colorlogo />
             </h2>
           </Link>
-          <Hamburger open={nav} handler={setNav} />
         </div>
       </Header>
       {nav && (
@@ -63,11 +63,20 @@ export default function Layout({ children }: { children: ReactNode }) {
         </Navigation>
       )}
       <Main>{children}</Main>
-      <BottomBar>
-        <Home />
-        <CalendarDates />
-        <Book />
-      </BottomBar>
+      {data && (
+        <BottomBar>
+          <div className="innerBottomBar">
+            <Link href="/" passHref>
+              <div>
+                <Home />
+              </div>
+            </Link>
+            <CalendarDates />
+            <Book />
+            <Hamburger open={nav} handler={setNav} />
+          </div>
+        </BottomBar>
+      )}
     </>
   );
 }

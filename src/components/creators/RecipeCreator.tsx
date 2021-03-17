@@ -2,19 +2,14 @@ import React, { useState } from 'react';
 import Router from 'next/router';
 import { useDropzone } from 'react-dropzone';
 import { Formik, Form } from 'formik';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import TitleInput from '../credentials/TitleInput';
-import {
-  BtnFilledStyles,
-  DropzoneStyles,
-  Notice,
-  SkeletonContainerStyles,
-  SkeletonRowStyles,
-} from '../styles';
+import { BtnFilledStyles, DropzoneStyles, Notice } from '../styles';
 import NumericInput from '../credentials/NumericInput';
 import Checkbox from '../credentials/Checkbox';
 import Textarea from '../credentials/Textarea';
 import IngredientSelector from './IngredientsSelector';
+import { NEW_RECIPE, SearchQueryResultsType } from '../../lib/queries';
 
 interface FormikValues {
   name: string;
@@ -34,36 +29,18 @@ const initialValues: FormikValues = {
   prepTime: '',
 };
 
-export const RecipeCreatorSkeleton = () => {
-  return (
-    <SkeletonContainerStyles>
-      <SkeletonRowStyles width="100%" height="52px" />
-      <SkeletonRowStyles width="100%" height="100px" />
-      <SkeletonRowStyles width="150px" height="42px" />
-      <SkeletonRowStyles width="150px" height="42px" />
-      <SkeletonRowStyles width="100%" height="150px" />
-    </SkeletonContainerStyles>
-  );
-};
-
 export default function RecipeCreator() {
+  const [ingredients, setIngredients] = useState<SearchQueryResultsType[]>([]);
+
   const onDrop = (acceptedFiles: File[]) => {
     return setFiles(acceptedFiles);
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  const NEW_INGREDIENT = gql`
-    mutation newRecipe($recipe: recipeInput!) {
-      newRecipe(recipe: $recipe) {
-        id
-      }
-    }
-  `;
-
-  const [newRecipe] = useMutation(NEW_INGREDIENT, {
+  const [newRecipe] = useMutation(NEW_RECIPE, {
     onCompleted: (data) => {
-      Router.push(`/recipes/${data.newIngredient.id}`);
+      Router.push(`/recipes/${data.newRecipe.id}`);
       setLoading(false);
     },
   });
@@ -91,7 +68,11 @@ export default function RecipeCreator() {
           try {
             newRecipe({
               variables: {
-                ingredient: { ...values, images: [resCloudinary.secure_url] },
+                recipe: {
+                  ...values,
+                  images: [resCloudinary.secure_url],
+                  ingredients: ingredients.map((i) => i.id),
+                },
               },
             });
           } catch (error) {
@@ -131,7 +112,10 @@ export default function RecipeCreator() {
             placeholder={0}
           />
           <Checkbox label="private recipe" name="private" />
-          <IngredientSelector />
+          <IngredientSelector
+            ingredients={ingredients}
+            setIngredients={setIngredients}
+          />
           <Textarea
             name="description"
             label="preparation"

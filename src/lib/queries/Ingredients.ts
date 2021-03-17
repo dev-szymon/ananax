@@ -22,3 +22,16 @@ export const SEARCH_INGREDIENTS_QUERY = gql`
     }
   }
 `;
+
+export const NEW_INGREDIENT = gql`
+  mutation newIngredient($ingredient: ingredientInput!) {
+    newIngredient(ingredient: $ingredient) {
+      id
+    }
+  }
+`;
+
+export interface SearchQueryResultsType {
+  id: string;
+  name: string;
+}
