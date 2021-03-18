@@ -34,6 +34,7 @@ export const GuestButton = styled(BtnFilledStyles)`
 
 export const PlainButton = styled.button`
   background-color: inherit;
+  outline: none;
   cursor: pointer;
   border: none;
 `;

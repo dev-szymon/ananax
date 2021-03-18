@@ -9,7 +9,7 @@ import { isServer } from '../lib/isServer';
 
 export default function CreateIngredient() {
   const { data, loading } = useQuery(ME_QUERY, {
-    skip: typeof window === 'undefined',
+    skip: isServer,
   });
   const router = useRouter();
 

@@ -4,3 +4,5 @@ export * from './colorlogo';
 export * from './greylogo';
 export * from './home';
 export * from './close';
+export * from './more';
+export * from './heart';

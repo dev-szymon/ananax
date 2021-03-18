@@ -2,12 +2,14 @@
   --colorAccent: rgb(21, 201, 110);
   --colorPrimary: #f2f5f5;
   --colorText: #0f0f0f;
+  --colorThird: #F7991F;
   --colorSecondaryText: #908e9b;
   --colorDisabled: #e1dfe9;
   --colorOutline: rgb(96, 128, 244);
   --lengthSm1: 0.25rem;
   --lengthSm2: 0.5rem;
   --lengthSm3: 0.75rem;
+  --lengthSm4: 0.875rem;
   --lengthMd1: 1rem;
   --lengthMd2: 1.25rem;
   --lengthMd3: 1.5rem;

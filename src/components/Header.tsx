@@ -6,14 +6,16 @@ const HeaderStyles = styled.header`
   width: 100%;
   position: fixed;
   top: 0;
+  background-color: #fff;
   display: flex;
   justify-content: center;
+  border-bottom: 1px solid var(--colorPrimary);
   align-items: center;
   z-index: 200;
   .header-inner {
     padding: 0 var(--lengthMd1);
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     width: 100%;
     max-width: 640px;
@@ -26,6 +28,11 @@ const HeaderStyles = styled.header`
       background-color: white;
       justify-content: center;
       align-items: center;
+    }
+    .header-label {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
     }
   }
 `;

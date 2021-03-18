@@ -36,3 +36,17 @@ export const BottomBar = styled.nav`
     justify-content: space-between;
   }
 `;
+
+export const SingleRow = styled.div`
+  display: flex;
+  padding: var(--lengthSm1) var(--lengthSm3);
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const Main = styled.main`
+  padding: var(--lengthLg3) 0;
+  min-height: 100vh;
+  max-width: 640px;
+  margin: 0 auto;
+`;

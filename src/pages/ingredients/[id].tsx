@@ -40,24 +40,24 @@ export default function SingleIngredientPage({
         <IngredientImage src={ingredient.images[0]} />
         <>
           <NutrientStyles>
-            <span className="label">kcal</span>
-            <span className="value">{ingredient.kcal}</span>
+            <span className="nutrient-label">kcal</span>
+            <span className="nutrient-value">{ingredient.kcal}</span>
           </NutrientStyles>
           <NutrientStyles>
-            <span className="label">carbs</span>
-            <span className="value">{ingredient.carbs}</span>
+            <span className="nutrient-label">carbs</span>
+            <span className="nutrient-value">{ingredient.carbs}</span>
           </NutrientStyles>
           <NutrientStyles>
-            <span className="label">protein</span>
-            <span className="value">{ingredient.protein}</span>
+            <span className="nutrient-label">protein</span>
+            <span className="nutrient-value">{ingredient.protein}</span>
           </NutrientStyles>
           <NutrientStyles>
-            <span className="label">fats</span>
-            <span className="value">{ingredient.fats}</span>
+            <span className="nutrient-label">fats</span>
+            <span className="nutrient-value">{ingredient.fats}</span>
           </NutrientStyles>
           <NutrientStyles>
-            <span className="label">glycemic index</span>
-            <span className="value">{ingredient.glycemicIndex}</span>
+            <span className="nutrient-label">glycemic index</span>
+            <span className="nutrient-value">{ingredient.glycemicIndex}</span>
           </NutrientStyles>
         </>
       </SingleIngredient>

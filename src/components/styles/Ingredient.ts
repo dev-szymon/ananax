@@ -18,13 +18,13 @@ export const NutrientStyles = styled.div`
   margin: var(--lengthSm3);
   border-radius: var(--lengthSm3);
   height: var(--lengThLg1);
-  .label {
+  .nutrient-label {
     display: flex;
     font-size: var(--lengthSm3);
     align-items: center;
     color: var(--colorText);
   }
-  .value {
+  .nutrient-value {
     background-color: none;
     border: none;
     max-height: 100%;
@@ -37,6 +37,11 @@ export const NutrientStyles = styled.div`
     width: 40%;
     outline: none;
   }
+`;
+
+export const NutrientSimpleStyles = styled.div`
+  font-size: var(--lengthMd1);
+  font-weight: 600;
 `;
 
 export const IngredientImage = styled.img`

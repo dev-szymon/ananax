@@ -43,8 +43,8 @@ export default function SingleRecipePage({ recipe, error }: SingleRecipeProps) {
           </NutrientStyles>
           <h3 style={{ marginBottom: '0.5rem' }}>Ingredients</h3>
           {recipe.ingredients.map((i) => (
-            <Link href={`/ingredients/${i.id}`}>
-              <SelectedIngredientStyles key={i.id}>
+            <Link key={i.id} href={`/ingredients/${i.id}`}>
+              <SelectedIngredientStyles>
                 <p>{i.name}</p>
               </SelectedIngredientStyles>
             </Link>

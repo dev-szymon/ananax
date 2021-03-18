@@ -23,6 +23,12 @@ export default function SignIn() {
         id
         username
         email
+        liked {
+          id
+        }
+        recipesSaved {
+          id
+        }
       }
     }
   `;
@@ -42,7 +48,7 @@ export default function SignIn() {
                   query: ME_QUERY,
                   data: {
                     __typename: 'Query',
-                    me: data?.logIn.user,
+                    me: data?.logIn,
                   },
                 });
                 // cache.evict({ fieldName: 'posts:{}' });

@@ -1,22 +1,21 @@
 import Header from './Header';
 import { ReactNode, useState } from 'react';
 import Link from 'next/link';
-import styled from 'styled-components';
+
 import Hamburger from './Hamburger';
 import { useMutation, gql, useApolloClient, useQuery } from '@apollo/client';
 import Navigation from '../components/Navigation';
-import { PlainButton, BottomBar } from './styles';
+import { PlainButton, BottomBar, Main } from './styles';
 import { Colorlogo, CalendarDates, Home, Book } from '../images';
 import { ME_QUERY } from '../lib/queries';
 import { useRouter } from 'next/router';
 
-const Main = styled.main`
-  padding: var(--lengthLg3) 0;
-  max-width: 640px;
-  margin: 0 auto;
-`;
+interface LayoutProps {
+  children: ReactNode;
+  headerLabel?: string;
+}
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({ children, headerLabel }: LayoutProps) {
   const [nav, setNav] = useState(false);
   const LOG_OUT = gql`
     mutation {
@@ -24,7 +23,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     }
   `;
 
-  const { data, loading } = useQuery(ME_QUERY, {
+  const { data } = useQuery(ME_QUERY, {
     skip: typeof window === 'undefined',
   });
   const [logOut] = useMutation(LOG_OUT);
@@ -39,6 +38,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               <Colorlogo />
             </h2>
           </Link>
+          <span className="header-label">{headerLabel}</span>
         </div>
       </Header>
       {nav && (
@@ -72,7 +72,11 @@ export default function Layout({ children }: { children: ReactNode }) {
               </div>
             </Link>
             <CalendarDates />
-            <Book />
+            <Link href="/cookbook/created">
+              <div>
+                <Book />
+              </div>
+            </Link>
             <Hamburger open={nav} handler={setNav} />
           </div>
         </BottomBar>

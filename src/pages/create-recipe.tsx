@@ -9,7 +9,7 @@ import { ME_QUERY } from '../lib/queries';
 
 export default function CreateRecipe() {
   const { data, loading } = useQuery(ME_QUERY, {
-    skip: typeof window === 'undefined',
+    skip: isServer,
   });
   const router = useRouter();
 
