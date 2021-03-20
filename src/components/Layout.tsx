@@ -1,11 +1,11 @@
 import Header from './Header';
-import { ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import Link from 'next/link';
 
 import Hamburger from './Hamburger';
 import { useMutation, gql, useApolloClient, useQuery } from '@apollo/client';
 import Navigation from '../components/Navigation';
-import { PlainButton, BottomBar, Main } from './styles';
+import { PlainButton, BottomBar, Main, LoginLinkHeader } from './styles';
 import { Colorlogo, CalendarDates, Home, Book } from '../images';
 import { ME_QUERY } from '../lib/queries';
 import { useRouter } from 'next/router';
@@ -13,9 +13,14 @@ import { useRouter } from 'next/router';
 interface LayoutProps {
   children: ReactNode;
   headerLabel?: string;
+  hideLogin?: boolean;
 }
 
-export default function Layout({ children, headerLabel }: LayoutProps) {
+export default function Layout({
+  children,
+  headerLabel,
+  hideLogin,
+}: LayoutProps) {
   const [nav, setNav] = useState(false);
   const LOG_OUT = gql`
     mutation {
@@ -23,7 +28,7 @@ export default function Layout({ children, headerLabel }: LayoutProps) {
     }
   `;
 
-  const { data } = useQuery(ME_QUERY, {
+  const { data, loading } = useQuery(ME_QUERY, {
     skip: typeof window === 'undefined',
   });
   const [logOut] = useMutation(LOG_OUT);
@@ -39,6 +44,11 @@ export default function Layout({ children, headerLabel }: LayoutProps) {
             </h2>
           </Link>
           <span className="header-label">{headerLabel}</span>
+          {!data && !loading && !hideLogin && (
+            <LoginLinkHeader>
+              <Link href="/login">sign in</Link>
+            </LoginLinkHeader>
+          )}
         </div>
       </Header>
       {nav && (

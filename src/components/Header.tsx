@@ -31,8 +31,7 @@ const HeaderStyles = styled.header`
     }
     .header-label {
       font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.2px;
     }
   }
 `;

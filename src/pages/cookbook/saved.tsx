@@ -6,6 +6,8 @@ import Loader from '../../components/Loader';
 import { useRouter } from 'next/router';
 import { isServer } from '../../lib/isServer';
 import RecipeCard from '../../components/RecipeCard';
+import Link from 'next/link';
+import { BtnFilledStyles } from '../../components/styles';
 
 export default function CookbookSaved() {
   const { data, loading }: MeRecipesSavedQuery = useQuery(
@@ -33,6 +35,13 @@ export default function CookbookSaved() {
         ) : (
           recipesSaved.map((r) => <RecipeCard recipe={r} key={r.id} />)
         )}
+        <Link href="/create-ingredient">
+          <BtnFilledStyles>new ingredient</BtnFilledStyles>
+        </Link>
+
+        <Link href="/create-recipe">
+          <BtnFilledStyles>new recipe</BtnFilledStyles>
+        </Link>
       </Layout>
     );
   }

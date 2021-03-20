@@ -1,11 +1,10 @@
+import React, { ChangeEvent, useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import Layout from '../components/Layout';
-import { BtnFilledStyles } from '../components/styles';
-import { useAuth } from '../lib/useAuth';
+import { HomePageContainer, SearchBarStyles } from '../components/styles';
 
 export default function Home() {
-  useAuth();
+  const [value, setValue] = useState('');
 
   return (
     <Layout>
@@ -13,13 +12,27 @@ export default function Home() {
         <title>Ananax</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Link href="/create-ingredient">
-        <BtnFilledStyles>new ingredient</BtnFilledStyles>
-      </Link>
-
-      <Link href="/create-recipe">
-        <BtnFilledStyles>new recipe</BtnFilledStyles>
-      </Link>
+      <HomePageContainer>
+        <div>
+          <h1>What will you cook today?</h1>
+          <SearchBarStyles>
+            <input
+              type="search"
+              name="search"
+              autoComplete="off"
+              placeholder="search recipes..."
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setValue(e.target.value);
+              }}
+              value={value}
+            />
+          </SearchBarStyles>
+        </div>
+        <img
+          className="landing-image"
+          src="https://res.cloudinary.com/dq104qc4m/image/upload/v1616174459/mealprep/pineapple_ghqxhw.png"
+        />
+      </HomePageContainer>
     </Layout>
   );
 }

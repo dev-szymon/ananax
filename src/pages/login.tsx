@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function SignInPage() {
   return (
-    <Layout headerLabel="sign in">
+    <Layout headerLabel="sign in" hideLogin>
       <Guest />
       <RadiusShadow style={{ margin: '0 auto' }}>
         <SignIn />

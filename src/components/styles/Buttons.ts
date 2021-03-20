@@ -38,3 +38,13 @@ export const PlainButton = styled.button`
   cursor: pointer;
   border: none;
 `;
+
+export const LoginLinkHeader = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  a {
+    color: var(--colorOutline);
+    font-weight: 400;
+    font-size: 0.875rem;
+  }
+`;

@@ -15,7 +15,7 @@ export const SINGLE_INGREDIENT_QUERY = gql`
 `;
 
 export const SEARCH_INGREDIENTS_QUERY = gql`
-  query getIngredientByName($name: String!) {
+  query getIngredientsByName($name: String!) {
     getIngredientByName(name: $name) {
       id
       name

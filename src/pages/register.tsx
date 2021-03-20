@@ -7,7 +7,7 @@ import { RadiusShadow, Caption } from '../components/styles';
 
 export default function SignUpPage() {
   return (
-    <Layout headerLabel="register">
+    <Layout headerLabel="register" hideLogin>
       <Guest />
       <RadiusShadow style={{ margin: '0 auto' }}>
         <SignUp />
