@@ -30,8 +30,11 @@ function createApolloClient() {
         }
       }),
       new HttpLink({
-        uri: process.env.API_ENDPOINT, // Server URL (must be absolute)
+        uri: `${process.env.API_ENDPOINT}/graphql`, // Server URL (must be absolute)
         credentials: 'include', // Additional fetch() options like `credentials` or `headers`
+        headers: {
+          'Access-Control-Allow-Origin': process.env.API_ENDPOINT,
+        },
       }),
     ]),
     cache: new InMemoryCache(),
