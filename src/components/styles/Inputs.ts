@@ -16,6 +16,7 @@ export const TextInputStyles = styled.div`
     border-radius: var(--lengthSm2);
     padding: var(--lengthSm3);
     padding-top: var(--lengthMd1);
+    -webkit-appearance: none;
     border: none;
     width: 100%;
     height: 100%;
@@ -31,6 +32,7 @@ export const TitleInputStyles = styled(TextInputStyles)`
   border: none;
   input {
     font-size: var(--lengthMd3);
+    -webkit-appearance: none;
     font-weight: 600;
     padding-top: var(--lengthSm3);
   }
@@ -56,6 +58,7 @@ export const NumericInputStyles = styled.div`
     border: none;
     text-align: right;
     color: var(--colorText);
+    -webkit-appearance: none;
     border-radius: var(--lengthSm3);
     padding: var(--lengthSm3);
     font-size: var(--lengthMd1);
@@ -85,6 +88,7 @@ export const CheckboxStyles = styled.div`
   }
   input {
     width: var(--lengthMd1);
+    -webkit-appearance: none;
     height: var(--lengthMd1);
     cursor: pointer;
   }
@@ -123,6 +127,7 @@ export const SearchBarStyles = styled.div`
     width: 100%;
     outline: none;
     border: none;
+    -webkit-appearance: none;
     outline: none;
     border-radius: var(--lengthSm2);
     padding: var(--lengthSm3) var(--lengthMd2);

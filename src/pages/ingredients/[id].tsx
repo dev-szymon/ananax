@@ -6,8 +6,9 @@ import {
   IngredientImage,
 } from '../../components/styles';
 import { SINGLE_INGREDIENT_QUERY } from '../../lib/queries';
-import { initializeApollo, addApolloState } from '../../lib/apolloClient';
+// import { initializeApollo, addApolloState } from '../../lib/withApollo';
 import { ApolloError } from '@apollo/client';
+import { withApollo } from '../../lib/withApollo';
 
 interface SingleIngredientProps {
   ingredient: {
@@ -23,10 +24,7 @@ interface SingleIngredientProps {
   error?: ApolloError | null;
 }
 
-export default function SingleIngredientPage({
-  ingredient,
-  error,
-}: SingleIngredientProps) {
+const SingleIngredientPage = ({ ingredient, error }: SingleIngredientProps) => {
   // TODO
   // create error pages
   if (error) {
@@ -35,7 +33,8 @@ export default function SingleIngredientPage({
 
   return (
     <Layout>
-      <SingleIngredient>
+      ingre
+      {/* <SingleIngredient>
         <h2>{ingredient.name}</h2>
         <IngredientImage src={ingredient.images[0]} />
         <>
@@ -60,28 +59,32 @@ export default function SingleIngredientPage({
             <span className="nutrient-value">{ingredient.glycemicIndex}</span>
           </NutrientStyles>
         </>
-      </SingleIngredient>
+      </SingleIngredient> */}
     </Layout>
   );
-}
+};
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const apolloClient = initializeApollo();
-  if (!params) {
-    return;
-  }
+export default SingleIngredientPage;
 
-  const {
-    data: { getIngredient: ingredient },
-    error,
-  } = await apolloClient.query({
-    query: SINGLE_INGREDIENT_QUERY,
-    variables: {
-      id: params.id,
-    },
-  });
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  // const { params } = ctx;
+  console.log(ctx);
+  // const apolloClient = initializeApollo();
+  // if (!params) {
+  //   return;
+  // }
 
-  return addApolloState(apolloClient, {
-    props: { ingredient: ingredient, error: error ? error : null },
-  });
+  // const {
+  //   data: { getIngredient: ingredient },
+  //   error,
+  // } = await apolloClient.query({
+  //   query: SINGLE_INGREDIENT_QUERY,
+  //   variables: {
+  //     id: params.id,
+  //   },
+  // });
+
+  return {
+    props: { ingredient: 'ingredient' },
+  };
 };
