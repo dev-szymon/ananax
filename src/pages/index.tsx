@@ -2,10 +2,8 @@ import React, { ChangeEvent, useState } from 'react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import { HomePageContainer, SearchBarStyles } from '../components/styles';
-import { addApolloState, initializeApollo } from '../lib/apolloClient';
-import { ME_QUERY } from '../lib/queries';
 
-export default function Home({ me }: any) {
+export default function Home() {
   const [value, setValue] = useState('');
 
   return (
@@ -34,28 +32,7 @@ export default function Home({ me }: any) {
           className="landing-image"
           src="https://res.cloudinary.com/dq104qc4m/image/upload/v1616174459/mealprep/pineapple_ghqxhw.png"
         />
-        <div>
-          <pre>{JSON.stringify(me)}</pre>
-        </div>
       </HomePageContainer>
     </Layout>
   );
 }
-
-export const getServerSideProps = async (ctx: any) => {
-  console.log(ctx);
-  const apolloClient = initializeApollo(null, ctx);
-
-  const {
-    data: { me },
-    error,
-  } = await apolloClient.query({
-    query: ME_QUERY,
-  });
-
-  console.log(me);
-
-  return addApolloState(apolloClient, {
-    props: { me: me },
-  });
-};

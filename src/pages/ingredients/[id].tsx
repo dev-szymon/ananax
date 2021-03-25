@@ -1,13 +1,9 @@
 import Layout from '../../components/Layout';
-import { GetServerSideProps, NextPageContext } from 'next';
 import {
   SingleIngredient,
   NutrientStyles,
   IngredientImage,
 } from '../../components/styles';
-import { SINGLE_INGREDIENT_QUERY } from '../../lib/queries';
-import { initializeApollo, addApolloState } from '../../lib/apolloClient';
-import { ApolloError } from '@apollo/client';
 
 interface SingleIngredientProps {
   ingredient: {
@@ -20,19 +16,11 @@ interface SingleIngredientProps {
     fats: number;
     glycemicIndex: number;
   };
-  error?: ApolloError | null;
 }
 
 export default function SingleIngredientPage({
   ingredient,
-  error,
 }: SingleIngredientProps) {
-  // TODO
-  // create error pages
-  if (error) {
-    return <p>Error</p>;
-  }
-
   return (
     <Layout>
       <SingleIngredient>
@@ -64,25 +52,3 @@ export default function SingleIngredientPage({
     </Layout>
   );
 }
-
-export const getServerSideProps = async (ctx: any) => {
-  const { params } = ctx;
-  const apolloClient = initializeApollo(null, ctx);
-  if (!params) {
-    return;
-  }
-
-  const {
-    data: { getIngredient: ingredient },
-    error,
-  } = await apolloClient.query({
-    query: SINGLE_INGREDIENT_QUERY,
-    variables: {
-      id: params.id,
-    },
-  });
-
-  return addApolloState(apolloClient, {
-    props: { ingredient: ingredient, error: error ? error : null },
-  });
-};

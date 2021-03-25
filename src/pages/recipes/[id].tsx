@@ -1,5 +1,4 @@
 import Layout from '../../components/Layout';
-import { GetServerSideProps } from 'next';
 import {
   SingleIngredient,
   NutrientStyles,
@@ -7,9 +6,7 @@ import {
   SelectedIngredientStyles,
 } from '../../components/styles';
 import Link from 'next/link';
-import { SearchQueryResultsType, SINGLE_RECIPE_QUERY } from '../../lib/queries';
-import { initializeApollo, addApolloState } from '../../lib/apolloClient';
-import { ApolloError } from '@apollo/client';
+import { SearchQueryResultsType } from '../../lib/queries';
 
 interface SingleRecipeProps {
   recipe: {
@@ -21,16 +18,9 @@ interface SingleRecipeProps {
     description: string;
     ingredients: SearchQueryResultsType[];
   };
-  error?: ApolloError | null;
 }
 
-export default function SingleRecipePage({ recipe, error }: SingleRecipeProps) {
-  // TODO
-  // create error pages
-  if (error) {
-    return <p>Error</p>;
-  }
-
+export default function SingleRecipePage({ recipe }: SingleRecipeProps) {
   return (
     <Layout>
       <SingleIngredient>
@@ -58,25 +48,3 @@ export default function SingleRecipePage({ recipe, error }: SingleRecipeProps) {
     </Layout>
   );
 }
-
-export const getServerSideProps = async (ctx: any) => {
-  const { params } = ctx;
-  const apolloClient = initializeApollo(null, ctx);
-  if (!params) {
-    return;
-  }
-
-  const {
-    data: { getRecipe: recipe },
-    error,
-  } = await apolloClient.query({
-    query: SINGLE_RECIPE_QUERY,
-    variables: {
-      id: params.id,
-    },
-  });
-
-  return addApolloState(apolloClient, {
-    props: { recipe: recipe, error: error ? error : null },
-  });
-};
