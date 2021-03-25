@@ -6,8 +6,9 @@ import { ME_QUERY } from '../lib/queries';
 import Loader from '../components/Loader';
 import { useRouter } from 'next/router';
 import { isServer } from '../lib/isServer';
+import { withApollo } from '../lib/withApollo';
 
-export default function CreateIngredient() {
+const CreateIngredient = () => {
   const { data, loading } = useQuery(ME_QUERY, {
     skip: isServer,
   });
@@ -36,4 +37,6 @@ export default function CreateIngredient() {
       </Layout>
     );
   }
-}
+};
+
+export default withApollo({ ssr: false })(CreateIngredient);

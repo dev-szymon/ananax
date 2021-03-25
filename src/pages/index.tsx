@@ -2,8 +2,9 @@ import React, { ChangeEvent, useState } from 'react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import { HomePageContainer, SearchBarStyles } from '../components/styles';
+import { withApollo } from '../lib/withApollo';
 
-export default function Home() {
+const Home = () => {
   const [value, setValue] = useState('');
 
   return (
@@ -35,4 +36,6 @@ export default function Home() {
       </HomePageContainer>
     </Layout>
   );
-}
+};
+
+export default withApollo({ ssr: false })(Home);

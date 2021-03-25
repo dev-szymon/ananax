@@ -3,8 +3,9 @@ import Layout from '../../components/Layout';
 import Loader from '../../components/Loader';
 import { RecipesQuery, RECIPES_QUERY } from '../../lib/queries';
 import RecipeCard from '../../components/RecipeCard';
+import { withApollo } from '../../lib/withApollo';
 
-export default function RecipesPage() {
+const RecipesPage = () => {
   const { data, loading, error }: RecipesQuery = useQuery(RECIPES_QUERY);
 
   if (loading) {
@@ -23,4 +24,6 @@ export default function RecipesPage() {
       </Layout>
     );
   }
-}
+};
+
+export default withApollo({ ssr: true })(RecipesPage);
