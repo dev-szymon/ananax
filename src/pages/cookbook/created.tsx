@@ -61,5 +61,5 @@ export default function CookbookCreated() {
 export const getServerSideProps = async (ctx: any) => {
   const apolloClient = initializeApollo(null, ctx);
 
-  return addApolloState(apolloClient);
+  return addApolloState(apolloClient, { props: {} });
 };

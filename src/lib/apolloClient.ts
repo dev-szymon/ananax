@@ -16,7 +16,6 @@ export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 function createApolloClient(ctx: NextPageContext) {
-  console.log(ctx?.req?.headers);
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: ApolloLink.from([
