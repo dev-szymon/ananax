@@ -59,8 +59,9 @@ export default function SingleRecipePage({ recipe, error }: SingleRecipeProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const apolloClient = initializeApollo();
+export const getServerSideProps = async (ctx: any) => {
+  const { params } = ctx;
+  const apolloClient = initializeApollo(null, ctx);
   if (!params) {
     return;
   }

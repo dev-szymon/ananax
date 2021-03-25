@@ -21,6 +21,7 @@ export default function Layout({
   headerLabel,
   hideLogin,
 }: LayoutProps) {
+  const apolloClient = useApolloClient();
   const [nav, setNav] = useState(false);
   const LOG_OUT = gql`
     mutation {
@@ -32,7 +33,6 @@ export default function Layout({
     skip: typeof window === 'undefined',
   });
   const [logOut] = useMutation(LOG_OUT);
-  const apolloClient = useApolloClient();
   const router = useRouter();
   return (
     <>

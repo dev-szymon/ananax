@@ -9,12 +9,14 @@ import {
 import { onError } from '@apollo/link-error';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
+import { NextPageContext } from 'next';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
-function createApolloClient() {
+function createApolloClient(ctx: NextPageContext) {
+  console.log(ctx?.req?.headers);
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: ApolloLink.from([
@@ -34,6 +36,7 @@ function createApolloClient() {
         credentials: 'include', // Additional fetch() options like `credentials` or `headers`
         headers: {
           'Access-Control-Allow-Origin': process.env.API_ENDPOINT,
+          cookie: ctx ? ctx.req?.headers.cookie : '',
         },
       }),
     ]),
@@ -41,8 +44,8 @@ function createApolloClient() {
   });
 }
 
-export function initializeApollo(initialState: any = null) {
-  const _apolloClient = apolloClient ?? createApolloClient();
+export function initializeApollo(initialState: any = null, ctx?: any) {
+  const _apolloClient = apolloClient ?? createApolloClient(ctx);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -74,7 +77,7 @@ export function initializeApollo(initialState: any = null) {
 
 export function addApolloState(
   client: ApolloClient<NormalizedCacheObject>,
-  pageProps: any
+  pageProps?: any
 ) {
   if (pageProps?.props) {
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();

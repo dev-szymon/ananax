@@ -1,5 +1,5 @@
 import Layout from '../../components/Layout';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, NextPageContext } from 'next';
 import {
   SingleIngredient,
   NutrientStyles,
@@ -65,8 +65,9 @@ export default function SingleIngredientPage({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const apolloClient = initializeApollo();
+export const getServerSideProps = async (ctx: any) => {
+  const { params } = ctx;
+  const apolloClient = initializeApollo(null, ctx);
   if (!params) {
     return;
   }
