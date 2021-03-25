@@ -11,9 +11,9 @@ import { isServer } from '../../lib/isServer';
 import RecipeCard from '../../components/RecipeCard';
 import Link from 'next/link';
 import { BtnFilledStyles } from '../../components/styles';
-import { initializeApollo, addApolloState } from '../../lib/apolloClient';
+import { withApollo } from '../../lib/withApollo';
 
-export default function CookbookCreated() {
+const CookbookCreated = () => {
   const { data, loading }: MeRecipesCreatedQuery = useQuery(
     ME_RECIPES_CREATED_QUERY,
     {
@@ -56,10 +56,5 @@ export default function CookbookCreated() {
       </Layout>
     );
   }
-}
-
-export const getServerSideProps = async (ctx: any) => {
-  const apolloClient = initializeApollo(null, ctx);
-
-  return addApolloState(apolloClient, { props: {} });
 };
+export default withApollo({ ssr: true })(CookbookCreated);

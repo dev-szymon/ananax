@@ -1,32 +1,47 @@
+import React from 'react';
 import Layout from '../../components/Layout';
-import { GetServerSideProps, NextPageContext } from 'next';
 import {
   SingleIngredient,
   NutrientStyles,
   IngredientImage,
 } from '../../components/styles';
 import { SINGLE_INGREDIENT_QUERY } from '../../lib/queries';
-import { initializeApollo, addApolloState } from '../../lib/apolloClient';
-import { ApolloError } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { withApollo } from '../../lib/withApollo';
+import { useRouter } from 'next/router';
+import Loader from '../../components/Loader';
 
-interface SingleIngredientProps {
-  ingredient: {
-    id: string;
-    name: string;
-    images: string[];
-    kcal: number;
-    carbs: number;
-    protein: number;
-    fats: number;
-    glycemicIndex: number;
-  };
-  error?: ApolloError | null;
+interface IIngredient {
+  id: string;
+  name: string;
+  images: string[];
+  kcal: number;
+  carbs: number;
+  protein: number;
+  fats: number;
+  glycemicIndex: number;
 }
 
-export default function SingleIngredientPage({
-  ingredient,
-  error,
-}: SingleIngredientProps) {
+const SingleIngredientPage = () => {
+  const router = useRouter();
+
+  const ingredientID = router.query.id;
+
+  const { data, loading, error } = useQuery(SINGLE_INGREDIENT_QUERY, {
+    variables: { id: ingredientID },
+  });
+
+  const ingredient: IIngredient = data?.getIngredient;
+  console.log(ingredient);
+
+  if (loading) {
+    return (
+      <Layout>
+        <Loader />
+      </Layout>
+    );
+  }
+
   // TODO
   // create error pages
   if (error) {
@@ -63,26 +78,17 @@ export default function SingleIngredientPage({
       </SingleIngredient>
     </Layout>
   );
-}
-
-export const getServerSideProps = async (ctx: any) => {
-  const { params } = ctx;
-  const apolloClient = initializeApollo(null, ctx);
-  if (!params) {
-    return;
-  }
-
-  const {
-    data: { getIngredient: ingredient },
-    error,
-  } = await apolloClient.query({
-    query: SINGLE_INGREDIENT_QUERY,
-    variables: {
-      id: params.id,
-    },
-  });
-
-  return addApolloState(apolloClient, {
-    props: { ingredient: ingredient, error: error ? error : null },
-  });
 };
+
+// export const getServerSideProps = (ctx: any) => {
+//   const { params } = ctx;
+//   if (!params) {
+//     return;
+//   }
+
+//   return {
+//     props: { ingredientID: params.id },
+//   };
+// };
+
+export default withApollo({ ssr: true })(SingleIngredientPage);

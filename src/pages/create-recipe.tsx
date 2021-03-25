@@ -6,8 +6,9 @@ import Layout from '../components/Layout';
 import Loader from '../components/Loader';
 import { isServer } from '../lib/isServer';
 import { ME_QUERY } from '../lib/queries';
+import { withApollo } from '../lib/withApollo';
 
-export default function CreateRecipe() {
+const CreateRecipe = () => {
   const { data, loading } = useQuery(ME_QUERY, {
     skip: isServer,
   });
@@ -36,4 +37,6 @@ export default function CreateRecipe() {
       </Layout>
     );
   }
-}
+};
+
+export default withApollo({ ssr: false })(CreateRecipe);

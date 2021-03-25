@@ -40,7 +40,14 @@ interface Props {
 export default function RecipeCard({ recipe }: Props) {
   const { name, images, id, createdBy, kcal } = recipe;
   const { data, loading, error } = useQuery(ME_QUERY);
-  const { liked, recipesSaved } = data?.me;
+
+  let liked;
+  let recipesSaved;
+  if (data) {
+    liked = data.me.liked;
+    recipesSaved = data.me.recipesSaved;
+    // const { liked, recipesSaved } = data?.me;
+  }
 
   const [toggleLikeRecipe] = useMutation(TOGGLE_LIKE_RECIPE);
   const [toggleSaveRecipe] = useMutation(TOGGLE_SAVE_RECIPE);
@@ -82,7 +89,11 @@ export default function RecipeCard({ recipe }: Props) {
               })
             }
           >
-            <Heart isActive={liked.some((r: { id: string }) => r.id === id)} />
+            <Heart
+              isActive={
+                data?.me && liked.some((r: { id: string }) => r.id === id)
+              }
+            />
           </PlainButton>
           <PlainButton
             onClick={() =>
@@ -101,7 +112,10 @@ export default function RecipeCard({ recipe }: Props) {
             }
           >
             <Book
-              isActive={recipesSaved.some((r: { id: string }) => r.id === id)}
+              isActive={
+                data?.me &&
+                recipesSaved.some((r: { id: string }) => r.id === id)
+              }
             />
           </PlainButton>
         </LikeAndSaveStyles>

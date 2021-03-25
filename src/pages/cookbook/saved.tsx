@@ -8,9 +8,9 @@ import { isServer } from '../../lib/isServer';
 import RecipeCard from '../../components/RecipeCard';
 import Link from 'next/link';
 import { BtnFilledStyles } from '../../components/styles';
-import { initializeApollo, addApolloState } from '../../lib/apolloClient';
+import { withApollo } from '../../lib/withApollo';
 
-export default function CookbookSaved() {
+const CookbookSaved = () => {
   const { data, loading }: MeRecipesSavedQuery = useQuery(
     ME_RECIPES_SAVED_QUERY,
     {
@@ -54,10 +54,6 @@ export default function CookbookSaved() {
       </Layout>
     );
   }
-}
-
-export const getServerSideProps = async (ctx: any) => {
-  const apolloClient = initializeApollo(null, ctx);
-
-  return addApolloState(apolloClient, { props: {} });
 };
+
+export default withApollo({ ssr: true })(CookbookSaved);

@@ -4,8 +4,9 @@ import Guest from '../components/credentials/Guest';
 import React from 'react';
 import Link from 'next/link';
 import { RadiusShadow, Caption } from '../components/styles';
+import { withApollo } from '../lib/withApollo';
 
-export default function SignUpPage() {
+const SignUpPage = () => {
   return (
     <Layout headerLabel="register" hideLogin>
       <Guest />
@@ -18,4 +19,6 @@ export default function SignUpPage() {
       </RadiusShadow>
     </Layout>
   );
-}
+};
+
+export default withApollo({ ssr: false })(SignUpPage);
