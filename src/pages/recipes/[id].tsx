@@ -1,3 +1,4 @@
+import React from 'react';
 import Layout from '../../components/Layout';
 import {
   SingleIngredient,
@@ -9,6 +10,8 @@ import Link from 'next/link';
 import { SearchQueryResultsType, SINGLE_RECIPE_QUERY } from '../../lib/queries';
 import { useQuery } from '@apollo/client';
 import { withApollo } from '../../lib/withApollo';
+import { useRouter } from 'next/router';
+import Loader from '../../components/Loader';
 
 interface IRecipe {
   id: string;
@@ -20,7 +23,11 @@ interface IRecipe {
   ingredients: SearchQueryResultsType[];
 }
 
-const SingleRecipePage = ({ recipeID }: { recipeID: string }) => {
+const SingleRecipePage = () => {
+  const router = useRouter();
+
+  const recipeID = router.query.id;
+
   const { data, loading, error } = useQuery(SINGLE_RECIPE_QUERY, {
     variables: { id: recipeID },
   });
@@ -33,6 +40,13 @@ const SingleRecipePage = ({ recipeID }: { recipeID: string }) => {
     return <p>Error</p>;
   }
 
+  if (loading) {
+    return (
+      <Layout>
+        <Loader />
+      </Layout>
+    );
+  }
   if (data) {
     return (
       <Layout>
@@ -61,17 +75,6 @@ const SingleRecipePage = ({ recipeID }: { recipeID: string }) => {
       </Layout>
     );
   }
-};
-
-export const getServerSideProps = async (ctx: any) => {
-  const { params } = ctx;
-  if (!params) {
-    return;
-  }
-
-  return {
-    props: { recipeID: params.id },
-  };
 };
 
 export default withApollo({ ssr: true })(SingleRecipePage);

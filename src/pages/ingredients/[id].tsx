@@ -1,3 +1,4 @@
+import React from 'react';
 import Layout from '../../components/Layout';
 import {
   SingleIngredient,
@@ -7,6 +8,8 @@ import {
 import { SINGLE_INGREDIENT_QUERY } from '../../lib/queries';
 import { useQuery } from '@apollo/client';
 import { withApollo } from '../../lib/withApollo';
+import { useRouter } from 'next/router';
+import Loader from '../../components/Loader';
 
 interface IIngredient {
   id: string;
@@ -19,13 +22,25 @@ interface IIngredient {
   glycemicIndex: number;
 }
 
-const SingleIngredientPage = ({ ingredientID }: { ingredientID: string }) => {
+const SingleIngredientPage = () => {
+  const router = useRouter();
+
+  const ingredientID = router.query.id;
+
   const { data, loading, error } = useQuery(SINGLE_INGREDIENT_QUERY, {
     variables: { id: ingredientID },
   });
 
   const ingredient: IIngredient = data?.getIngredient;
   console.log(ingredient);
+
+  if (loading) {
+    return (
+      <Layout>
+        <Loader />
+      </Layout>
+    );
+  }
 
   // TODO
   // create error pages
@@ -65,15 +80,15 @@ const SingleIngredientPage = ({ ingredientID }: { ingredientID: string }) => {
   );
 };
 
-export const getServerSideProps = (ctx: any) => {
-  const { params } = ctx;
-  if (!params) {
-    return;
-  }
+// export const getServerSideProps = (ctx: any) => {
+//   const { params } = ctx;
+//   if (!params) {
+//     return;
+//   }
 
-  return {
-    props: { ingredientID: params.id },
-  };
-};
+//   return {
+//     props: { ingredientID: params.id },
+//   };
+// };
 
 export default withApollo({ ssr: true })(SingleIngredientPage);
