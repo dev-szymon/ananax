@@ -1,19 +1,22 @@
 import { Formik, Form } from 'formik';
 import InputField from './TextInput';
 import { BtnFilledStyles } from '../styles';
+import { useAuth } from '../../lib/auth';
 
 interface ISignUp {
-  username: string;
+  // username: string;
   email: string;
   password: string;
 }
 
 export default function SignIn() {
   const initialValues: ISignUp = {
-    username: '',
+    // username: '',
     email: '',
     password: '',
   };
+
+  const { signup } = useAuth();
 
   return (
     <>
@@ -21,7 +24,8 @@ export default function SignIn() {
         initialValues={initialValues}
         onSubmit={async (values) => {
           try {
-            console.log(values);
+            const { email, password } = values;
+            signup(email, password);
           } catch (error) {
             console.log(error);
           }
@@ -29,7 +33,7 @@ export default function SignIn() {
       >
         <Form autoComplete="off">
           <fieldset>
-            <InputField type="text" name="username" label="username" />
+            {/* <InputField type="text" name="username" label="username" /> */}
             <InputField type="email" name="email" label="email" />
             <InputField type="password" name="password" label="password" />
             <BtnFilledStyles style={{ marginTop: '1rem' }} type="submit">

@@ -2,10 +2,13 @@ import React, { ChangeEvent, useState } from 'react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import { HomePageContainer, SearchBarStyles } from '../components/styles';
+import { useAuth } from '../lib/auth';
 
 export default function Home() {
   const [value, setValue] = useState('');
 
+  const { user } = useAuth();
+  console.log(user);
   return (
     <Layout>
       <Head>

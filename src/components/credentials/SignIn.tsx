@@ -1,6 +1,8 @@
 import { Formik, Form } from 'formik';
 import InputField from './TextInput';
 import { BtnFilledStyles } from '../styles';
+import { useAuth } from '../../lib/auth';
+import { emit } from 'node:process';
 
 interface ISignIn {
   email: string;
@@ -13,13 +15,16 @@ export default function SignIn() {
     password: '',
   };
 
+  const { signin } = useAuth();
+
   return (
     <>
       <Formik
         initialValues={initialValues}
         onSubmit={async (values) => {
           try {
-            console.log(values);
+            const { email, password } = values;
+            signin(email, password);
           } catch (error) {
             console.log(error);
           }

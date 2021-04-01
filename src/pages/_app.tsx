@@ -1,15 +1,13 @@
+import React from 'react';
 import '../styles/globals.css';
 import { AppProps } from 'next/app';
-import { ApolloProvider } from '@apollo/client';
-import { useApollo } from '../lib/apolloClient';
+import { ProvideAuth } from '../lib/auth';
 
 function App({ Component, pageProps }: AppProps) {
-  const apolloClient = useApollo(pageProps);
-
   return (
-    <ApolloProvider client={apolloClient}>
+    <ProvideAuth>
       <Component {...pageProps} />
-    </ApolloProvider>
+    </ProvideAuth>
   );
 }
 

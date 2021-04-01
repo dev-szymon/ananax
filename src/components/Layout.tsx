@@ -6,7 +6,8 @@ import Hamburger from './Hamburger';
 import Navigation from '../components/Navigation';
 import { PlainButton, BottomBar, Main, LoginLinkHeader } from './styles';
 import { Colorlogo, CalendarDates, Home, Book } from '../images';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
+import { useAuth } from '../lib/auth';
 
 interface LayoutProps {
   children: ReactNode;
@@ -15,8 +16,9 @@ interface LayoutProps {
 
 export default function Layout({ children, headerLabel }: LayoutProps) {
   const [nav, setNav] = useState(false);
-
+  const { user, signout } = useAuth();
   const router = useRouter();
+
   return (
     <>
       <Header>
@@ -27,9 +29,11 @@ export default function Layout({ children, headerLabel }: LayoutProps) {
             </h2>
           </Link>
           <span className="header-label">{headerLabel}</span>
-          <LoginLinkHeader>
-            <Link href="/login">sign in</Link>
-          </LoginLinkHeader>
+          {!user && (
+            <LoginLinkHeader>
+              <Link href="/login">sign in</Link>
+            </LoginLinkHeader>
+          )}
         </div>
       </Header>
       {nav && (
@@ -38,7 +42,9 @@ export default function Layout({ children, headerLabel }: LayoutProps) {
             <li>
               <PlainButton
                 onClick={() => {
-                  console.log('logout');
+                  signout();
+                  setNav(false);
+                  router.pathname === '/' ? router.reload() : router.push('/');
                 }}
               >
                 logout
@@ -48,22 +54,24 @@ export default function Layout({ children, headerLabel }: LayoutProps) {
         </Navigation>
       )}
       <Main>{children}</Main>
-      <BottomBar>
-        <div className="innerBottomBar">
-          <Link href="/" passHref>
-            <div>
-              <Home />
-            </div>
-          </Link>
-          <CalendarDates />
-          <Link href="/cookbook/created">
-            <div>
-              <Book />
-            </div>
-          </Link>
-          <Hamburger open={nav} handler={setNav} />
-        </div>
-      </BottomBar>
+      {user && (
+        <BottomBar>
+          <div className="innerBottomBar">
+            <Link href="/" passHref>
+              <div>
+                <Home />
+              </div>
+            </Link>
+            <CalendarDates />
+            <Link href="/cookbook/created">
+              <div>
+                <Book />
+              </div>
+            </Link>
+            <Hamburger open={nav} handler={setNav} />
+          </div>
+        </BottomBar>
+      )}
     </>
   );
 }
