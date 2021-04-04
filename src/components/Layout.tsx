@@ -1,23 +1,31 @@
 import Header from './Header';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import Link from 'next/link';
 
-import Hamburger from './Hamburger';
 import Navigation from '../components/Navigation';
-import { PlainButton, BottomBar, Main, LoginLinkHeader } from './styles';
-import { Colorlogo, CalendarDates, Home, Book } from '../images';
-import { Router, useRouter } from 'next/router';
+import { PlainButton, BottomBar, Main } from './styles';
+import { Colorlogo, CalendarDates, Home, Book, More } from '../images';
 import { useAuth } from '../lib/auth';
+import { useMenu } from '../context/menuContext';
+import { useRouter } from 'next/router';
 
 interface LayoutProps {
   children: ReactNode;
   headerLabel?: string;
+  menuType?: string;
 }
 
-export default function Layout({ children, headerLabel }: LayoutProps) {
-  const [nav, setNav] = useState(false);
-  const { user, signout } = useAuth();
+export default function Layout({
+  children,
+  headerLabel,
+  menuType,
+}: LayoutProps) {
+  const { menu, setMenu, menuHandler } = useMenu();
+  const { user } = useAuth();
   const router = useRouter();
+
+  const isLoginPage =
+    router.pathname === '/login' || router.pathname === '/register';
 
   return (
     <>
@@ -29,30 +37,14 @@ export default function Layout({ children, headerLabel }: LayoutProps) {
             </h2>
           </Link>
           <span className="header-label">{headerLabel}</span>
-          {!user && (
-            <LoginLinkHeader>
+          {!user && !isLoginPage && (
+            <div style={{ textAlign: 'right' }}>
               <Link href="/login">sign in</Link>
-            </LoginLinkHeader>
+            </div>
           )}
         </div>
       </Header>
-      {nav && (
-        <Navigation>
-          <ul>
-            <li>
-              <PlainButton
-                onClick={() => {
-                  signout();
-                  setNav(false);
-                  router.pathname === '/' ? router.reload() : router.push('/');
-                }}
-              >
-                logout
-              </PlainButton>
-            </li>
-          </ul>
-        </Navigation>
-      )}
+      {menu && <Navigation />}
       <Main>{children}</Main>
       {user && (
         <BottomBar>
@@ -63,12 +55,17 @@ export default function Layout({ children, headerLabel }: LayoutProps) {
               </div>
             </Link>
             <CalendarDates />
-            <Link href="/cookbook/created">
+            <PlainButton onClick={() => menuHandler('COOKBOOK')}>
               <div>
                 <Book />
               </div>
-            </Link>
-            <Hamburger open={nav} handler={setNav} />
+            </PlainButton>
+            <PlainButton
+              type="button"
+              onClick={() => menuHandler(menuType || 'DEFAULT')}
+            >
+              <More fill="var(--colorText)" />
+            </PlainButton>
           </div>
         </BottomBar>
       )}

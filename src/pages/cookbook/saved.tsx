@@ -4,7 +4,7 @@
 // import { useRouter } from 'next/router';
 // import RecipeCard from '../../components/RecipeCard';
 // import Link from 'next/link';
-// import { BtnFilledStyles } from '../../components/styles';
+// import { PrimaryButton } from '../../components/styles';
 
 // export default function CookbookSaved() {
 //   const router = useRouter();
@@ -19,11 +19,11 @@
 //           recipesSaved.map((r) => <RecipeCard recipe={r} key={r.id} />)
 //         )}
 //         <Link href="/create-ingredient">
-//           <BtnFilledStyles>new ingredient</BtnFilledStyles>
+//           <PrimaryButton>new ingredient</PrimaryButton>
 //         </Link>
 
 //         <Link href="/create-recipe">
-//           <BtnFilledStyles>new recipe</BtnFilledStyles>
+//           <PrimaryButton>new recipe</PrimaryButton>
 //         </Link>
 //       </Layout>
 //     );

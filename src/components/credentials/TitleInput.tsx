@@ -1,7 +1,7 @@
 import { Field, ErrorMessage } from 'formik';
 import { TitleInputStyles } from '../styles';
 
-export default function TextInput({
+export default function TitleInput({
   type,
   className,
   name,

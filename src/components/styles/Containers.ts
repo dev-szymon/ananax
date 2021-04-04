@@ -1,14 +1,5 @@
 import styled from 'styled-components';
 
-export const RadiusShadow = styled.div`
-  width: 350px;
-  border-radius: var(--lengthMd1);
-  padding: var(--lengthLg1) var(--lengthMd1);
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--boxShadow);
-`;
-
 export const BorderBottom = styled.div`
   width: 100%;
   border-bottom: 1px solid var(--colorGray);
@@ -61,10 +52,5 @@ export const HomePageContainer = styled.div`
     font-weight: 600;
     padding: var(--lengthSm3);
     margin-bottom: var(--lengthMd1);
-  }
-  .landing-image {
-    position: absolute;
-    height: 80vh;
-    z-index: -100;
   }
 `;

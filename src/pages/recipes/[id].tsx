@@ -6,7 +6,6 @@ import {
   SelectedIngredientStyles,
 } from '../../components/styles';
 import Link from 'next/link';
-import { SearchQueryResultsType } from '../../lib/queries';
 
 interface SingleRecipeProps {
   recipe: {
@@ -16,7 +15,7 @@ interface SingleRecipeProps {
     createdBy: { id: string; username: string };
     prepTime: number;
     description: string;
-    ingredients: SearchQueryResultsType[];
+    ingredients: any[];
   };
 }
 
@@ -40,7 +39,7 @@ export default function SingleRecipePage({ recipe }: SingleRecipeProps) {
             </Link>
           ))}
           <h3 style={{ marginBottom: '0.5rem' }}>Preparation</h3>
-          <pre style={{ fontFamily: 'var(--baseFont)' }}>
+          <pre style={{ fontFamily: 'var(--fontPrimary)' }}>
             {recipe.description}
           </pre>
         </>

@@ -2,12 +2,20 @@ import React from 'react';
 import '../styles/globals.css';
 import { AppProps } from 'next/app';
 import { ProvideAuth } from '../lib/auth';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { MenuProvider } from '../context/menuContext';
 
 function App({ Component, pageProps }: AppProps) {
+  const queryClient = new QueryClient();
+
   return (
-    <ProvideAuth>
-      <Component {...pageProps} />
-    </ProvideAuth>
+    <QueryClientProvider client={queryClient}>
+      <ProvideAuth>
+        <MenuProvider>
+          <Component {...pageProps} />
+        </MenuProvider>
+      </ProvideAuth>
+    </QueryClientProvider>
   );
 }
 

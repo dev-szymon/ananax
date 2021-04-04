@@ -11,14 +11,14 @@
 
 // const RecipeCardStyles = styled.div`
 //   width: 100%;
-//   border-bottom: 1px solid var(--colorPrimary);
+//   border-bottom: 1px solid var(--colorLight);
 //   img {
 //     width: 100%;
 //     max-width: 100%;
 //   }
 //   .username-tag {
 //     font-size: 0.875rem;
-//     color: var(--colorSecondaryText);
+//     color: var(--colorTextLight);
 //   }
 // `;
 
@@ -51,7 +51,7 @@
 //           <span className="username-tag">{`@${createdBy.username}`}</span>
 //         </Link>
 //         <PlainButton>
-//           <More fill="var(--colorThird)" />
+//           <More fill="var(--colorSecondary)" />
 //         </PlainButton>
 //       </SingleRow>
 //       <Link href={`/recipes/${id}`}>

@@ -1,23 +1,31 @@
 import { Field, ErrorMessage } from 'formik';
-import { TextInputStyles } from '../styles';
+import { BaseInputStyles } from '../styles';
 
 export default function TextInput({
   type,
   className,
   name,
   label,
+  placeholder,
   ...rest
 }: {
   type: string;
   className?: string;
   name: string;
   label: string;
+  placeholder?: string;
 }) {
   return (
-    <TextInputStyles className={className}>
+    <BaseInputStyles className={className}>
       <label htmlFor={name}>{label}</label>
-      <Field id={name} type={type} name={name} {...rest} />
+      <Field
+        id={name}
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        {...rest}
+      />
       <ErrorMessage name={name} />
-    </TextInputStyles>
+    </BaseInputStyles>
   );
 }

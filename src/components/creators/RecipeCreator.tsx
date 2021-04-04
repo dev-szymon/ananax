@@ -1,118 +1,124 @@
-// import React, { useState } from 'react';
-// import { useDropzone } from 'react-dropzone';
-// import { Formik, Form } from 'formik';
-// import TitleInput from '../credentials/TitleInput';
-// import { BtnFilledStyles, DropzoneStyles, Notice } from '../styles';
-// import NumericInput from '../credentials/NumericInput';
-// import Checkbox from '../credentials/Checkbox';
-// import Textarea from '../credentials/Textarea';
-// import IngredientSelector from './IngredientsSelector';
+import React, { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { Formik, Form } from 'formik';
+import TitleInput from '../credentials/TitleInput';
+import { PrimaryButton, TertiaryButton, DropzoneStyles } from '../styles';
+import NumericInput from '../credentials/NumericInput';
+import Textarea from '../credentials/Textarea';
+import { useMenu } from '../../context/menuContext';
+import { useIngredientsSelector } from '../../context/ingredientsSelectorContext';
 
-// interface FormikValues {
-//   name: string;
-//   images: string[] | [];
-//   private: boolean;
-//   ingredients: string[];
-//   description: string[];
-//   prepTime: number | '';
-// }
+export interface ICreateRecipe {
+  name: string;
+  images: string[] | [];
+  ingredients: string[];
+  description: string[];
+  prepTime: number | '';
+}
 
-// const initialValues: FormikValues = {
-//   name: '',
-//   images: [],
-//   private: false,
-//   ingredients: [],
-//   description: [],
-//   prepTime: '',
-// };
+const initialValues: ICreateRecipe = {
+  name: '',
+  images: [],
+  ingredients: [],
+  description: [],
+  prepTime: '',
+};
 
-// export default function RecipeCreator() {
-//   const onDrop = (acceptedFiles: File[]) => {
-//     return setFiles(acceptedFiles);
-//   };
+export default function RecipeCreator() {
+  const { menuHandler } = useMenu();
+  const { ingredients } = useIngredientsSelector();
 
-//   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-//   const [ingredients, setIngredients] = useState<string[]>([])
-//   const [files, setFiles] = useState<File[]>([]);
-//   const [loading, setLoading] = useState(false);
+  const onDrop = (acceptedFiles: File[]) => {
+    return setFiles(acceptedFiles);
+  };
 
-//   const isFile: boolean = files.length > 0;
-//   return (
-//     <Formik
-//       initialValues={initialValues}
-//       onSubmit={async (values) => {
-//         setLoading(true);
-//         try {
-//           const data = new FormData();
-//           data.append('file', files[0]);
-//           data.append('upload_preset', 'fwwd2pmr');
-//           const res = await fetch(
-//             `https://api.cloudinary.com/v1_1/dq104qc4m/image/upload`,
-//             {
-//               method: 'POST',
-//               body: data,
-//             }
-//           );
-//           const resCloudinary = await res.json();
-//           try {
-//             const recipe =  {
-//               ...values,
-//               images: [resCloudinary.secure_url],
-//               ingredients: ingredients.map((i) => i),
-//             },
-//             console.log(recipe)
-//           } catch (error) {
-//             // remove uploaded cloudinary asset if there is error creating recipe
-//             // set error state and display msg
-//             console.log(error);
-//           }
-//         } catch (error) {
-//           // set error state and display msg
-//           console.log(error);
-//         }
-//       }}
-//     >
-//       <Form>
-//         <fieldset
-//           aria-busy={loading}
-//           disabled={loading}
-//           style={{ padding: '1rem' }}
-//         >
-//           <TitleInput type="text" placeholder="Recipe name..." name="name" />
-//           <DropzoneStyles {...getRootProps()}>
-//             {files[0] ? (
-//               <img
-//                 style={{ width: '60%' }}
-//                 src={URL.createObjectURL(files[0])}
-//                 alt="upload preview"
-//               ></img>
-//             ) : (
-//               <Notice>Upload image...</Notice>
-//             )}
-//             <input type="file" {...getInputProps()} multiple={false} />
-//           </DropzoneStyles>
-//           <NumericInput
-//             label="preparation time"
-//             name="prepTime"
-//             step="1"
-//             placeholder={0}
-//           />
-//           <Checkbox label="private recipe" name="private" />
-//           <IngredientSelector
-//             ingredients={ingredients}
-//             setIngredients={setIngredients}
-//           />
-//           <Textarea
-//             name="description"
-//             label="preparation"
-//             placeholder="Recipe preparation..."
-//           />
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
 
-//           <BtnFilledStyles type="submit" disabled={!isFile}>
-//             create recipe
-//           </BtnFilledStyles>
-//         </fieldset>
-//       </Form>
-//     </Formik>
-//   );
-// }
+  const isFile: boolean = files.length > 0;
+  return (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={async (values) => {
+        setLoading(true);
+        try {
+          const data = new FormData();
+          data.append('file', files[0]);
+          data.append('upload_preset', 'fwwd2pmr');
+          const res = await fetch(
+            `https://api.cloudinary.com/v1_1/dq104qc4m/image/upload`,
+            {
+              method: 'POST',
+              body: data,
+            }
+          );
+          const resCloudinary = await res.json();
+          try {
+            const recipe = {
+              ...values,
+              images: [resCloudinary.secure_url],
+              ingredients: ingredients.map((i) => i),
+            };
+            // create recipe with api serverless functions
+            console.log(recipe);
+          } catch (error) {
+            // remove uploaded cloudinary asset if there is error creating recipe
+            // set error state and display msg
+            console.log(error);
+          }
+        } catch (error) {
+          // set error state and display msg
+          console.log(error);
+        }
+      }}
+    >
+      <Form>
+        <fieldset
+          aria-busy={loading}
+          disabled={loading}
+          style={{ padding: '1rem' }}
+        >
+          <TitleInput type="text" placeholder="Recipe name..." name="name" />
+          <DropzoneStyles {...getRootProps()}>
+            {files[0] ? (
+              <img
+                style={{ width: '60%' }}
+                src={URL.createObjectURL(files[0])}
+                alt="upload preview"
+              ></img>
+            ) : (
+              <a>upload image ...</a>
+            )}
+            <input type="file" {...getInputProps()} multiple={false} />
+          </DropzoneStyles>
+          <div style={{ maxWidth: '180px' }}>
+            <NumericInput
+              label="preparation time"
+              name="prepTime"
+              placeholder={0}
+            />
+          </div>
+
+          <TertiaryButton
+            style={{ marginBottom: '1rem' }}
+            type="button"
+            onClick={() => menuHandler('SEARCH_INGREDIENTS')}
+          >
+            + add ingredients
+          </TertiaryButton>
+
+          <Textarea
+            name="description"
+            label="preparation"
+            placeholder="Recipe preparation..."
+          />
+
+          <PrimaryButton type="submit" disabled={!isFile}>
+            create recipe
+          </PrimaryButton>
+        </fieldset>
+      </Form>
+    </Formik>
+  );
+}

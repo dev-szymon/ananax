@@ -19,8 +19,14 @@ if (!firebase.apps.length) {
 
 interface IAuthContext {
   user: IUserState | null;
-  signin: (email: string, password: string) => Promise<firebase.User | null>;
-  signup: (email: string, password: string) => Promise<firebase.User | null>;
+  signin: (
+    email: string,
+    password: string
+  ) => Promise<firebase.User | null> | undefined;
+  signup: (
+    email: string,
+    password: string
+  ) => Promise<firebase.User | null> | undefined;
   signout: () => Promise<void>;
 }
 
@@ -38,7 +44,6 @@ export function ProvideAuth({ children }: { children: ReactNode }) {
 
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
-
 interface IUserState {
   uid: string;
 }
@@ -68,13 +73,17 @@ function useProvideAuth() {
   };
 
   const signin = (email: string, password: string) => {
-    return firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
-        setUser(response.user);
-        return response.user;
-      });
+    try {
+      return firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((response) => {
+          setUser(response.user);
+          return response.user;
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const signout = () => {
@@ -103,6 +112,4 @@ function useProvideAuth() {
   };
 }
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);

@@ -1,14 +1,11 @@
 import React, { ChangeEvent, useState } from 'react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
-import { HomePageContainer, SearchBarStyles } from '../components/styles';
-import { useAuth } from '../lib/auth';
+import { HomePageContainer, BaseInputStyles } from '../components/styles';
 
 export default function Home() {
   const [value, setValue] = useState('');
 
-  const { user } = useAuth();
-  console.log(user);
   return (
     <Layout>
       <Head>
@@ -18,7 +15,7 @@ export default function Home() {
       <HomePageContainer>
         <div>
           <h1>What will you cook today?</h1>
-          <SearchBarStyles>
+          <BaseInputStyles>
             <input
               type="search"
               name="search"
@@ -29,13 +26,14 @@ export default function Home() {
               }}
               value={value}
             />
-          </SearchBarStyles>
+          </BaseInputStyles>
         </div>
-        <img
-          className="landing-image"
-          src="https://res.cloudinary.com/dq104qc4m/image/upload/v1616174459/mealprep/pineapple_ghqxhw.png"
-        />
       </HomePageContainer>
+      <img
+        style={{ height: '70vh' }}
+        className="landing-image"
+        src="https://res.cloudinary.com/dq104qc4m/image/upload/v1616174459/mealprep/pineapple_ghqxhw.png"
+      />
     </Layout>
   );
 }

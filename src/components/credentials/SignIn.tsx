@@ -1,8 +1,8 @@
+import React from 'react';
 import { Formik, Form } from 'formik';
 import InputField from './TextInput';
-import { BtnFilledStyles } from '../styles';
+import { PrimaryButton } from '../styles';
 import { useAuth } from '../../lib/auth';
-import { emit } from 'node:process';
 
 interface ISignIn {
   email: string;
@@ -33,11 +33,14 @@ export default function SignIn() {
         <Form autoComplete="off">
           {/* set aria busy depending on mutation state */}
           <fieldset aria-busy={false}>
-            <InputField type="email" name="email" label="email" />
+            <InputField
+              type="email"
+              name="email"
+              label="email"
+              placeholder="your@email.com"
+            />
             <InputField type="password" name="password" label="password" />
-            <BtnFilledStyles style={{ marginTop: '1rem' }} type="submit">
-              sign in
-            </BtnFilledStyles>
+            <PrimaryButton type="submit">sign in</PrimaryButton>
           </fieldset>
         </Form>
       </Formik>

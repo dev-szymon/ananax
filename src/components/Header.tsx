@@ -3,17 +3,17 @@ import styled from 'styled-components';
 
 const HeaderStyles = styled.header`
   height: var(--lengthLg3);
+  background-color: var(--colorLight);
   width: 100%;
   position: fixed;
   top: 0;
-  background-color: #fff;
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid var(--colorPrimary);
   align-items: center;
   z-index: 200;
   .header-inner {
     padding: 0 var(--lengthMd1);
+    border-bottom: 1px solid var(--colorLight);
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
@@ -25,13 +25,9 @@ const HeaderStyles = styled.header`
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background-color: white;
       justify-content: center;
       align-items: center;
-    }
-    .header-label {
-      font-size: 1rem;
-      letter-spacing: 0.2px;
+      margin: 0;
     }
   }
 `;
