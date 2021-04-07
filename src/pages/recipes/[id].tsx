@@ -20,9 +20,11 @@ interface SingleRecipeProps {
 }
 
 export default function SingleRecipePage({ recipe }: SingleRecipeProps) {
+  console.log(recipe);
   return (
     <Layout>
-      <SingleIngredient>
+      single recipe
+      {/* <SingleIngredient>
         <h2>{recipe.name}</h2>
         <IngredientImage src={recipe.images[0]} />
         <>
@@ -43,7 +45,7 @@ export default function SingleRecipePage({ recipe }: SingleRecipeProps) {
             {recipe.description}
           </pre>
         </>
-      </SingleIngredient>
+      </SingleIngredient> */}
     </Layout>
   );
 }

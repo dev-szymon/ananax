@@ -23,7 +23,8 @@ export default function SingleIngredientPage({
 }: SingleIngredientProps) {
   return (
     <Layout>
-      <SingleIngredient>
+      single ingredient
+      {/* <SingleIngredient>
         <h2>{ingredient.name}</h2>
         <IngredientImage src={ingredient.images[0]} />
         <>
@@ -48,7 +49,7 @@ export default function SingleIngredientPage({
             <span className="nutrient-value">{ingredient.glycemicIndex}</span>
           </NutrientStyles>
         </>
-      </SingleIngredient>
+      </SingleIngredient> */}
     </Layout>
   );
 }
