@@ -1,7 +1,7 @@
 import { Field, ErrorMessage } from 'formik';
 import { TitleInputStyles } from '../styles';
 
-export default function TextInput({
+export default function TitleInput({
   type,
   className,
   name,
@@ -19,8 +19,9 @@ export default function TextInput({
         id={name}
         type={type}
         name={name}
-        {...rest}
+        autoComplete="off"
         placeholder={placeholder}
+        {...rest}
       />
       <ErrorMessage name={name} />
     </TitleInputStyles>

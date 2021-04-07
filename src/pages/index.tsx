@@ -1,11 +1,9 @@
 import React, { ChangeEvent, useState } from 'react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
-import { HomePageContainer, SearchBarStyles } from '../components/styles';
-import { addApolloState, initializeApollo } from '../lib/apolloClient';
-import { ME_QUERY } from '../lib/queries';
+import { HomePageContainer, BaseInputStyles } from '../components/styles';
 
-export default function Home({ me }: any) {
+export default function Home() {
   const [value, setValue] = useState('');
 
   return (
@@ -17,7 +15,7 @@ export default function Home({ me }: any) {
       <HomePageContainer>
         <div>
           <h1>What will you cook today?</h1>
-          <SearchBarStyles>
+          <BaseInputStyles>
             <input
               type="search"
               name="search"
@@ -28,34 +26,14 @@ export default function Home({ me }: any) {
               }}
               value={value}
             />
-          </SearchBarStyles>
-        </div>
-        <img
-          className="landing-image"
-          src="https://res.cloudinary.com/dq104qc4m/image/upload/v1616174459/mealprep/pineapple_ghqxhw.png"
-        />
-        <div>
-          <pre>{JSON.stringify(me)}</pre>
+          </BaseInputStyles>
         </div>
       </HomePageContainer>
+      <img
+        style={{ height: '70vh', margin: '0 auto' }}
+        className="landing-image"
+        src="https://res.cloudinary.com/dq104qc4m/image/upload/v1616174459/mealprep/pineapple_ghqxhw.png"
+      />
     </Layout>
   );
 }
-
-export const getServerSideProps = async (ctx: any) => {
-  console.log(ctx);
-  const apolloClient = initializeApollo(null, ctx);
-
-  const {
-    data: { me },
-    error,
-  } = await apolloClient.query({
-    query: ME_QUERY,
-  });
-
-  console.log(me);
-
-  return addApolloState(apolloClient, {
-    props: { me: me },
-  });
-};

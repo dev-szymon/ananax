@@ -1,15 +1,19 @@
 import styled from 'styled-components';
 
-export const BtnFilledStyles = styled.button`
-  background-color: var(--colorAccent);
-  color: var(--colorPrimary);
-  border-radius: var(--lengthSm2);
+// font: [ <font-style> || <font-variant> || <font-weight> ]? <font-size> [ / <line-height (en-US)> ]? <font-family>
+
+export const BaseButton = styled.button`
+  border-radius: 0.5rem;
+  font: var(--typographyButton);
+  letter-spacing: 0.02em;
+  -webkit-letter-spacing: 0.02em;
+  -moz-letter-spacing: 0.02em;
+  -ms-letter-spacing: 0.02em;
   border: none;
-  font-size: var(--lengthMd1);
-  font-weight: 600;
-  padding: var(--lengthSm2) var(--lengthMd2);
+  padding: 0.5rem 1.5rem;
   cursor: pointer;
-  box-shadow: var(--boxShadowAccent);
+  outline: none;
+  --webkit-appearance: none;
   :disabled {
     opacity: 0.6;
     pointer-events: none;
@@ -17,19 +21,24 @@ export const BtnFilledStyles = styled.button`
   }
 `;
 
-export const BtnBorderStyles = styled.button`
-  background-color: unset;
-  color: var(--colorText);
-  border: 1px solid var(--colorText);
-  font-weight: 600;
-  border-radius: var(--lengthSm2);
-  padding: var(--lengthSm1) var(--lengthMd3);
-  cursor: pointer;
+export const PrimaryButton = styled(BaseButton)`
+  background-color: var(--colorPrimary);
+  color: var(--colorLight);
+  box-shadow: 0px 4px 8px 0px var(--colorPrimary25);
+  /* rgba(14, 14, 44, 0.1); */
+  /* inset 0px -1px 0px rgba(14, 14, 44, 0.2); */
 `;
 
-export const GuestButton = styled(BtnFilledStyles)`
-  background-color: var(--colorOutline);
-  box-shadow: var(--boxShadowSmoothOutline);
+export const SecondaryButton = styled(BaseButton)`
+  background-color: var(--colorPrimary25);
+  color: var(--colorDark);
+  box-shadow: inset 0px -1px 0.5px rgba(14, 14, 44, 0.2);
+`;
+
+export const TertiaryButton = styled(BaseButton)`
+  background-color: #fff;
+  color: var(--colorDark);
+  border: 1px solid var(--colorPrimary25);
 `;
 
 export const PlainButton = styled.button`
@@ -37,14 +46,4 @@ export const PlainButton = styled.button`
   outline: none;
   cursor: pointer;
   border: none;
-`;
-
-export const LoginLinkHeader = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  a {
-    color: var(--colorOutline);
-    font-weight: 400;
-    font-size: 0.875rem;
-  }
 `;

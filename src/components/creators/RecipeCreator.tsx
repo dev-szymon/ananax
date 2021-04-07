@@ -1,49 +1,43 @@
 import React, { useState } from 'react';
-import Router from 'next/router';
 import { useDropzone } from 'react-dropzone';
 import { Formik, Form } from 'formik';
-import { useMutation } from '@apollo/client';
 import TitleInput from '../credentials/TitleInput';
-import { BtnFilledStyles, DropzoneStyles, Notice } from '../styles';
+import {
+  PrimaryButton,
+  TertiaryButton,
+  DropzoneStyles,
+  CreatorFieldset,
+} from '../styles';
 import NumericInput from '../credentials/NumericInput';
-import Checkbox from '../credentials/Checkbox';
 import Textarea from '../credentials/Textarea';
-import IngredientSelector from './IngredientsSelector';
-import { NEW_RECIPE, SearchQueryResultsType } from '../../lib/queries';
+import { useMenu } from '../../context/menuContext';
+import { useIngredientsSelector } from '../../context/ingredientsSelectorContext';
 
-interface FormikValues {
+export interface ICreateRecipe {
   name: string;
   images: string[] | [];
-  private: boolean;
   ingredients: string[];
   description: string[];
   prepTime: number | '';
 }
 
-const initialValues: FormikValues = {
+const initialValues: ICreateRecipe = {
   name: '',
   images: [],
-  private: false,
   ingredients: [],
   description: [],
   prepTime: '',
 };
 
 export default function RecipeCreator() {
-  const [ingredients, setIngredients] = useState<SearchQueryResultsType[]>([]);
+  const { menuHandler } = useMenu();
+  const { ingredients } = useIngredientsSelector();
 
   const onDrop = (acceptedFiles: File[]) => {
     return setFiles(acceptedFiles);
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
-  const [newRecipe] = useMutation(NEW_RECIPE, {
-    onCompleted: (data) => {
-      Router.push(`/recipes/${data.newRecipe.id}`);
-      setLoading(false);
-    },
-  });
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -66,15 +60,13 @@ export default function RecipeCreator() {
           );
           const resCloudinary = await res.json();
           try {
-            newRecipe({
-              variables: {
-                recipe: {
-                  ...values,
-                  images: [resCloudinary.secure_url],
-                  ingredients: ingredients.map((i) => i.id),
-                },
-              },
-            });
+            const recipe = {
+              ...values,
+              images: [resCloudinary.secure_url],
+              ingredients: ingredients.map((i) => i),
+            };
+            // create recipe with api serverless functions
+            console.log(recipe);
           } catch (error) {
             // remove uploaded cloudinary asset if there is error creating recipe
             // set error state and display msg
@@ -87,11 +79,7 @@ export default function RecipeCreator() {
       }}
     >
       <Form>
-        <fieldset
-          aria-busy={loading}
-          disabled={loading}
-          style={{ padding: '1rem' }}
-        >
+        <CreatorFieldset aria-busy={loading} disabled={loading}>
           <TitleInput type="text" placeholder="Recipe name..." name="name" />
           <DropzoneStyles {...getRootProps()}>
             {files[0] ? (
@@ -101,31 +89,36 @@ export default function RecipeCreator() {
                 alt="upload preview"
               ></img>
             ) : (
-              <Notice>Upload image...</Notice>
+              <a>upload image ...</a>
             )}
             <input type="file" {...getInputProps()} multiple={false} />
           </DropzoneStyles>
-          <NumericInput
-            label="preparation time"
-            name="prepTime"
-            step="1"
-            placeholder={0}
-          />
-          <Checkbox label="private recipe" name="private" />
-          <IngredientSelector
-            ingredients={ingredients}
-            setIngredients={setIngredients}
-          />
+          <div style={{ maxWidth: '180px' }}>
+            <NumericInput
+              label="preparation time"
+              name="prepTime"
+              placeholder={0}
+            />
+          </div>
+
+          <TertiaryButton
+            style={{ marginBottom: '1rem' }}
+            type="button"
+            onClick={() => menuHandler('SEARCH_INGREDIENTS')}
+          >
+            + add ingredients
+          </TertiaryButton>
+
           <Textarea
             name="description"
             label="preparation"
             placeholder="Recipe preparation..."
           />
 
-          <BtnFilledStyles type="submit" disabled={!isFile}>
+          <PrimaryButton type="submit" disabled={!isFile}>
             create recipe
-          </BtnFilledStyles>
-        </fieldset>
+          </PrimaryButton>
+        </CreatorFieldset>
       </Form>
     </Formik>
   );

@@ -1,28 +1,118 @@
-import { ReactNode } from 'react';
+import React from 'react';
+import router from 'next/router';
 import styled from 'styled-components';
+import { useMenu } from '../context/menuContext';
+import { useAuth } from '../lib/auth';
+import { PlainButton } from './styles';
+import Link from 'next/link';
+import IngredientSelector from './creators/IngredientsSelector';
+import { useIngredientsSelector } from '../context/ingredientsSelectorContext';
 
-const NavigationStyles = styled.nav`
-  background-color: #ffffff;
+const NavigationOutsideStyles = styled.div`
+  background-color: rgba(0, 0, 0, 0.3);
   position: fixed;
-  top: 0;
-  padding-top: var(--lengthLg3);
+  bottom: 0;
   left: 0;
-  width: 100vw;
-  max-width: 100%;
-  height: calc(100vh - var(--lengthLg3));
-  z-index: 100;
-  display: flex;
+  padding-bottom: 3rem;
+  width: 100%;
+  height: 100vh;
+  z-index: 200;
   overflow: hidden;
+  display: flex;
   flex-direction: column;
-  ul {
-    align-self: center;
-    list-style: none;
-  }
+  justify-content: flex-end;
 `;
 
-interface NavigationProps {
-  children: ReactNode;
-}
-export default function Navigation({ children }: NavigationProps) {
-  return <NavigationStyles>{children}</NavigationStyles>;
+const NavigationStyles = styled.nav`
+  background-color: var(--colorLight);
+  position: relative;
+  border-radius: 1rem 1rem 0 0;
+  padding: 1rem;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 640px;
+`;
+
+const Navi = () => {
+  const { signout } = useAuth();
+  const { menu, setMenu } = useMenu();
+  const { ingredients, setIngredients } = useIngredientsSelector();
+
+  switch (menu) {
+    case 'SEARCH_INGREDIENTS':
+      return (
+        <IngredientSelector
+          ingredients={ingredients}
+          setIngredients={setIngredients}
+        />
+      );
+    case 'COOKBOOK':
+      return (
+        <>
+          <p>cookbook</p>
+          <div>
+            <p>recipes</p>
+            <ul>
+              <li>created</li>
+              <li>saved</li>
+              <Link href="/create-recipe">
+                <li>+ new recipe</li>
+              </Link>
+            </ul>
+          </div>
+          <div>
+            <p>ingredients</p>
+            <ul>
+              <li>created</li>
+              <li>saved</li>
+              <Link href="/create-ingredient">
+                <li>+ new ingredient</li>
+              </Link>
+            </ul>
+          </div>
+        </>
+      );
+    case 'DEFAULT':
+      return (
+        <ul>
+          <li>
+            <PlainButton
+              onClick={() => {
+                signout();
+                setMenu(false);
+                router.pathname === '/' ? router.reload() : router.push('/');
+              }}
+            >
+              logout
+            </PlainButton>
+          </li>
+        </ul>
+      );
+    default:
+      return (
+        <ul>
+          <li>
+            <PlainButton
+              onClick={() => {
+                signout();
+                setMenu(false);
+                router.pathname === '/' ? router.reload() : router.push('/');
+              }}
+            >
+              logout
+            </PlainButton>
+          </li>
+        </ul>
+      );
+  }
+};
+
+export default function Navigation() {
+  return (
+    <NavigationOutsideStyles>
+      <NavigationStyles>
+        <Navi />
+      </NavigationStyles>
+    </NavigationOutsideStyles>
+  );
 }

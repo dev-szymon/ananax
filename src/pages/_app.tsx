@@ -1,15 +1,21 @@
+import React from 'react';
 import '../styles/globals.css';
 import { AppProps } from 'next/app';
-import { ApolloProvider } from '@apollo/client';
-import { useApollo } from '../lib/apolloClient';
+import { ProvideAuth } from '../lib/auth';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { MenuProvider } from '../context/menuContext';
 
 function App({ Component, pageProps }: AppProps) {
-  const apolloClient = useApollo(pageProps);
+  const queryClient = new QueryClient();
 
   return (
-    <ApolloProvider client={apolloClient}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <QueryClientProvider client={queryClient}>
+      <ProvideAuth>
+        <MenuProvider>
+          <Component {...pageProps} />
+        </MenuProvider>
+      </ProvideAuth>
+    </QueryClientProvider>
   );
 }
 

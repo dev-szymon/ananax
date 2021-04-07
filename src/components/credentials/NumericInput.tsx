@@ -1,5 +1,5 @@
 import { Field, ErrorMessage } from 'formik';
-import { NumericInputStyles } from '../styles';
+import { BaseInputStyles } from '../styles';
 
 export default function NumericInput({
   className,
@@ -16,18 +16,19 @@ export default function NumericInput({
   label: string;
 }) {
   return (
-    <NumericInputStyles className={className}>
+    <BaseInputStyles className={className}>
       <label htmlFor={name}>{label}</label>
       <Field
         id={name}
         type="number"
         name={name}
         min={0}
+        autoComplete="off"
         step={step}
         {...rest}
         placeholder={placeholder}
       />
       <ErrorMessage name={name} />
-    </NumericInputStyles>
+    </BaseInputStyles>
   );
 }

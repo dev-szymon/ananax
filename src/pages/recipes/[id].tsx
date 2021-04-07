@@ -1,5 +1,4 @@
 import Layout from '../../components/Layout';
-import { GetServerSideProps } from 'next';
 import {
   SingleIngredient,
   NutrientStyles,
@@ -7,9 +6,6 @@ import {
   SelectedIngredientStyles,
 } from '../../components/styles';
 import Link from 'next/link';
-import { SearchQueryResultsType, SINGLE_RECIPE_QUERY } from '../../lib/queries';
-import { initializeApollo, addApolloState } from '../../lib/apolloClient';
-import { ApolloError } from '@apollo/client';
 
 interface SingleRecipeProps {
   recipe: {
@@ -19,21 +15,16 @@ interface SingleRecipeProps {
     createdBy: { id: string; username: string };
     prepTime: number;
     description: string;
-    ingredients: SearchQueryResultsType[];
+    ingredients: any[];
   };
-  error?: ApolloError | null;
 }
 
-export default function SingleRecipePage({ recipe, error }: SingleRecipeProps) {
-  // TODO
-  // create error pages
-  if (error) {
-    return <p>Error</p>;
-  }
-
+export default function SingleRecipePage({ recipe }: SingleRecipeProps) {
+  console.log(recipe);
   return (
     <Layout>
-      <SingleIngredient>
+      single recipe
+      {/* <SingleIngredient>
         <h2>{recipe.name}</h2>
         <IngredientImage src={recipe.images[0]} />
         <>
@@ -50,33 +41,11 @@ export default function SingleRecipePage({ recipe, error }: SingleRecipeProps) {
             </Link>
           ))}
           <h3 style={{ marginBottom: '0.5rem' }}>Preparation</h3>
-          <pre style={{ fontFamily: 'var(--baseFont)' }}>
+          <pre style={{ fontFamily: 'var(--fontPrimary)' }}>
             {recipe.description}
           </pre>
         </>
-      </SingleIngredient>
+      </SingleIngredient> */}
     </Layout>
   );
 }
-
-export const getServerSideProps = async (ctx: any) => {
-  const { params } = ctx;
-  const apolloClient = initializeApollo(null, ctx);
-  if (!params) {
-    return;
-  }
-
-  const {
-    data: { getRecipe: recipe },
-    error,
-  } = await apolloClient.query({
-    query: SINGLE_RECIPE_QUERY,
-    variables: {
-      id: params.id,
-    },
-  });
-
-  return addApolloState(apolloClient, {
-    props: { recipe: recipe, error: error ? error : null },
-  });
-};

@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import NumericInput from '../credentials/NumericInput';
 import TitleInput from '../credentials/TitleInput';
 import { Formik, Form } from 'formik';
-import { useMutation } from '@apollo/client';
 import { useDropzone } from 'react-dropzone';
-import { DropzoneStyles, Notice, BtnFilledStyles } from '../styles';
-import Router from 'next/router';
-import { NEW_INGREDIENT } from '../../lib/queries';
+import { DropzoneStyles, PrimaryButton, CreatorFieldset } from '../styles';
+import { createIngredient } from '../../lib/firestore';
+import { useAuth } from '../../lib/auth';
 
 interface FormikValues {
   name: string;
@@ -32,15 +31,10 @@ export default function IngredientCreator() {
   const onDrop = (acceptedFiles: File[]) => {
     return setFiles(acceptedFiles);
   };
+  const { user } = useAuth();
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  const [newIngredient] = useMutation(NEW_INGREDIENT, {
-    onCompleted: (data) => {
-      Router.push(`/ingredients/${data.newIngredient.id}`);
-      setLoading(false);
-    },
-  });
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -49,42 +43,42 @@ export default function IngredientCreator() {
     <Formik
       initialValues={initialValues}
       onSubmit={async (values) => {
-        setLoading(true);
-        try {
-          const data = new FormData();
-          data.append('file', files[0]);
-          data.append('upload_preset', 'fwwd2pmr');
-          const res = await fetch(
-            `https://api.cloudinary.com/v1_1/dq104qc4m/image/upload`,
-            {
-              method: 'POST',
-              body: data,
-            }
-          );
-          const resCloudinary = await res.json();
+        if (user) {
+          setLoading(true);
           try {
-            newIngredient({
-              variables: {
-                ingredient: { ...values, images: [resCloudinary.secure_url] },
-              },
-            });
+            const data = new FormData();
+            data.append('file', files[0]);
+            data.append('upload_preset', 'fwwd2pmr');
+            const res = await fetch(
+              `https://api.cloudinary.com/v1_1/dq104qc4m/image/upload`,
+              {
+                method: 'POST',
+                body: data,
+              }
+            );
+            const resCloudinary = await res.json();
+            try {
+              const ingredient = {
+                ...values,
+                author: user?.uid,
+                images: [resCloudinary.secure_url],
+              };
+              console.log(ingredient);
+              createIngredient(ingredient);
+            } catch (error) {
+              // remove uploaded cloudinary asset if there is error creating ingredient
+              // set error state and display msg
+              console.log(error);
+            }
           } catch (error) {
-            // remove uploaded cloudinary asset if there is error creating ingredient
             // set error state and display msg
             console.log(error);
           }
-        } catch (error) {
-          // set error state and display msg
-          console.log(error);
         }
       }}
     >
       <Form>
-        <fieldset
-          aria-busy={loading}
-          disabled={loading}
-          style={{ padding: '1rem' }}
-        >
+        <CreatorFieldset aria-busy={loading} disabled={loading}>
           <TitleInput
             type="text"
             placeholder="Ingredient name..."
@@ -98,23 +92,30 @@ export default function IngredientCreator() {
                 alt="upload preview"
               ></img>
             ) : (
-              <Notice>Upload image...</Notice>
+              <a style={{ font: 'var(--typographySmall)' }}>Upload image ...</a>
             )}
             <input type="file" {...getInputProps()} multiple={false} />
           </DropzoneStyles>
-          <NumericInput name="kcal" label="kcal" placeholder={0} />
-          <NumericInput name="carbs" label="carbs" placeholder={0} />
-          <NumericInput name="protein" label="protein" placeholder={0} />
-          <NumericInput name="fats" label="fats" placeholder={0} />
-          <NumericInput
-            name="glycemicIndex"
-            label="glycemic index"
-            placeholder={0}
-          />
-          <BtnFilledStyles type="submit" disabled={!isFile}>
+          <h5
+            style={{ font: 'var(--typographySmallBold', marginBottom: '1rem' }}
+          >
+            Nutrients in 100g
+          </h5>
+          <div style={{ maxWidth: '200px' }}>
+            <NumericInput name="kcal" label="kcal" placeholder={0} />
+            <NumericInput name="carbs" label="carbs" placeholder={0} />
+            <NumericInput name="protein" label="protein" placeholder={0} />
+            <NumericInput name="fats" label="fats" placeholder={0} />
+            <NumericInput
+              name="glycemicIndex"
+              label="glycemic index"
+              placeholder={0}
+            />
+          </div>
+          <PrimaryButton type="submit" disabled={!isFile}>
             create ingredient
-          </BtnFilledStyles>
-        </fieldset>
+          </PrimaryButton>
+        </CreatorFieldset>
       </Form>
     </Formik>
   );

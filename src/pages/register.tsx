@@ -1,21 +1,22 @@
+import React from 'react';
 import Layout from '../components/Layout';
 import SignUp from '../components/credentials/SignUp';
-import Guest from '../components/credentials/Guest';
-import React from 'react';
 import Link from 'next/link';
-import { RadiusShadow, Caption } from '../components/styles';
 
 export default function SignUpPage() {
   return (
-    <Layout headerLabel="register" hideLogin>
-      <Guest />
-      <RadiusShadow style={{ margin: '0 auto' }}>
+    <Layout headerLabel="register">
+      <div style={{ margin: '0 auto', maxWidth: '300px' }}>
         <SignUp />
-        <Caption>
-          <p>Already have an account?</p>
-          <Link href="/login">sign in!</Link>
-        </Caption>
-      </RadiusShadow>
+        <div style={{ font: 'var(--typographySmall)', marginTop: '1rem' }}>
+          <p>
+            <span>Already have an account?</span>
+            <span style={{ marginLeft: '4px' }}>
+              <Link href="/login">sign in!</Link>
+            </span>
+          </p>
+        </div>
+      </div>
     </Layout>
   );
 }

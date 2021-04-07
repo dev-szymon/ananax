@@ -1,35 +1,23 @@
-import { useQuery } from '@apollo/client';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import React from 'react';
 import RecipeCreator from '../components/creators/RecipeCreator';
 import Layout from '../components/Layout';
 import Loader from '../components/Loader';
-import { isServer } from '../lib/isServer';
-import { ME_QUERY } from '../lib/queries';
+import { useAuth } from '../lib/auth';
 
 export default function CreateRecipe() {
-  const { data, loading } = useQuery(ME_QUERY, {
-    skip: isServer,
-  });
-  const router = useRouter();
+  //   const router = useRouter();
+  const { user } = useAuth();
 
-  if (loading || isServer) {
-    return (
-      <Layout>
-        <Loader />
-      </Layout>
-    );
-  }
-
-  if (data?.me) {
+  if (user) {
     return (
       <Layout>
         <RecipeCreator />
       </Layout>
     );
   }
-  if (!loading && !data?.me) {
-    router.replace('/login?next=' + router.pathname);
+  if (!user) {
+    // router.replace('/login?next=' + router.pathname);
     return (
       <Layout>
         <Loader />
