@@ -2,22 +2,26 @@ import styled from 'styled-components';
 
 export const BaseInputStyles = styled.div`
   width: 100%;
-  font: var(--typographyBody);
   label {
     font: var(--typographySmaller);
     margin-bottom: 0.25rem;
   }
   input {
+    -webkit-appearance: none;
     border-radius: 0.5rem;
+    font: var(--typographyBody);
     border: 1px solid var(--colorDim);
     padding: 0.75rem 1rem;
     background-color: var(--colorDim);
+    box-shadow: none;
     width: 100%;
     height: 100%;
     outline: none;
   }
 
   input:focus {
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0px 0px 0px 4px var(--colorPrimary25);
     box-shadow: 0px 0px 0px 4px var(--colorPrimary25);
     background-color: var(--colorLight);
     border: 1px solid var(--colorPrimary);
