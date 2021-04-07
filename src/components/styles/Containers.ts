@@ -7,7 +7,7 @@ export const BorderBottom = styled.div`
 `;
 
 export const BottomBar = styled.nav`
-  height: var(--lengthLg3);
+  height: 3rem;
   width: 100%;
   position: fixed;
   background-color: white;
@@ -15,13 +15,13 @@ export const BottomBar = styled.nav`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 200;
+  z-index: 300;
   .innerBottomBar {
     width: 100%;
     height: 100%;
     padding: var(--lengthSm1) var(--lengthMd2);
     max-width: 640px;
-    border-top: 0.5px solid var(--colorDisabled);
+    border-top: 0.5px solid var(--colorAccent25);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -36,7 +36,7 @@ export const SingleRow = styled.div`
 `;
 
 export const Main = styled.main`
-  padding: var(--lengthLg3) 0;
+  padding: 3rem 0;
   min-height: 100vh;
   max-width: 640px;
   margin: 0 auto;

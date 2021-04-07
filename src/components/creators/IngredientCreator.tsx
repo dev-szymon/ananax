@@ -3,7 +3,7 @@ import NumericInput from '../credentials/NumericInput';
 import TitleInput from '../credentials/TitleInput';
 import { Formik, Form } from 'formik';
 import { useDropzone } from 'react-dropzone';
-import { DropzoneStyles, PrimaryButton } from '../styles';
+import { DropzoneStyles, PrimaryButton, CreatorFieldset } from '../styles';
 import { createIngredient } from '../../lib/firestore';
 import { useAuth } from '../../lib/auth';
 
@@ -78,11 +78,7 @@ export default function IngredientCreator() {
       }}
     >
       <Form>
-        <fieldset
-          aria-busy={loading}
-          disabled={loading}
-          style={{ padding: '1rem' }}
-        >
+        <CreatorFieldset aria-busy={loading} disabled={loading}>
           <TitleInput
             type="text"
             placeholder="Ingredient name..."
@@ -100,7 +96,11 @@ export default function IngredientCreator() {
             )}
             <input type="file" {...getInputProps()} multiple={false} />
           </DropzoneStyles>
-          <h3>Nutrients in 100g</h3>
+          <h5
+            style={{ font: 'var(--typographySmallBold', marginBottom: '1rem' }}
+          >
+            Nutrients in 100g
+          </h5>
           <div style={{ maxWidth: '200px' }}>
             <NumericInput name="kcal" label="kcal" placeholder={0} />
             <NumericInput name="carbs" label="carbs" placeholder={0} />
@@ -115,7 +115,7 @@ export default function IngredientCreator() {
           <PrimaryButton type="submit" disabled={!isFile}>
             create ingredient
           </PrimaryButton>
-        </fieldset>
+        </CreatorFieldset>
       </Form>
     </Formik>
   );

@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Formik, Form } from 'formik';
 import TitleInput from '../credentials/TitleInput';
-import { PrimaryButton, TertiaryButton, DropzoneStyles } from '../styles';
+import {
+  PrimaryButton,
+  TertiaryButton,
+  DropzoneStyles,
+  CreatorFieldset,
+} from '../styles';
 import NumericInput from '../credentials/NumericInput';
 import Textarea from '../credentials/Textarea';
 import { useMenu } from '../../context/menuContext';
@@ -74,11 +79,7 @@ export default function RecipeCreator() {
       }}
     >
       <Form>
-        <fieldset
-          aria-busy={loading}
-          disabled={loading}
-          style={{ padding: '1rem' }}
-        >
+        <CreatorFieldset aria-busy={loading} disabled={loading}>
           <TitleInput type="text" placeholder="Recipe name..." name="name" />
           <DropzoneStyles {...getRootProps()}>
             {files[0] ? (
@@ -117,7 +118,7 @@ export default function RecipeCreator() {
           <PrimaryButton type="submit" disabled={!isFile}>
             create recipe
           </PrimaryButton>
-        </fieldset>
+        </CreatorFieldset>
       </Form>
     </Formik>
   );

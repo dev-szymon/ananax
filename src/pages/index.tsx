@@ -30,7 +30,7 @@ export default function Home() {
         </div>
       </HomePageContainer>
       <img
-        style={{ height: '70vh' }}
+        style={{ height: '70vh', margin: '0 auto' }}
         className="landing-image"
         src="https://res.cloudinary.com/dq104qc4m/image/upload/v1616174459/mealprep/pineapple_ghqxhw.png"
       />

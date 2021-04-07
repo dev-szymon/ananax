@@ -10,7 +10,10 @@ export default function SignUpPage() {
         <SignUp />
         <div style={{ font: 'var(--typographySmall)', marginTop: '1rem' }}>
           <p>
-            Already have an account? <Link href="/login">sign in!</Link>
+            <span>Already have an account?</span>
+            <span style={{ marginLeft: '4px' }}>
+              <Link href="/login">sign in!</Link>
+            </span>
           </p>
         </div>
       </div>

@@ -8,24 +8,29 @@ import Link from 'next/link';
 import IngredientSelector from './creators/IngredientsSelector';
 import { useIngredientsSelector } from '../context/ingredientsSelectorContext';
 
-const NavigationStyles = styled.nav`
-  background-color: #fff;
+const NavigationOutsideStyles = styled.div`
+  background-color: rgba(0, 0, 0, 0.3);
   position: fixed;
   bottom: 0;
-  padding-bottom: 5rem;
-  padding-top: 1rem;
   left: 0;
-  width: 100vw;
-  max-height: calc(100vh - var(--lengthLg3));
-  z-index: 100;
-  display: flex;
+  padding-bottom: 3rem;
+  width: 100%;
+  height: 100vh;
+  z-index: 200;
   overflow: hidden;
-  border-radius: 2rem 2rem 0 0;
+  display: flex;
   flex-direction: column;
-  ul {
-    align-self: center;
-    list-style: none;
-  }
+  justify-content: flex-end;
+`;
+
+const NavigationStyles = styled.nav`
+  background-color: var(--colorLight);
+  position: relative;
+  border-radius: 1rem 1rem 0 0;
+  padding: 1rem;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 640px;
 `;
 
 const Navi = () => {
@@ -60,7 +65,9 @@ const Navi = () => {
             <ul>
               <li>created</li>
               <li>saved</li>
-              <li>+ new ingredient</li>
+              <Link href="/create-ingredient">
+                <li>+ new ingredient</li>
+              </Link>
             </ul>
           </div>
         </>
@@ -102,8 +109,10 @@ const Navi = () => {
 
 export default function Navigation() {
   return (
-    <NavigationStyles>
-      <Navi />
-    </NavigationStyles>
+    <NavigationOutsideStyles>
+      <NavigationStyles>
+        <Navi />
+      </NavigationStyles>
+    </NavigationOutsideStyles>
   );
 }

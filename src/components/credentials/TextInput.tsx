@@ -22,6 +22,7 @@ export default function TextInput({
         id={name}
         type={type}
         name={name}
+        autoComplete="off"
         placeholder={placeholder}
         {...rest}
       />

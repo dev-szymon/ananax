@@ -23,6 +23,7 @@ export default function NumericInput({
         type="number"
         name={name}
         min={0}
+        autoComplete="off"
         step={step}
         {...rest}
         placeholder={placeholder}

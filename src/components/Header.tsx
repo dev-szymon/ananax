@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import styled from 'styled-components';
 
 const HeaderStyles = styled.header`
-  height: var(--lengthLg3);
+  height: 3rem;
   background-color: var(--colorLight);
   width: 100%;
   position: fixed;
@@ -10,7 +10,7 @@ const HeaderStyles = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 200;
+  z-index: 100;
   .header-inner {
     padding: 0 var(--lengthMd1);
     border-bottom: 1px solid var(--colorLight);
@@ -29,6 +29,16 @@ const HeaderStyles = styled.header`
       align-items: center;
       margin: 0;
     }
+  }
+  ::after {
+    content: '';
+    width: 100vw;
+    height: 2px;
+    background-color: var(--colorPrimary);
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
   }
 `;
 

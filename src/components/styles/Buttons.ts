@@ -24,8 +24,9 @@ export const BaseButton = styled.button`
 export const PrimaryButton = styled(BaseButton)`
   background-color: var(--colorPrimary);
   color: var(--colorLight);
-  box-shadow: 0px 6px 2px -4px rgba(14, 14, 44, 0.1),
-    inset 0px -1px 0px rgba(14, 14, 44, 0.2);
+  box-shadow: 0px 4px 8px 0px var(--colorPrimary25);
+  /* rgba(14, 14, 44, 0.1); */
+  /* inset 0px -1px 0px rgba(14, 14, 44, 0.2); */
 `;
 
 export const SecondaryButton = styled(BaseButton)`

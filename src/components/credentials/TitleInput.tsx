@@ -19,8 +19,9 @@ export default function TitleInput({
         id={name}
         type={type}
         name={name}
-        {...rest}
+        autoComplete="off"
         placeholder={placeholder}
+        {...rest}
       />
       <ErrorMessage name={name} />
     </TitleInputStyles>

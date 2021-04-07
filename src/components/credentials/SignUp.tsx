@@ -4,14 +4,14 @@ import { PrimaryButton } from '../styles';
 import { useAuth } from '../../lib/auth';
 
 interface ISignUp {
-  // username: string;
+  username: string;
   email: string;
   password: string;
 }
 
 export default function SignIn() {
   const initialValues: ISignUp = {
-    // username: '',
+    username: '',
     email: '',
     password: '',
   };
@@ -24,16 +24,21 @@ export default function SignIn() {
         initialValues={initialValues}
         onSubmit={async (values) => {
           try {
-            const { email, password } = values;
-            signup(email, password);
+            const { email, password, username } = values;
+            signup(email, password, username);
           } catch (error) {
             console.log(error);
           }
         }}
       >
-        <Form autoComplete="off">
+        <Form>
           <fieldset>
-            {/* <InputField type="text" name="username" label="username" /> */}
+            <InputField
+              placeholder="username"
+              type="text"
+              name="username"
+              label="username"
+            />
             <InputField
               placeholder="register@account.com"
               type="email"
@@ -41,7 +46,9 @@ export default function SignIn() {
               label="email"
             />
             <InputField type="password" name="password" label="password" />
-            <PrimaryButton type="submit">sign up</PrimaryButton>
+            <PrimaryButton style={{ marginTop: '1rem' }} type="submit">
+              sign up
+            </PrimaryButton>
           </fieldset>
         </Form>
       </Formik>

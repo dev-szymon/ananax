@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 
 export const BaseInputStyles = styled.div`
-  margin-bottom: 1rem;
+  width: 100%;
+  font: var(--typographyBody);
   label {
-    font: var(--typographySmall);
+    font: var(--typographySmaller);
+    margin-bottom: 0.25rem;
   }
   input {
     border-radius: 0.5rem;
-    box-shadow: inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1);
     border: 1px solid var(--colorDim);
-    margin: 0.5rem 0;
     padding: 0.75rem 1rem;
     background-color: var(--colorDim);
     width: 100%;
@@ -18,9 +18,9 @@ export const BaseInputStyles = styled.div`
   }
 
   input:focus {
-    box-shadow: var(--boxShadowOutline);
+    box-shadow: 0px 0px 0px 4px var(--colorPrimary25);
     background-color: var(--colorLight);
-    border: 1px solid var(--colorAccent);
+    border: 1px solid var(--colorPrimary);
   }
 `;
 
@@ -32,10 +32,9 @@ export const TitleInputStyles = styled(BaseInputStyles)`
 
 export const TextareaStyles = styled(BaseInputStyles)`
   textarea {
+    font: var(--typographyBody);
     border-radius: 0.5rem;
-    box-shadow: inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1);
     border: 1px solid var(--colorDim);
-    margin: 0.5rem 0;
     padding: 0.75rem 1rem;
     background-color: var(--colorDim);
     width: 100%;
@@ -46,9 +45,9 @@ export const TextareaStyles = styled(BaseInputStyles)`
     min-height: 150px;
   }
   textarea:focus {
-    box-shadow: var(--boxShadowOutline);
+    box-shadow: 0px 0px 0px 4px var(--colorPrimary25);
     background-color: var(--colorLight);
-    border: 1px solid var(--colorAccent);
+    border: 1px solid var(--colorPrimary);
   }
 `;
 
@@ -71,5 +70,12 @@ export const DropzoneStyles = styled.div`
   img {
     min-width: 100%;
     max-height: 100%;
+  }
+`;
+
+export const CreatorFieldset = styled.fieldset`
+  padding: 1rem;
+  input {
+    margin-bottom: 1rem;
   }
 `;

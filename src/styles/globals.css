@@ -13,6 +13,8 @@
   --typographyButton: normal 500 1rem/137.5% var(--fontPrimary);
   --typographyBold: 700;
   --typographySmall: normal 400 0.875rem/142.5% var(--fontPrimary);
+  --typographySmaller: normal 400 0.725rem/142.5% var(--fontPrimary);
+  --typographySmallBold: normal 500 0.875rem/142.5% var(--fontPrimary);
   /* ------------ */
 
   /* ------------ */
@@ -81,9 +83,6 @@ a {
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-}
-a:hover {
-  text-decoration: underline;
 }
 
 * {

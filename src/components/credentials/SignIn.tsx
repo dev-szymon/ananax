@@ -30,7 +30,7 @@ export default function SignIn() {
           }
         }}
       >
-        <Form autoComplete="off">
+        <Form>
           {/* set aria busy depending on mutation state */}
           <fieldset aria-busy={false}>
             <InputField
@@ -40,7 +40,9 @@ export default function SignIn() {
               placeholder="your@email.com"
             />
             <InputField type="password" name="password" label="password" />
-            <PrimaryButton type="submit">sign in</PrimaryButton>
+            <PrimaryButton style={{ marginTop: '1rem' }} type="submit">
+              sign in
+            </PrimaryButton>
           </fieldset>
         </Form>
       </Formik>

@@ -24,6 +24,7 @@ interface IAuthContext {
     password: string
   ) => Promise<firebase.User | null> | undefined;
   signup: (
+    username: string,
     email: string,
     password: string
   ) => Promise<firebase.User | null> | undefined;
@@ -51,13 +52,14 @@ interface IUserState {
 function useProvideAuth() {
   const [user, setUser] = useState<IUserState | null>(null);
 
-  const signup = (email: string, password: string) => {
+  const signup = (email: string, password: string, username: string) => {
     return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(({ user }) => {
         if (user) {
           createUser(user.uid, {
+            username: username,
             email: user.email,
             emailVerified: user.emailVerified,
             photoUrl: user.photoURL,

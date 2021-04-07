@@ -6,9 +6,19 @@ import React, {
   Dispatch,
 } from 'react';
 
+interface INutrient {
+  amount: number;
+  unitName: string;
+}
+
 interface ISelectedIngredients {
+  id: string | number;
   source: 'internal' | 'usda';
-  id: string;
+  name: string;
+  protein: INutrient;
+  kcal: INutrient;
+  fats: INutrient;
+  carbs: INutrient;
 }
 
 export interface IIngredientsSelectorContext {

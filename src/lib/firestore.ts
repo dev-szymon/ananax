@@ -17,6 +17,7 @@ const userDefaults = {
 };
 
 export interface IUserData {
+  username?: string;
   email: string | null;
   emailVerified: boolean;
   photoUrl: string | null;

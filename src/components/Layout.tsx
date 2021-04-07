@@ -36,9 +36,13 @@ export default function Layout({
               <Colorlogo />
             </h2>
           </Link>
-          <span className="header-label">{headerLabel}</span>
+          <span style={{ font: 'var(--typographySmallBold)' }}>
+            {headerLabel}
+          </span>
           {!user && !isLoginPage && (
-            <div style={{ textAlign: 'right' }}>
+            <div
+              style={{ textAlign: 'right', font: 'var(--typographySmallBold)' }}
+            >
               <Link href="/login">sign in</Link>
             </div>
           )}
