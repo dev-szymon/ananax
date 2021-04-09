@@ -110,7 +110,6 @@ export default function RecipeCreator() {
           </TertiaryButton>
 
           <Textarea
-            style={{ marginBottom: '1rem' }}
             name="description"
             label="preparation"
             placeholder="Recipe preparation..."
