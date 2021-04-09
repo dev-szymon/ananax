@@ -20,9 +20,11 @@ export default function Layout({
   headerLabel,
   menuType,
 }: LayoutProps) {
-  const { menu, setMenu, menuHandler } = useMenu();
+  const { menu, menuHandler } = useMenu();
   const { user } = useAuth();
   const router = useRouter();
+
+  const isMenu = menu && menu !== 'SEARCH_INGREDIENTS';
 
   const isLoginPage =
     router.pathname === '/login' || router.pathname === '/register';
@@ -48,7 +50,7 @@ export default function Layout({
           )}
         </div>
       </Header>
-      {menu && <Navigation />}
+      {isMenu && <Navigation />}
       <Main>{children}</Main>
       {user && (
         <BottomBar>

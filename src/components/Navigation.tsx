@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import router from 'next/router';
 import styled from 'styled-components';
 import { useMenu } from '../context/menuContext';
@@ -6,7 +6,7 @@ import { useAuth } from '../lib/auth';
 import { PlainButton } from './styles';
 import Link from 'next/link';
 import IngredientSelector from './creators/IngredientsSelector';
-import { useIngredientsSelector } from '../context/ingredientsSelectorContext';
+import { useOutsideClick } from '../lib/customHooks';
 
 const NavigationOutsideStyles = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
@@ -36,16 +36,10 @@ const NavigationStyles = styled.nav`
 const Navi = () => {
   const { signout } = useAuth();
   const { menu, setMenu } = useMenu();
-  const { ingredients, setIngredients } = useIngredientsSelector();
 
   switch (menu) {
     case 'SEARCH_INGREDIENTS':
-      return (
-        <IngredientSelector
-          ingredients={ingredients}
-          setIngredients={setIngredients}
-        />
-      );
+      return <IngredientSelector />;
     case 'COOKBOOK':
       return (
         <>
@@ -108,9 +102,14 @@ const Navi = () => {
 };
 
 export default function Navigation() {
+  const { setMenu } = useMenu();
+
+  const ref = useRef(null);
+
+  useOutsideClick(ref, () => setMenu(false));
   return (
     <NavigationOutsideStyles>
-      <NavigationStyles>
+      <NavigationStyles ref={ref}>
         <Navi />
       </NavigationStyles>
     </NavigationOutsideStyles>

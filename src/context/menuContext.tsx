@@ -3,7 +3,7 @@ import React, { ReactNode, useContext, createContext, useState } from 'react';
 interface IMenuContext {
   menu: string | false;
   setMenu: (props: string | false) => void;
-  menuHandler: (target: string) => void;
+  menuHandler: (target: string | false) => void;
 }
 const MenuContext = createContext<IMenuContext>({
   menu: false,
@@ -13,7 +13,7 @@ const MenuContext = createContext<IMenuContext>({
 
 export const MenuProvider = ({ children }: { children: ReactNode }) => {
   const [menu, setMenu] = useState<string | false>(false);
-  const menuHandler = (target: string) =>
+  const menuHandler = (target: string | false) =>
     setMenu(!menu ? target : menu === target ? false : target);
 
   return (

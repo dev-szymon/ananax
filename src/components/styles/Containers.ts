@@ -19,9 +19,9 @@ export const BottomBar = styled.nav`
   .innerBottomBar {
     width: 100%;
     height: 100%;
-    padding: var(--lengthSm1) var(--lengthMd2);
+    padding: 0.5rem 1rem;
     max-width: 640px;
-    border-top: 0.5px solid var(--colorAccent25);
+    border-top: 0.5px solid var(--colorDim);
     display: flex;
     align-items: center;
     justify-content: space-between;
