@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Field, Form, Formik } from 'formik';
-import { BaseInputStyles, PrimaryButton } from '../styles';
-import { IIngredientsSelectorContext } from '../../context/ingredientsSelectorContext';
+import { BaseInputStyles, PlainButton, PrimaryButton } from '../styles';
+import {
+  IIngredientsSelectorContext,
+  useIngredientsSelector,
+} from '../../context/ingredientsSelectorContext';
 import styled from 'styled-components';
+import { useMenu } from '../../context/menuContext';
+import IngredientSearchResult from '../IngredientSearchResult';
 
 const getNutrientData = (product: any, string: string) => {
   const n = product.foodNutrients.filter((nutrient: any) => {
@@ -11,21 +16,21 @@ const getNutrientData = (product: any, string: string) => {
     if (string === 'Energy') {
       if (nutrientName === string && unitName === 'KCAL') {
         const object = {
-          amount: value,
+          amount: value || 'n/a',
           unitName: unitName,
         };
         return object;
       }
     } else if (nutrientName === string) {
       const object = {
-        amount: value,
+        amount: value || 'n/a',
         unitName: unitName,
       };
       return object;
     }
   });
 
-  return n[0];
+  return n[0] || 'n/a';
 };
 
 const getData = (product: any) => {
@@ -35,110 +40,111 @@ const getData = (product: any) => {
     id: fdcId,
     source: 'usda',
     name: description,
-    protein: getNutrientData(product, 'Protein'),
-    kcal: getNutrientData(product, 'Energy'),
-    fats: getNutrientData(product, 'Total lipid (fat)'),
-    carbs: getNutrientData(product, 'Carbohydrate, by difference'),
+    nutrients: {
+      protein: getNutrientData(product, 'Protein'),
+      kcal: getNutrientData(product, 'Energy'),
+      fats: getNutrientData(product, 'Total lipid (fat)'),
+      carbs: getNutrientData(product, 'Carbohydrate, by difference'),
+    },
   };
 
   return data;
 };
 
 const IngredientSelectorStyles = styled.div`
-  height: calc(100vh - 5rem - 2px);
+  padding: 4px 0.5rem 0 0.5rem;
+  height: 100%;
 `;
 
-const IngredientSelector = ({
-  ingredients,
-  setIngredients,
-}: IIngredientsSelectorContext) => {
+const IngredientSelector = () => {
   const [results, setResults] = useState<any[] | null>(null);
+  const { ingredients, setIngredients } = useIngredientsSelector();
+  const { menuHandler } = useMenu();
 
   return (
     <IngredientSelectorStyles>
-      <Formik
-        initialValues={{ search: '' }}
-        onSubmit={async (values) => {
-          // const response = await fetch(
-          //   'https://api.nal.usda.gov/fdc/v1/foods/list?api_key=tIhYSTVEHtMz4AcuBgeI0VnGi7ttWl3hfYYluwhV',
-          //   {
-          //     body: `{"dataType": ["Foundation"],  "pageSize": "200","sortOrder": "desc"}`,
-          //     headers: {
-          //       'Content-Type': 'application/json',
-          //     },
-          //     method: 'POST',
-          //   }
-          // );
-          const response = await fetch(
-            'https://api.nal.usda.gov/fdc/v1/foods/search?api_key=tIhYSTVEHtMz4AcuBgeI0VnGi7ttWl3hfYYluwhV',
-            {
-              body: `{"query": "${values.search}", "dataType": ["Foundation"], "pageSize": "1000", "sortOrder": "desc"}`,
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              method: 'POST',
-            }
-          );
-
-          const items = await response.json();
-          setResults([...items.foods.map((food: any) => getData(food))]);
+      <div
+        style={{
+          position: 'sticky',
+          top: '3rem',
+          paddingTop: '4px',
+          backgroundColor: 'var(--colorLight)',
         }}
       >
-        <Form
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+        <Formik
+          initialValues={{ search: '' }}
+          onSubmit={async (values) => {
+            // const response = await fetch(
+            //   'https://api.nal.usda.gov/fdc/v1/foods/list?api_key=tIhYSTVEHtMz4AcuBgeI0VnGi7ttWl3hfYYluwhV',
+            //   {
+            //     body: `{"dataType": ["Foundation"],  "pageSize": "200","sortOrder": "desc"}`,
+            //     headers: {
+            //       'Content-Type': 'application/json',
+            //     },
+            //     method: 'POST',
+            //   }
+            // );
+            const response = await fetch(
+              'https://api.nal.usda.gov/fdc/v1/foods/search?api_key=tIhYSTVEHtMz4AcuBgeI0VnGi7ttWl3hfYYluwhV',
+              {
+                body: `{"query": "${values.search}", "dataType": ["Foundation"], "pageSize": "1000", "sortOrder": "desc"}`,
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                method: 'POST',
+              }
+            );
+
+            const items = await response.json();
+            setResults([...items.foods.map((food: any) => getData(food))]);
           }}
         >
-          <BaseInputStyles>
-            <Field
-              type="search"
-              name="search"
-              placeholder="search ingredients..."
-              autoComplete={'off'}
-            />
-          </BaseInputStyles>
-          <PrimaryButton type="submit">search</PrimaryButton>
-        </Form>
-      </Formik>
-      <div style={{ height: '100%', overflowY: 'scroll' }}>
+          <Form
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <BaseInputStyles>
+              <Field
+                type="search"
+                name="search"
+                placeholder="search ingredients..."
+                autoComplete={'off'}
+              />
+            </BaseInputStyles>
+            <PlainButton
+              style={{
+                color: 'var(--colorPrimary)',
+                fontWeight: 'bold',
+                padding: '0 0.25rem',
+              }}
+              type="submit"
+            >
+              search
+            </PlainButton>
+            <PlainButton
+              style={{
+                padding: '0 0.25rem',
+              }}
+              type="button"
+              onClick={() => menuHandler(false)}
+            >
+              cancel
+            </PlainButton>
+          </Form>
+        </Formik>
+      </div>
+
+      <div style={{ height: '100%' }}>
         {results &&
-          results.map((r) => {
-            return (
-              <div key={r.id} style={{ padding: '4px 0' }}>
-                <h5 style={{ font: 'var(--typographyBody)' }}>{r.name}</h5>
-                <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <p style={{ font: 'var(--typographySmaller' }}>kcal</p>
-                    <span style={{ font: 'var(--typographySmallBold' }}>
-                      {r.kcal?.value}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <p style={{ font: 'var(--typographySmaller' }}>protein</p>
-                    <span style={{ font: 'var(--typographySmallBold' }}>
-                      {r.protein?.value}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <p style={{ font: 'var(--typographySmaller' }}>fats</p>
-                    <span style={{ font: 'var(--typographySmallBold' }}>
-                      {r.fats?.value}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <p style={{ font: 'var(--typographySmaller' }}>carbs</p>
-                    <span style={{ font: 'var(--typographySmallBold' }}>
-                      {r.carbs?.value}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          results.map((ingredient) => (
+            <IngredientSearchResult
+              key={ingredient.id}
+              ingredient={ingredient}
+            />
+          ))}
       </div>
     </IngredientSelectorStyles>
   );

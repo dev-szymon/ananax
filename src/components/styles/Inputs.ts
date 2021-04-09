@@ -12,7 +12,7 @@ export const BaseInputStyles = styled.div`
     font: var(--typographyBody);
     border: 1px solid var(--colorDim);
     padding: 0.75rem 1rem;
-    background-color: var(--colorDim);
+    background-color: var(--colorWhite);
     box-shadow: none;
     width: 100%;
     height: 100%;
@@ -40,7 +40,7 @@ export const TextareaStyles = styled(BaseInputStyles)`
     border-radius: 0.5rem;
     border: 1px solid var(--colorDim);
     padding: 0.75rem 1rem;
-    background-color: var(--colorDim);
+    background-color: var(--colorWhite);
     width: 100%;
     height: 100%;
     outline: none;
@@ -65,15 +65,16 @@ export const DropzoneStyles = styled.div`
   min-height: 100px;
   max-height: 300px;
   border-radius: 0.5rem;
-  padding: var(--lengthMd1);
-  background-color: var(--colorDim);
-  border: 1px dashed var(--colorAccent);
-  box-shadow: 0 2px 8px 0px var(--colorAccent25);
+  background-color: var(--colorWhite);
+  border: 1px dashed var(--colorPrimary);
   outline-color: var(--colorAccent);
   overflow: hidden;
   img {
     min-width: 100%;
     max-height: 100%;
+  }
+  a {
+    color: var(--colorPrimary);
   }
 `;
 
