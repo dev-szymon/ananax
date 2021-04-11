@@ -89,7 +89,7 @@ export default function RecipeCreator() {
                 alt="upload preview"
               ></img>
             ) : (
-              <a>upload image ...</a>
+              <a style={{ font: 'var(--typographySmall)' }}>upload image ...</a>
             )}
             <input type="file" {...getInputProps()} multiple={false} />
           </DropzoneStyles>

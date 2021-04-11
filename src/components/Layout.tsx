@@ -24,32 +24,39 @@ export default function Layout({
   const { user } = useAuth();
   const router = useRouter();
 
-  const isMenu = menu && menu !== 'SEARCH_INGREDIENTS';
+  const isIngredientSelector = menu && menu === 'SEARCH_INGREDIENTS';
+
+  const isMenu = menu && !isIngredientSelector;
 
   const isLoginPage =
     router.pathname === '/login' || router.pathname === '/register';
 
   return (
     <>
-      <Header>
-        <div className="header-inner">
-          <Link href="/">
-            <h2>
-              <Colorlogo />
-            </h2>
-          </Link>
-          <span style={{ font: 'var(--typographySmallBold)' }}>
-            {headerLabel}
-          </span>
-          {!user && !isLoginPage && (
-            <div
-              style={{ textAlign: 'right', font: 'var(--typographySmallBold)' }}
-            >
-              <Link href="/login">sign in</Link>
-            </div>
-          )}
-        </div>
-      </Header>
+      {!isIngredientSelector && (
+        <Header>
+          <div className="header-inner">
+            <Link href="/">
+              <h2>
+                <Colorlogo />
+              </h2>
+            </Link>
+            <span style={{ font: 'var(--typographySmallBold)' }}>
+              {headerLabel}
+            </span>
+            {!user && !isLoginPage && (
+              <div
+                style={{
+                  textAlign: 'right',
+                  font: 'var(--typographySmallBold)',
+                }}
+              >
+                <Link href="/login">sign in</Link>
+              </div>
+            )}
+          </div>
+        </Header>
+      )}
       {isMenu && <Navigation />}
       <Main>{children}</Main>
       {user && (
@@ -70,7 +77,9 @@ export default function Layout({
               type="button"
               onClick={() => menuHandler(menuType || 'DEFAULT')}
             >
-              <More fill="var(--colorText)" />
+              <div style={{ width: '2rem' }}>
+                <More fill="var(--colorText)" />
+              </div>
             </PlainButton>
           </div>
         </BottomBar>

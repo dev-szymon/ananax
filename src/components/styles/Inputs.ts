@@ -36,6 +36,7 @@ export const TitleInputStyles = styled(BaseInputStyles)`
 
 export const TextareaStyles = styled(BaseInputStyles)`
   textarea {
+    -webkit-appearance: none;
     font: var(--typographyBody);
     border-radius: 0.5rem;
     border: 1px solid var(--colorDim);
@@ -45,7 +46,6 @@ export const TextareaStyles = styled(BaseInputStyles)`
     height: 100%;
     outline: none;
     resize: none;
-    height: 150px;
     min-height: 150px;
   }
   textarea:focus {
@@ -67,7 +67,7 @@ export const DropzoneStyles = styled.div`
   border-radius: 0.5rem;
   background-color: var(--colorWhite);
   border: 1px dashed var(--colorPrimary);
-  outline-color: var(--colorAccent);
+  outline-color: var(--colorPrimary25);
   overflow: hidden;
   img {
     min-width: 100%;

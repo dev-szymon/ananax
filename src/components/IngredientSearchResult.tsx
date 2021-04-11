@@ -1,21 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import Flex from './Flex';
-
-const IngredientSearchResultStyles = styled.div`
-  padding: 4px 0;
-  border-bottom: 0.5px solid var(--colorDim);
-  > h5 {
-    font: var(--typographyBody);
-  }
-  .nutrient-label {
-    font: var(--typographySmaller);
-    color: var(--colorTextLight);
-  }
-  .nutrient-value {
-    font: var(--typographySmallBold);
-  }
-`;
+import { IngredientSearchResultStyles } from './styles';
 
 interface IIngredientSearchResultNutrients {
   kcal: INutrient;
