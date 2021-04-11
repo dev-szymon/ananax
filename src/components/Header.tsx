@@ -5,7 +5,7 @@ const HeaderStyles = styled.header`
   height: 3rem;
   background-color: var(--colorLight);
   width: 100%;
-  position: fixed;
+  position: sticky;
   top: 0;
   display: flex;
   justify-content: center;

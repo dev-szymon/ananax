@@ -5,6 +5,7 @@ import { Formik, Form } from 'formik';
 import { useDropzone } from 'react-dropzone';
 import { DropzoneStyles, PrimaryButton, CreatorFieldset } from '../styles';
 import { createIngredient } from '../../lib/firestore';
+import { useMutation } from 'react-query';
 import { useAuth } from '../../lib/auth';
 
 interface FormikValues {
@@ -28,15 +29,31 @@ const initialValues: FormikValues = {
 };
 
 export default function IngredientCreator() {
+  const { user } = useAuth();
+
   const onDrop = (acceptedFiles: File[]) => {
     return setFiles(acceptedFiles);
   };
-  const { user } = useAuth();
-
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const onCreateIngredient = useMutation(
+    (formData: any) => {
+      return fetch('/api/createIngredient', {
+        method: 'POST',
+        body: formData,
+      });
+    },
+    {
+      onSuccess: async (data, variables, context) => {
+        const res = await data.json();
+        setLoading(false);
+        console.log(res);
+      },
+    }
+  );
 
   const isFile: boolean = files.length > 0;
   return (
@@ -45,35 +62,49 @@ export default function IngredientCreator() {
       onSubmit={async (values) => {
         if (user) {
           setLoading(true);
-          try {
-            const data = new FormData();
-            data.append('file', files[0]);
-            data.append('upload_preset', 'fwwd2pmr');
-            const res = await fetch(
-              `https://api.cloudinary.com/v1_1/dq104qc4m/image/upload`,
-              {
-                method: 'POST',
-                body: data,
-              }
-            );
-            const resCloudinary = await res.json();
-            try {
-              const ingredient = {
-                ...values,
-                author: user?.uid,
-                images: [resCloudinary.secure_url],
-              };
-              console.log(ingredient);
-              createIngredient(ingredient);
-            } catch (error) {
-              // remove uploaded cloudinary asset if there is error creating ingredient
-              // set error state and display msg
-              console.log(error);
-            }
-          } catch (error) {
-            // set error state and display msg
-            console.log(error);
-          }
+          const data = new FormData();
+          data.append('files', files[0]);
+          data.append('author_id', user.uid);
+          data.append('values', JSON.stringify({ ...values }));
+          onCreateIngredient.mutate(data);
+          //   try {
+          //     const data = new FormData();
+          //     data.append('file', files[0]);
+          //     data.append('upload_preset', 'fwwd2pmr');
+          //     const res = await fetch(
+          //       `https://api.cloudinary.com/v1_1/dq104qc4m/image/upload`,
+          //       {
+          //         method: 'POST',
+          //         body: data,
+          //       }
+          //     );
+          //     const resCloudinary = await res.json();
+          //     try {
+          //       const {
+          //         kcal,
+          //         protein,
+          //         fats,
+          //         glycemicIndex,
+          //         carbs,
+          //         name,
+          //       } = values;
+          //       const ingredient = {
+          //         name,
+          //         author: user.uid,
+          //         images: [resCloudinary.secure_url],
+          //         nutrients: { kcal, protein, fats, glycemicIndex, carbs },
+          //       };
+          //       const ing = await createIngredient(ingredient);
+          //       console.log(ing);
+          //     } catch (error) {
+          //       // remove uploaded cloudinary asset if there is error creating ingredient
+          //       // set error state and display msg
+          //       console.log(error);
+          //     }
+          //   } catch (error) {
+          //     // set error state and display msg
+          //     console.log(error);
+          //   }
         }
       }}
     >

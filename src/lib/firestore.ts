@@ -26,12 +26,14 @@ export interface IUserData {
 export interface IIngredientData {
   name: string;
   author: string;
-  fats: number | '';
   images: string[] | [];
-  kcal: number | '';
-  carbs: number | '';
-  protein: number | '';
-  glycemicIndex: number | '';
+  nutrients: {
+    fats: number | '';
+    kcal: number | '';
+    carbs: number | '';
+    protein: number | '';
+    glycemicIndex: number | '';
+  };
 }
 
 export const createUser = (uid: string, data: IUserData) => {
@@ -41,8 +43,19 @@ export const createUser = (uid: string, data: IUserData) => {
     .set({ uid, ...userDefaults, ...data }, { merge: true });
 };
 
-export const createIngredient = (data: IIngredientData) =>
-  firestore.collection('ingredients').add({ ...data });
+export const createIngredient = async (data: IIngredientData) => {
+  return firestore
+    .collection('ingredients')
+    .add({ ...data })
+    .then(function (docRef) {
+      docRef.get().then(function (doc) {
+        console.log(doc?.data());
+      });
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+};
 
 // export const createRecipe = (data: ICreateRecipe) =>
 //   firestore.collection('recipes').add({ ...data });

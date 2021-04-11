@@ -1,55 +1,11 @@
 import React, { useState } from 'react';
 import { Field, Form, Formik } from 'formik';
-import { BaseInputStyles, PlainButton, PrimaryButton } from '../styles';
-import {
-  IIngredientsSelectorContext,
-  useIngredientsSelector,
-} from '../../context/ingredientsSelectorContext';
+import { BaseInputStyles, PlainButton } from '../styles';
+import { useIngredientsSelector } from '../../context/ingredientsSelectorContext';
 import styled from 'styled-components';
 import { useMenu } from '../../context/menuContext';
 import IngredientSearchResult from '../IngredientSearchResult';
-
-const getNutrientData = (product: any, string: string) => {
-  const n = product.foodNutrients.filter((nutrient: any) => {
-    const { nutrientName, value, unitName } = nutrient;
-
-    if (string === 'Energy') {
-      if (nutrientName === string && unitName === 'KCAL') {
-        const object = {
-          amount: value || 'n/a',
-          unitName: unitName,
-        };
-        return object;
-      }
-    } else if (nutrientName === string) {
-      const object = {
-        amount: value || 'n/a',
-        unitName: unitName,
-      };
-      return object;
-    }
-  });
-
-  return n[0] || 'n/a';
-};
-
-const getData = (product: any) => {
-  const { description, fdcId } = product;
-
-  const data = {
-    id: fdcId,
-    source: 'usda',
-    name: description,
-    nutrients: {
-      protein: getNutrientData(product, 'Protein'),
-      kcal: getNutrientData(product, 'Energy'),
-      fats: getNutrientData(product, 'Total lipid (fat)'),
-      carbs: getNutrientData(product, 'Carbohydrate, by difference'),
-    },
-  };
-
-  return data;
-};
+import { getUsdaData } from '../../lib/parsers';
 
 const IngredientSelectorStyles = styled.div`
   padding: 4px 0.5rem 0 0.5rem;
@@ -66,7 +22,7 @@ const IngredientSelector = () => {
       <div
         style={{
           position: 'sticky',
-          top: '3rem',
+          top: '0',
           paddingTop: '4px',
           backgroundColor: 'var(--colorLight)',
         }}
@@ -96,7 +52,7 @@ const IngredientSelector = () => {
             );
 
             const items = await response.json();
-            setResults([...items.foods.map((food: any) => getData(food))]);
+            setResults([...items.foods.map((food: any) => getUsdaData(food))]);
           }}
         >
           <Form
