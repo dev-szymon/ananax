@@ -6,7 +6,7 @@ import { useAuth } from '../lib/auth';
 import { PlainButton } from './styles';
 import Link from 'next/link';
 import IngredientSelector from './creators/IngredientsSelector';
-import { useOutsideClick } from '../lib/customHooks';
+import { useClick } from '../lib/customHooks';
 
 const NavigationOutsideStyles = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
@@ -31,6 +31,11 @@ const NavigationStyles = styled.nav`
   margin: 0 auto;
   width: 100%;
   max-width: 640px;
+  li {
+    button {
+      font: var(--typographyBody);
+    }
+  }
 `;
 
 const Navi = () => {
@@ -49,9 +54,16 @@ const Navi = () => {
             <ul>
               <li>created</li>
               <li>saved</li>
-              <Link href="/create-recipe">
-                <li>+ new recipe</li>
-              </Link>
+              <li>
+                <PlainButton
+                  onClick={() => {
+                    router.push('/create-recipe');
+                    setMenu(false);
+                  }}
+                >
+                  + new recipe
+                </PlainButton>
+              </li>
             </ul>
           </div>
           <div>
@@ -73,8 +85,8 @@ const Navi = () => {
             <PlainButton
               onClick={() => {
                 signout();
-                setMenu(false);
                 router.pathname === '/' ? router.reload() : router.push('/');
+                setMenu(false);
               }}
             >
               logout
@@ -106,10 +118,10 @@ export default function Navigation() {
 
   const ref = useRef(null);
 
-  useOutsideClick(ref, () => setMenu(false));
+  useClick(ref, () => setMenu(false));
   return (
-    <NavigationOutsideStyles>
-      <NavigationStyles ref={ref}>
+    <NavigationOutsideStyles ref={ref}>
+      <NavigationStyles>
         <Navi />
       </NavigationStyles>
     </NavigationOutsideStyles>

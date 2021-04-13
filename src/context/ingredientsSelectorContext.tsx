@@ -31,7 +31,11 @@ const IngredientsSelectorContext = createContext<IIngredientsSelectorContext>({
   setIngredients: () => {},
 });
 
-export const MenuProvider = ({ children }: { children: ReactNode }) => {
+export const IngredientSelectorProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const [ingredients, setIngredients] = useState<ISelectedIngredients[]>([]);
 
   return (

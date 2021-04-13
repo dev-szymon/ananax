@@ -1,1 +1,1 @@
-export * from './outsideClick';
+export * from './useClick';
