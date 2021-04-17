@@ -42,17 +42,18 @@ export default function IngredientCreator() {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const onCreateIngredient = useMutation(
-    (formData: any) => {
-      return fetch('/api/createIngredient', {
+    async (formData: FormData) => {
+      const response = await fetch('/api/create-ingredient', {
         method: 'POST',
         body: formData,
       });
+
+      return await response.json();
     },
     {
-      onSuccess: async (data, variables, context) => {
-        const res = await data.json();
+      onSuccess: async (data) => {
         setLoading(false);
-        console.log(res);
+        console.log(data);
       },
     }
   );
@@ -66,7 +67,8 @@ export default function IngredientCreator() {
           setLoading(true);
           const data = new FormData();
           data.append('files', files[0]);
-          data.append('author_id', user.uid);
+          data.append('authorId', user.uid);
+          // data.append('authorUsername', user.username);
           data.append('values', JSON.stringify({ ...values }));
           onCreateIngredient.mutate(data);
         }
@@ -104,12 +106,12 @@ export default function IngredientCreator() {
             </h5>
             <div style={{ width: '50%', maxWidth: '200px' }}>
               <NumericInput name="kcal" label="kcal" placeholder={0} />
-              <NumericInput name="carbs" label="węglowodany" placeholder={0} />
-              <NumericInput name="protein" label="białko" placeholder={0} />
-              <NumericInput name="fats" label="tłuszcze" placeholder={0} />
+              <NumericInput name="carbs" label="carbs" placeholder={0} />
+              <NumericInput name="protein" label="protein" placeholder={0} />
+              <NumericInput name="fats" label="fats" placeholder={0} />
               <NumericInput
                 name="glycemicIndex"
-                label="indeks glikemiczny"
+                label="glycemic index"
                 placeholder={0}
               />
             </div>
@@ -118,7 +120,10 @@ export default function IngredientCreator() {
             </PrimaryButton>
             <TertiaryButton
               style={{ marginLeft: '1rem' }}
-              onClick={() => formProps.handleReset()}
+              onClick={() => {
+                formProps.handleReset();
+                setFiles([]);
+              }}
               type="reset"
             >
               clear

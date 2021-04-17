@@ -1,4 +1,3 @@
-import { ICreateRecipe } from '../components/creators/RecipeCreator';
 import firebase from './firebase';
 
 const firestore = firebase.firestore();
@@ -23,10 +22,11 @@ export interface IUserData {
   photoUrl: string | null;
 }
 
-export interface IIngredientData {
+export interface ICreateIngredientData {
   name: string;
   author: string;
   images: string[] | [];
+  createdAt: string;
   nutrients: {
     fats: number | '';
     kcal: number | '';
@@ -36,28 +36,62 @@ export interface IIngredientData {
   };
 }
 
-export const createUser = (uid: string, data: IUserData) => {
+export interface IIngredientData extends ICreateIngredientData {
+  id: string;
+}
+
+export const onCreateUser = (uid: string, data: IUserData) => {
   return firestore
     .collection('users')
     .doc(uid)
     .set({ uid, ...userDefaults, ...data }, { merge: true });
 };
 
-export const createIngredient = async (data: IIngredientData) => {
+export const onCreateIngredient = async (data: ICreateIngredientData) => {
   return firestore
     .collection('ingredients')
     .add({ ...data })
-    .then(function (docRef) {
-      docRef.get().then(function (doc) {
-        console.log(doc?.data());
+    .then(async function (docRef) {
+      return await docRef.get().then(async function (doc) {
+        const data = doc.data();
+        return { id: doc.id, ...data };
       });
     })
     .catch(function (error) {
       console.error(error);
+      return error;
     });
 };
 
-// export const createRecipe = (data: ICreateRecipe) =>
-//   firestore.collection('recipes').add({ ...data });
+export const getUserIngredientsCreated = async (uid: string | null) => {
+  if (!uid) {
+    throw new Error('Please log in!');
+  }
 
-// export const queryIngredients = () => firestore.collection('ingredients').get();
+  const snapshot = await firestore
+    .collection('ingredients')
+    .where('author', '==', uid)
+    .get();
+
+  const ingredients: IIngredientData[] = [];
+
+  snapshot.forEach((doc) => {
+    ingredients.push({
+      id: doc.id,
+      ...doc.data(),
+    } as IIngredientData);
+  });
+
+  ingredients.sort((a, b) => {
+    return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+  });
+
+  return { ingredients };
+};
+
+export const getUser = async (uid: string) => {
+  const user = await firestore.collection('users').doc(uid).get();
+
+  const userData = { id: uid, ...user.data() };
+  return { ...userData };
+};

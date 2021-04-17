@@ -6,13 +6,13 @@ import Navigation from '../components/Navigation';
 import { PlainButton, BottomBar, Main } from './styles';
 import { Colorlogo, CalendarDates, Home, Book, More } from '../images';
 import { useAuth } from '../lib/auth';
-import { useMenu } from '../context/menuContext';
+import { MenuEnum, useMenu } from '../context/menuContext';
 import { useRouter } from 'next/router';
 
 interface LayoutProps {
   children: ReactNode;
   headerLabel?: string;
-  menuType?: string;
+  menuType?: MenuEnum;
 }
 
 export default function Layout({

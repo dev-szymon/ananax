@@ -120,7 +120,7 @@ export default function RecipeCreator() {
             create recipe
           </PrimaryButton>
         </CreatorFieldset>
-        <Persist name="ingredient-creator" />
+        <Persist name="recipe-creator" />
       </Form>
     </Formik>
   );
