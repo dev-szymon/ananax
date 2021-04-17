@@ -1,37 +1,15 @@
 import React, { useRef } from 'react';
 import router from 'next/router';
-import styled from 'styled-components';
 import { useMenu } from '../context/menuContext';
 import { useAuth } from '../lib/auth';
-import { PlainButton } from './styles';
+import {
+  NavigationOutsideStyles,
+  NavigationStyles,
+  PlainButton,
+} from './styles';
 import Link from 'next/link';
 import IngredientSelector from './creators/IngredientsSelector';
-import { useOutsideClick } from '../lib/customHooks';
-
-const NavigationOutsideStyles = styled.div`
-  background-color: rgba(0, 0, 0, 0.3);
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  padding-bottom: 3rem;
-  width: 100%;
-  height: 100vh;
-  z-index: 200;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-`;
-
-const NavigationStyles = styled.nav`
-  background-color: var(--colorLight);
-  position: relative;
-  border-radius: 1rem 1rem 0 0;
-  padding: 1rem;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 640px;
-`;
+import { useClick } from '../lib/customHooks';
 
 const Navi = () => {
   const { signout } = useAuth();
@@ -49,15 +27,24 @@ const Navi = () => {
             <ul>
               <li>created</li>
               <li>saved</li>
-              <Link href="/create-recipe">
-                <li>+ new recipe</li>
-              </Link>
+              <li>
+                <PlainButton
+                  onClick={() => {
+                    router.push('/create-recipe');
+                    setMenu(false);
+                  }}
+                >
+                  + new recipe
+                </PlainButton>
+              </li>
             </ul>
           </div>
           <div>
             <p>ingredients</p>
             <ul>
-              <li>created</li>
+              <Link href="/cookbook/ingredients/ingredients-created">
+                <li>created</li>
+              </Link>
               <li>saved</li>
               <Link href="/create-ingredient">
                 <li>+ new ingredient</li>
@@ -73,8 +60,8 @@ const Navi = () => {
             <PlainButton
               onClick={() => {
                 signout();
-                setMenu(false);
                 router.pathname === '/' ? router.reload() : router.push('/');
+                setMenu(false);
               }}
             >
               logout
@@ -106,10 +93,10 @@ export default function Navigation() {
 
   const ref = useRef(null);
 
-  useOutsideClick(ref, () => setMenu(false));
+  useClick(ref, () => setMenu(false));
   return (
-    <NavigationOutsideStyles>
-      <NavigationStyles ref={ref}>
+    <NavigationOutsideStyles ref={ref}>
+      <NavigationStyles>
         <Navi />
       </NavigationStyles>
     </NavigationOutsideStyles>

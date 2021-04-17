@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { createUser } from './firestore';
+import { onCreateUser } from './firestore';
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -58,7 +58,7 @@ function useProvideAuth() {
       .createUserWithEmailAndPassword(email, password)
       .then(({ user }) => {
         if (user) {
-          createUser(user.uid, {
+          onCreateUser(user.uid, {
             username: username,
             email: user.email,
             emailVerified: user.emailVerified,

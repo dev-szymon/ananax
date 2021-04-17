@@ -12,6 +12,7 @@ import NumericInput from '../credentials/NumericInput';
 import Textarea from '../credentials/Textarea';
 import { useMenu } from '../../context/menuContext';
 import { useIngredientsSelector } from '../../context/ingredientsSelectorContext';
+import { Persist } from 'formik-persist';
 
 export interface ICreateRecipe {
   name: string;
@@ -21,7 +22,7 @@ export interface ICreateRecipe {
   prepTime: number | '';
 }
 
-const initialValues: ICreateRecipe = {
+export const initialRecipeValues: ICreateRecipe = {
   name: '',
   images: [],
   ingredients: [],
@@ -44,7 +45,7 @@ export default function RecipeCreator() {
   const isFile: boolean = files.length > 0;
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={initialRecipeValues}
       onSubmit={async (values) => {
         setLoading(true);
         try {
@@ -119,6 +120,7 @@ export default function RecipeCreator() {
             create recipe
           </PrimaryButton>
         </CreatorFieldset>
+        <Persist name="recipe-creator" />
       </Form>
     </Formik>
   );

@@ -2,6 +2,7 @@ import { Formik, Form } from 'formik';
 import InputField from './TextInput';
 import { PrimaryButton } from '../styles';
 import { useAuth } from '../../lib/auth';
+import { useRouter } from 'next/router';
 
 interface ISignUp {
   username: string;
@@ -10,13 +11,18 @@ interface ISignUp {
 }
 
 export default function SignIn() {
+  const router = useRouter();
   const initialValues: ISignUp = {
     username: '',
     email: '',
     password: '',
   };
 
-  const { signup } = useAuth();
+  const { user, signup } = useAuth();
+
+  if (user) {
+    router.push('/');
+  }
 
   return (
     <>

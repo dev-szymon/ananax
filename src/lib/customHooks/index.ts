@@ -1,1 +1,2 @@
-export * from './outsideClick';
+export * from './useClick';
+export * from './isServer';
