@@ -31,7 +31,7 @@ export default function CookbookCreated() {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return (
       <Layout>
         <Loader />
