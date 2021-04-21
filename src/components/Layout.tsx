@@ -70,7 +70,7 @@ export default function Layout({
             <CalendarDates />
             <PlainButton onClick={() => menuHandler('COOKBOOK')}>
               <div>
-                <Book />
+                <Book fill={'black'} />
               </div>
             </PlainButton>
             <PlainButton
