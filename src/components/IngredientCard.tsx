@@ -1,8 +1,6 @@
 import React from 'react';
-import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { More } from '../images';
-import { getUser } from '../lib/firestore';
+import { Book, Heart, More } from '../images';
 import Flex from './Flex';
 import { PlainButton } from './styles';
 import Image from 'next/image';
@@ -10,12 +8,11 @@ import Image from 'next/image';
 const IngredientCardStyles = styled.div`
   padding: 1rem 0;
 `;
-const AuthorTag = styled.div`
-  font: var(--typographySmaller);
-`;
-
 const CardElementTop = styled(Flex)`
   padding: 0.5rem;
+`;
+const SmallTagElement = styled.div`
+  font: var(--typographySmaller);
 `;
 
 const CardTitle = styled.h3`
@@ -43,18 +40,21 @@ const Imagine = styled.div`
   }
 `;
 
-export default function IngredientCard(ingredient: any) {
-  const { author, name, images } = ingredient.ingredient;
+const CardElementBottom = styled(Flex)`
+  padding: 0.5rem;
+`;
 
-  const { isLoading, data }: { isLoading: boolean; data: any } = useQuery(
-    `user${author}`,
-    async () => await getUser(author)
-  );
+const CardElementActions = styled(Flex)`
+  padding: 0 0.5rem;
+`;
+
+export default function IngredientCard(ingredient: any) {
+  const { authorUsername, name, images, nutrients } = ingredient.ingredient;
 
   return (
     <IngredientCardStyles>
       <CardElementTop align="center" justify="space-between">
-        <AuthorTag>{`@${data ? data.username : '...'}`}</AuthorTag>
+        <SmallTagElement>{`@${authorUsername}`}</SmallTagElement>
         <PlainButton style={{ width: '2rem' }}>
           <More fill="var(--colorText)" />
         </PlainButton>
@@ -64,10 +64,22 @@ export default function IngredientCard(ingredient: any) {
       <IngredientCardImage>
         <Imagine>
           <div>
-            <Image src={images[0]} layout="fill"></Image>
+            <Image src={images[0]} object-fit="cover" layout="fill"></Image>
           </div>
         </Imagine>
       </IngredientCardImage>
+
+      <CardElementBottom justify="space-between" align="center">
+        <SmallTagElement>{`${nutrients.kcal} kcal`}</SmallTagElement>
+        <CardElementActions justify="center" align="center">
+          <PlainButton style={{ width: '1.2rem', height: '1.2rem' }}>
+            <Heart isActive={false} />
+          </PlainButton>
+          <PlainButton style={{ width: '1.2rem', height: '1.2rem' }}>
+            <Book fill="var(--colorText)" />
+          </PlainButton>
+        </CardElementActions>
+      </CardElementBottom>
     </IngredientCardStyles>
   );
 }

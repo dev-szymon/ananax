@@ -19,20 +19,29 @@ if (!firebase.apps.length) {
 
 interface IAuthContext {
   user: IUserState | null;
+  loading: boolean;
   signin: (
     email: string,
     password: string
-  ) => Promise<firebase.User | null> | undefined;
+  ) => Promise<IUserState | null> | undefined;
   signup: (
     username: string,
     email: string,
     password: string
-  ) => Promise<firebase.User | null> | undefined;
+  ) => Promise<IUserState | null> | undefined;
   signout: () => Promise<void>;
+}
+
+interface IUserState {
+  uid: string;
+  email: string | null;
+  photoUrl: string | null;
+  token: string;
 }
 
 const defaultContext: IAuthContext = {
   user: null,
+  loading: true,
   signin: (email: string, password: string) => new Promise((resolve) => null),
   signup: (email: string, password: string) => new Promise((resolve) => null),
   signout: () => new Promise((resolve) => resolve()),
@@ -45,30 +54,32 @@ export function ProvideAuth({ children }: { children: ReactNode }) {
 
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
-interface IUserState {
-  uid: string;
-}
 
 function useProvideAuth() {
   const [user, setUser] = useState<IUserState | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const signup = (email: string, password: string, username: string) => {
     return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(({ user }) => {
+      .then(async ({ user }) => {
         if (user) {
+          const formattedUser = await formatUser(user);
+          const { token, ...restUser } = formattedUser;
+
           onCreateUser(user.uid, {
             username: username,
-            email: user.email,
-            emailVerified: user.emailVerified,
-            photoUrl: user.photoURL,
+            email: restUser.email,
+            photoUrl: restUser.photoUrl,
           });
 
-          setUser(user);
+          setUser(formattedUser);
+          setLoading(false);
 
-          return user;
+          return formattedUser;
         } else {
+          setUser(null);
           return null;
         }
       });
@@ -79,9 +90,17 @@ function useProvideAuth() {
       return firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then((response) => {
-          setUser(response.user);
-          return response.user;
+        .then(async ({ user }) => {
+          if (user) {
+            const formattedUser = await formatUser(user);
+            setUser(formattedUser);
+            setLoading(false);
+            return formattedUser;
+          } else {
+            setUser(null);
+            setLoading(false);
+            return null;
+          }
         });
     } catch (error) {
       console.log(error);
@@ -96,22 +115,36 @@ function useProvideAuth() {
   };
 
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        setUser(user);
+        const formattedUser = await formatUser(user);
+        setUser(formattedUser);
+        setLoading(false);
       } else {
         setUser(null);
+        setLoading(false);
       }
     });
     return () => unsubscribe();
   }, []);
 
   return {
+    loading,
     user,
     signup,
     signin,
     signout,
   };
 }
+
+const formatUser = async (user: firebase.User): Promise<IUserState> => {
+  const token = await user.getIdToken();
+  return {
+    uid: user.uid,
+    email: user.email,
+    photoUrl: user.photoURL,
+    token,
+  };
+};
 
 export const useAuth = () => useContext(AuthContext);

@@ -46,6 +46,10 @@ export default function IngredientCreator() {
       const response = await fetch('/api/create-ingredient', {
         method: 'POST',
         body: formData,
+        headers: {
+          token: user ? user.token : '',
+        },
+        credentials: 'same-origin',
       });
 
       return await response.json();
@@ -67,8 +71,6 @@ export default function IngredientCreator() {
           setLoading(true);
           const data = new FormData();
           data.append('files', files[0]);
-          data.append('authorId', user.uid);
-          // data.append('authorUsername', user.username);
           data.append('values', JSON.stringify({ ...values }));
           onCreateIngredient.mutate(data);
         }
