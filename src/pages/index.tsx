@@ -32,7 +32,7 @@ export default function Home() {
       <img
         style={{ height: '70vh', margin: '0 auto' }}
         className="landing-image"
-        src="https://res.cloudinary.com/dq104qc4m/image/upload/v1616174459/mealprep/pineapple_ghqxhw.png"
+        src="https://res.cloudinary.com/dq104qc4m/image/upload/v1618971081/pineapple_ghqxhw_tjzquq.png"
       />
     </Layout>
   );

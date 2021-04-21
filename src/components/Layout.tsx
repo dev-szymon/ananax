@@ -69,7 +69,7 @@ export default function Layout({
             </Link>
             <CalendarDates />
             <PlainButton onClick={() => menuHandler('COOKBOOK')}>
-              <div>
+              <div style={{ width: '24px', height: '24px' }}>
                 <Book fill={'black'} />
               </div>
             </PlainButton>
