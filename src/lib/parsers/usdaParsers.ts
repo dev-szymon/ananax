@@ -1,3 +1,5 @@
+import { IIngredientData } from '../firestore';
+
 export const getUsdaNutrientData = (product: any, string: string) => {
   const n = product.foodNutrients.filter((nutrient: any) => {
     const { nutrientName, value, unitName } = nutrient;
@@ -25,7 +27,7 @@ export const getUsdaNutrientData = (product: any, string: string) => {
 export const getUsdaData = (product: any) => {
   const { description, fdcId } = product;
 
-  const data = {
+  return {
     id: fdcId,
     source: 'usda',
     name: description,
@@ -36,6 +38,15 @@ export const getUsdaData = (product: any) => {
       carbs: getUsdaNutrientData(product, 'Carbohydrate, by difference'),
     },
   };
+};
 
-  return data;
+export const getInternalData = (product: IIngredientData) => {
+  return {
+    id: product.id,
+    source: 'internal',
+    name: product.name,
+    nutrients: {
+      ...product.nutrients,
+    },
+  };
 };

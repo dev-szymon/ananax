@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const BaseInputStyles = styled.div`
   width: 100%;
+  margin-bottom: 0.5rem;
   label {
     font: var(--typographySmaller);
     margin-bottom: 0.25rem;
@@ -17,6 +18,7 @@ export const BaseInputStyles = styled.div`
     width: 100%;
     height: 100%;
     outline: none;
+    margin: 0;
   }
 
   input:focus {
@@ -26,11 +28,20 @@ export const BaseInputStyles = styled.div`
     background-color: var(--colorLight);
     border: 1px solid var(--colorPrimary);
   }
+  .error-msg {
+    color: var(--colorError);
+    padding-left: 0.5rem;
+    font: var(--typographySmall);
+  }
 `;
 
 export const TitleInputStyles = styled(BaseInputStyles)`
   input {
     font-weight: 600;
+  }
+
+  .error-msg {
+    color: var(--colorError);
   }
 `;
 
@@ -74,6 +85,7 @@ export const DropzoneStyles = styled.div`
     max-height: 100%;
   }
   a {
+    font: var(--typographySmall);
     color: var(--colorPrimary);
   }
 `;
@@ -81,6 +93,6 @@ export const DropzoneStyles = styled.div`
 export const CreatorFieldset = styled.fieldset`
   padding: 1rem;
   input {
-    margin-bottom: 1rem;
+    margin-bottom: 0.25rem;
   }
 `;

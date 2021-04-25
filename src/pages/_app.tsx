@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/globals.css';
+import '../components/styles/global.css';
 import { AppProps } from 'next/app';
 import { ProvideAuth } from '../lib/auth';
 import { QueryClient, QueryClientProvider } from 'react-query';

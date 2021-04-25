@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import SignUp from '../components/credentials/SignUp';
+import SignUp from '../components/forms/SignUp';
 import Link from 'next/link';
 
 export default function SignUpPage() {

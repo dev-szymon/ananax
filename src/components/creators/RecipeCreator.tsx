@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Formik, Form } from 'formik';
-import TitleInput from '../credentials/TitleInput';
+import TitleInput from '../forms/TitleInput';
 import {
   PrimaryButton,
   TertiaryButton,
   DropzoneStyles,
   CreatorFieldset,
 } from '../styles';
-import NumericInput from '../credentials/NumericInput';
-import Textarea from '../credentials/Textarea';
+import NumericInput from '../forms/NumericInput';
+import Textarea from '../forms/Textarea';
 import { useMenu } from '../../context/menuContext';
 import { useIngredientsSelector } from '../../context/ingredientsSelectorContext';
 import { Persist } from 'formik-persist';

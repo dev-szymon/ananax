@@ -4,6 +4,7 @@ import { Book, Heart, More } from '../images';
 import Flex from './Flex';
 import { PlainButton } from './styles';
 import Image from 'next/image';
+import { IIngredientData } from '../lib/firestore';
 
 const IngredientCardStyles = styled.div`
   padding: 1rem 0;
@@ -13,6 +14,7 @@ const CardElementTop = styled(Flex)`
 `;
 const SmallTagElement = styled.div`
   font: var(--typographySmaller);
+  color: var(--colorTextLight);
 `;
 
 const CardTitle = styled.h3`
@@ -48,15 +50,30 @@ const CardElementActions = styled(Flex)`
   padding: 0 0.5rem;
 `;
 
+const Count = styled.div`
+  font: var(--typographySmaller);
+  color: var(--colorTextLight);
+  padding-left: 0.2rem;
+  padding-right: 0.5rem;
+  text-align: center;
+`;
+
 export default function IngredientCard(ingredient: any) {
-  const { authorUsername, name, images, nutrients } = ingredient.ingredient;
+  const {
+    authorUsername,
+    name,
+    images,
+    nutrients,
+    likesCount,
+    cookbookCount,
+  } = ingredient.ingredient;
 
   return (
     <IngredientCardStyles>
       <CardElementTop align="center" justify="space-between">
         <SmallTagElement>{`@${authorUsername}`}</SmallTagElement>
         <PlainButton style={{ width: '2rem' }}>
-          <More fill="var(--colorText)" />
+          <More fill="var(--colorTextLight)" />
         </PlainButton>
       </CardElementTop>
 
@@ -72,12 +89,23 @@ export default function IngredientCard(ingredient: any) {
       <CardElementBottom justify="space-between" align="center">
         <SmallTagElement>{`${nutrients.kcal} kcal`}</SmallTagElement>
         <CardElementActions justify="center" align="center">
-          <PlainButton style={{ width: '1.2rem', height: '1.2rem' }}>
-            <Heart isActive={false} />
-          </PlainButton>
-          <PlainButton style={{ width: '1.2rem', height: '1.2rem' }}>
-            <Book fill="var(--colorText)" />
-          </PlainButton>
+          <Flex align="center">
+            <PlainButton
+              style={{
+                width: '1.2rem',
+                height: '1.2rem',
+              }}
+            >
+              <Heart isActive={false} />
+            </PlainButton>
+            <Count>{likesCount}</Count>
+          </Flex>
+          <Flex>
+            <PlainButton style={{ width: '1.2rem', height: '1.2rem' }}>
+              <Book fill="var(--colorText)" />
+            </PlainButton>
+            <Count>{cookbookCount}</Count>
+          </Flex>
         </CardElementActions>
       </CardElementBottom>
     </IngredientCardStyles>

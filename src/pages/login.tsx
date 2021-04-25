@@ -1,5 +1,5 @@
 import Layout from '../components/Layout';
-import SignIn from '../components/credentials/SignIn';
+import SignIn from '../components/forms/SignIn';
 import React from 'react';
 import Link from 'next/link';
 

@@ -47,7 +47,7 @@ const defaultContext: IAuthContext = {
   signout: () => new Promise((resolve) => resolve()),
 };
 
-const AuthContext = createContext(defaultContext);
+export const AuthContext = createContext(defaultContext);
 
 export function ProvideAuth({ children }: { children: ReactNode }) {
   const auth = useProvideAuth();

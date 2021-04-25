@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useQuery } from 'react-query';
 import Layout from '../../components/Layout';
 import Loader from '../../components/Loader';
@@ -16,8 +16,7 @@ export default function IngredientsPage() {
       }
     );
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   });
 
   if (data) {

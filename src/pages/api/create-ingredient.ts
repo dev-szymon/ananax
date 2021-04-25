@@ -3,6 +3,8 @@ import formidable from 'formidable';
 import { v2 as cloudinary } from 'cloudinary';
 import { onCreateIngredient } from '../../lib/db-admin';
 import { auth } from '../../lib/firebase-admin';
+import { ingredientNutrients } from '../../components/creators/IngredientCreator/IngredientCreator';
+import { INutrientData } from '../../types/ingredients';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -35,9 +37,11 @@ export default async function createIngredientApi(
     const { uid } = await auth.verifyIdToken(req.headers.token as string);
 
     const { files, values } = data;
-    const { fats, kcal, carbs, protein, glycemicIndex, name } = JSON.parse(
-      values
-    );
+
+    const valuesJSON = JSON.parse(values);
+
+    const { name } = valuesJSON;
+
     const cloudinaryResponse = await cloudinary.uploader.upload(
       files.path,
       { upload_preset: 'fwwd2pmr' },
@@ -50,17 +54,29 @@ export default async function createIngredientApi(
         }
       }
     );
+
+    // take ingredientNutrients array and take nutrient data from form values and populate the unit name.
+    const nutrients: INutrientData = ingredientNutrients.reduce(
+      (acc, nutrient) => {
+        if (!valuesJSON[nutrient.name]) {
+          return { ...acc };
+        }
+        return {
+          ...acc,
+          [nutrient.name]: {
+            value: valuesJSON[nutrient.name],
+            unitName: nutrient.unitName,
+          },
+        };
+      },
+      {}
+    );
+
     const firestoreResponse = await onCreateIngredient({
       name: name as string,
       authorId: uid as string,
       createdAt: new Date().toISOString(),
-      nutrients: {
-        fats: fats as number,
-        kcal: kcal as number,
-        carbs: carbs as number,
-        protein: protein as number,
-        glycemicIndex: glycemicIndex as number,
-      },
+      nutrients,
       images: [cloudinaryResponse.secure_url],
     });
     if (firestoreResponse.id) {

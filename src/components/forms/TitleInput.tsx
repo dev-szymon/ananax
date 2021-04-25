@@ -23,7 +23,9 @@ export default function TitleInput({
         placeholder={placeholder}
         {...rest}
       />
-      <ErrorMessage name={name} />
+      <div className="error-msg">
+        <ErrorMessage name={name} />
+      </div>
     </TitleInputStyles>
   );
 }

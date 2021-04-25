@@ -5,7 +5,8 @@ import { useIngredientsSelector } from '../../context/ingredientsSelectorContext
 import styled from 'styled-components';
 import { useMenu } from '../../context/menuContext';
 import IngredientSearchResult from '../IngredientSearchResult';
-import { getUsdaData } from '../../lib/parsers';
+import { getUsdaData, getInternalData } from '../../lib/parsers';
+import { IIngredientData } from '../../types/ingredients';
 
 const IngredientSelectorStyles = styled.div`
   padding: 4px 0.5rem 0 0.5rem;
@@ -30,17 +31,7 @@ const IngredientSelector = () => {
         <Formik
           initialValues={{ search: '' }}
           onSubmit={async (values) => {
-            // const response = await fetch(
-            //   'https://api.nal.usda.gov/fdc/v1/foods/list?api_key=tIhYSTVEHtMz4AcuBgeI0VnGi7ttWl3hfYYluwhV',
-            //   {
-            //     body: `{"dataType": ["Foundation"],  "pageSize": "200","sortOrder": "desc"}`,
-            //     headers: {
-            //       'Content-Type': 'application/json',
-            //     },
-            //     method: 'POST',
-            //   }
-            // );
-            const response = await fetch(
+            const responseUSDA = await fetch(
               'https://api.nal.usda.gov/fdc/v1/foods/search?api_key=tIhYSTVEHtMz4AcuBgeI0VnGi7ttWl3hfYYluwhV',
               {
                 body: `{"query": "${values.search}", "dataType": ["Foundation"], "pageSize": "1000", "sortOrder": "desc"}`,
@@ -51,8 +42,19 @@ const IngredientSelector = () => {
               }
             );
 
-            const items = await response.json();
-            setResults([...items.foods.map((food: any) => getUsdaData(food))]);
+            const responseInternal = await fetch(
+              `/api/search-ingredients/${values.search}`
+            );
+
+            const itemsInternal = await responseInternal.json();
+
+            const itemsUSDA = await responseUSDA.json();
+            setResults([
+              ...itemsInternal.ingredients.ingredients.map(
+                (food: IIngredientData) => getInternalData(food)
+              ),
+              ...itemsUSDA.foods.map((food: any) => getUsdaData(food)),
+            ]);
           }}
         >
           <Form

@@ -1,5 +1,11 @@
+import { ICreateIngredientData, IIngredientData } from '../types/ingredients';
 import { db } from './firebase-admin';
-import { ICreateIngredientData, IIngredientData } from './firestore';
+
+const ingredientDefaults = {
+  type: 'ingredient',
+  likesCount: 0,
+  cookbookCount: 0,
+};
 
 export const onCreateIngredient = async (data: ICreateIngredientData) => {
   const authorData = await db.collection('users').doc(data.authorId).get();
@@ -8,7 +14,7 @@ export const onCreateIngredient = async (data: ICreateIngredientData) => {
     .collection('nodes')
     .add({
       ...data,
-      type: 'ingredient',
+      ...ingredientDefaults,
       authorUsername: authorData.data()?.username,
     })
     .then(async function (docRef) {
@@ -41,6 +47,25 @@ export const getUserIngredientsCreated = async (uid: string) => {
 
   ingredients.sort((a, b) => {
     return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+  });
+
+  return { ingredients };
+};
+
+export const getIngredientsByKeyword = async (keyword: string) => {
+  const snapshot = await db
+    .collection('nodes')
+    .where('type', '==', 'ingredient')
+    .where('name', '==', keyword)
+    .get();
+
+  const ingredients: IIngredientData[] = [];
+
+  snapshot.forEach((doc) => {
+    ingredients.push({
+      id: doc.id,
+      ...doc.data(),
+    } as IIngredientData);
   });
 
   return { ingredients };

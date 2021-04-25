@@ -1,29 +1,34 @@
 import { Field, ErrorMessage } from 'formik';
-import { TextareaStyles } from '../styles';
+import { BaseInputStyles } from '../styles';
 
-export default function NumericInput({
+export default function TextInput({
+  type,
   className,
   name,
   label,
   placeholder,
   ...rest
 }: {
+  type: string;
   className?: string;
   name: string;
   label: string;
-  placeholder: string;
+  placeholder?: string;
 }) {
   return (
-    <TextareaStyles className={className}>
+    <BaseInputStyles className={className}>
       <label htmlFor={name}>{label}</label>
       <Field
         id={name}
-        as="textarea"
+        type={type}
         name={name}
+        autoComplete="off"
         placeholder={placeholder}
         {...rest}
       />
-      <ErrorMessage name={name} />
-    </TextareaStyles>
+      <div className="error-msg">
+        <ErrorMessage name={name} />
+      </div>
+    </BaseInputStyles>
   );
 }
