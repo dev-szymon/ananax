@@ -8,7 +8,7 @@ export default async function createIngredientApi(
 ) {
   if (req.headers.token) {
     const { uid } = await auth.verifyIdToken(req.headers.token as string);
-    const { ingredients } = await getUserIngredientsCreated(uid);
+    const ingredients = await getUserIngredientsCreated(uid);
     res.status(200).json({ ingredients });
   }
 }

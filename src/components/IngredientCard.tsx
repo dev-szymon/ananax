@@ -1,64 +1,26 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Book, Heart, More } from '../images';
 import Flex from './Flex';
-import { PlainButton } from './styles';
+import {
+  CardElementActions,
+  CardElementBottom,
+  CardElementTop,
+  CardTitle,
+  Count,
+  Imagine,
+  IngredientCardImage,
+  IngredientCardStyles,
+  PlainButton,
+  SmallTagElement,
+} from './styles';
 import Image from 'next/image';
-import { IIngredientData } from '../lib/firestore';
+import { IIngredientData } from '../types/ingredients';
 
-const IngredientCardStyles = styled.div`
-  padding: 1rem 0;
-`;
-const CardElementTop = styled(Flex)`
-  padding: 0.5rem;
-`;
-const SmallTagElement = styled.div`
-  font: var(--typographySmaller);
-  color: var(--colorTextLight);
-`;
+interface IIngredientCardProps {
+  ingredient: IIngredientData;
+}
 
-const CardTitle = styled.h3`
-  margin: 0;
-  font: var(--typographyHeader3);
-  font-size: 1rem;
-  padding: 0.5rem;
-  padding-top: 0;
-`;
-
-const IngredientCardImage = styled.div`
-  padding: 0 0.5rem;
-  display: flex;
-  position: relative;
-  width: 100%;
-`;
-
-const Imagine = styled.div`
-  width: 30%;
-  div {
-    position: relative;
-    overflow: hidden;
-    height: 0;
-    padding-top: 75%;
-  }
-`;
-
-const CardElementBottom = styled(Flex)`
-  padding: 0.5rem;
-`;
-
-const CardElementActions = styled(Flex)`
-  padding: 0 0.5rem;
-`;
-
-const Count = styled.div`
-  font: var(--typographySmaller);
-  color: var(--colorTextLight);
-  padding-left: 0.2rem;
-  padding-right: 0.5rem;
-  text-align: center;
-`;
-
-export default function IngredientCard(ingredient: any) {
+export default function IngredientCard({ ingredient }: IIngredientCardProps) {
   const {
     authorUsername,
     name,
@@ -66,7 +28,7 @@ export default function IngredientCard(ingredient: any) {
     nutrients,
     likesCount,
     cookbookCount,
-  } = ingredient.ingredient;
+  } = ingredient;
 
   return (
     <IngredientCardStyles>
@@ -87,7 +49,7 @@ export default function IngredientCard(ingredient: any) {
       </IngredientCardImage>
 
       <CardElementBottom justify="space-between" align="center">
-        <SmallTagElement>{`${nutrients.kcal} kcal`}</SmallTagElement>
+        <SmallTagElement>{`${nutrients.kcal.value} kcal`}</SmallTagElement>
         <CardElementActions justify="center" align="center">
           <Flex align="center">
             <PlainButton

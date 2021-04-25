@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,700,500&display=swap');
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css?family=Roboto:400,700,500&display=swap');
 
 :root {
   /* ------------ */
@@ -102,3 +105,7 @@ fieldset {
 fieldset:disabled {
   opacity: 0.5;
 }
+
+`;
+
+export default GlobalStyle;

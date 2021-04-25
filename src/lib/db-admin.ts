@@ -1,4 +1,4 @@
-import { ICreateIngredientData, IIngredientData } from '../types/ingredients';
+import { ICreateIngredientValues, IIngredientData } from '../types/ingredients';
 import { db } from './firebase-admin';
 
 const ingredientDefaults = {
@@ -7,7 +7,7 @@ const ingredientDefaults = {
   cookbookCount: 0,
 };
 
-export const onCreateIngredient = async (data: ICreateIngredientData) => {
+export const onCreateIngredient = async (data: ICreateIngredientValues) => {
   const authorData = await db.collection('users').doc(data.authorId).get();
 
   return db
@@ -20,11 +20,10 @@ export const onCreateIngredient = async (data: ICreateIngredientData) => {
     .then(async function (docRef) {
       return await docRef.get().then(async function (doc) {
         const data = doc.data();
-        return { id: doc.id, ...data };
+        return { id: doc.id, ...data } as IIngredientData;
       });
     })
     .catch(function (error) {
-      console.error(error);
       return error;
     });
 };
@@ -49,7 +48,7 @@ export const getUserIngredientsCreated = async (uid: string) => {
     return Date.parse(a.createdAt) - Date.parse(b.createdAt);
   });
 
-  return { ingredients };
+  return ingredients;
 };
 
 export const getIngredientsByKeyword = async (keyword: string) => {

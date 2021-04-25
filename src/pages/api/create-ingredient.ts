@@ -4,7 +4,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { onCreateIngredient } from '../../lib/db-admin';
 import { auth } from '../../lib/firebase-admin';
 import { ingredientNutrients } from '../../components/creators/IngredientCreator/IngredientCreator';
-import { INutrientData } from '../../types/ingredients';
+import { NutrientDataType } from '../../types/ingredients';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -56,7 +56,7 @@ export default async function createIngredientApi(
     );
 
     // take ingredientNutrients array and take nutrient data from form values and populate the unit name.
-    const nutrients: INutrientData = ingredientNutrients.reduce(
+    const nutrients: NutrientDataType = ingredientNutrients.reduce(
       (acc, nutrient) => {
         if (!valuesJSON[nutrient.name]) {
           return { ...acc };
@@ -69,7 +69,7 @@ export default async function createIngredientApi(
           },
         };
       },
-      {}
+      {} as NutrientDataType
     );
 
     const firestoreResponse = await onCreateIngredient({

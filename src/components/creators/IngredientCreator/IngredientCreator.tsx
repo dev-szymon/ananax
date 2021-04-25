@@ -50,7 +50,7 @@ export default function IngredientCreator({
   };
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  const onCreateIngredient = useMutation(
+  const useCreateIngredient = useMutation(
     async (formData: FormData) => {
       const response = await fetch('/api/create-ingredient', {
         method: 'POST',
@@ -80,7 +80,7 @@ export default function IngredientCreator({
         const data = new FormData();
         data.append('files', files[0]);
         data.append('values', JSON.stringify({ ...values }));
-        onCreateIngredient.mutate(data);
+        useCreateIngredient.mutate(data);
         resetForm();
         setFiles([]);
       }}

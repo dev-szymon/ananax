@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
-import { Field, Form, Formik } from 'formik';
-import { BaseInputStyles, PlainButton } from '../styles';
-import { useIngredientsSelector } from '../../context/ingredientsSelectorContext';
 import styled from 'styled-components';
+import { Field, Form, Formik } from 'formik';
+
 import { useMenu } from '../../context/menuContext';
+import { useIngredientsSelector } from '../../context/ingredientsSelectorContext';
+import { IIngredientData } from '../../types/ingredients';
+import { BaseInputStyles, PlainButton } from '../styles';
 import IngredientSearchResult from '../IngredientSearchResult';
 import { getUsdaData, getInternalData } from '../../lib/parsers';
-import { IIngredientData } from '../../types/ingredients';
 
 const IngredientSelectorStyles = styled.div`
   padding: 4px 0.5rem 0 0.5rem;
   height: 100%;
+  .ingredient-selector_search {
+    position: sticky;
+    top: 0;
+    padding-top: 4px;
+    background-color: var(--colorLight);
+  }
 `;
 
 const IngredientSelector = () => {
@@ -20,14 +27,7 @@ const IngredientSelector = () => {
 
   return (
     <IngredientSelectorStyles>
-      <div
-        style={{
-          position: 'sticky',
-          top: '0',
-          paddingTop: '4px',
-          backgroundColor: 'var(--colorLight)',
-        }}
-      >
+      <div className="ingredient-selector_search">
         <Formik
           initialValues={{ search: '' }}
           onSubmit={async (values) => {

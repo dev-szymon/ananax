@@ -17,15 +17,18 @@ export type NutrientDataType = {
   };
 };
 
-export interface ICreateIngredientData {
+export interface ICreateIngredientValues {
   name: string;
   authorId: string;
   images: string[] | [];
   createdAt: string;
   nutrients: NutrientDataType;
 }
-export interface IIngredientData extends ICreateIngredientData {
+
+export interface IIngredientData extends ICreateIngredientValues {
+  id: string;
   type: 'ingredient';
   authorUsername: string;
-  id: string;
+  likesCount: number;
+  cookbookCount: number;
 }

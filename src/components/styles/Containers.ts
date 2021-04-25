@@ -36,7 +36,6 @@ export const SingleRow = styled.div`
 `;
 
 export const Main = styled.main`
-  /* padding: 3rem 0; */
   padding-bottom: 3rem;
   min-height: 100vh;
   max-width: 640px;
