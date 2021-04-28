@@ -16,5 +16,5 @@ try {
 
 const db = admin.firestore();
 const auth = admin.auth();
-
-export { db, auth };
+const { FieldPath } = admin.firestore;
+export { db, auth, FieldPath };

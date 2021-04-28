@@ -1,55 +1,82 @@
+import { Formik, Form, Field } from 'formik';
 import React from 'react';
+import { useIngredientsSelector } from '../context/ingredientsSelectorContext';
+import { IIngredientData, NutrientKeys } from '../types/ingredients';
 import Flex from './Flex';
-import { IngredientSearchResultStyles } from './styles';
+import { AmountInputStyles, IngredientSearchResultStyles } from './styles';
 
-interface IIngredientSearchResultNutrients {
-  kcal: INutrient;
-  protein: INutrient;
-  fats: INutrient;
-  carbs: INutrient;
-}
-
-interface INutrient {
-  value: number;
-  unitName: string;
-}
-
-type INutrientLabel = keyof IIngredientSearchResultNutrients;
-
-export interface IIngredientSearchResult {
-  name: string;
-  nutrients: IIngredientSearchResultNutrients;
-}
+const DISPLAY_NUTRIENTS: NutrientKeys[] = ['kcal', 'protein', 'fats', 'carbs'];
 
 interface IIngredientSearchResultProps {
-  ingredient: IIngredientSearchResult;
+  ingredient: IIngredientData;
 }
 
-const DISPLAY_NUTRIENTS: INutrientLabel[] = [
-  'kcal',
-  'protein',
-  'fats',
-  'carbs',
-];
+interface IInitialValues {
+  [key: string]: number;
+}
 
 export default function IngredientSearchResult({
   ingredient,
 }: IIngredientSearchResultProps) {
-  const { name, nutrients } = ingredient;
+  const { ingredients, setIngredients } = useIngredientsSelector();
+  const { name, nutrients, id } = ingredient;
+  const contextAmount = ingredients[id] ? ingredients[id].amount : 0;
+
+  const initialValues: IInitialValues = { [id]: contextAmount };
   return (
-    <IngredientSearchResultStyles>
+    <IngredientSearchResultStyles
+      style={{
+        backgroundColor:
+          contextAmount > 0 ? 'var(--colorPrimary25)' : 'var(--colorLight)',
+      }}
+    >
       <h5>{name}</h5>
-      <Flex style={{ maxWidth: '200px' }} justify="space-between">
-        {DISPLAY_NUTRIENTS.map((nutrientLabel: INutrientLabel) => {
-          return (
-            <Flex direction="column" align="flex-end">
-              <p className="nutrient-label">{nutrientLabel}</p>
-              <div className="nutrient-value">
-                {`${nutrients[nutrientLabel].value || 'n/a'}`}
-              </div>
-            </Flex>
-          );
-        })}
+      <Flex justify="space-between">
+        <Flex
+          justify="space-between"
+          style={{ width: '100%', maxWidth: '80%' }}
+        >
+          {DISPLAY_NUTRIENTS.map((nutrientKey) => {
+            const { unitName, value } = nutrients[nutrientKey];
+            const constructedLabel = unitName
+              ? `${nutrientKey} [ ${unitName} ]`
+              : nutrientKey;
+            return (
+              <Flex direction="column" align="flex-start" key={nutrientKey}>
+                <p className="nutrient-label">{constructedLabel}</p>
+                <div className="nutrient-value">{`${value || 'n/a'}`}</div>
+              </Flex>
+            );
+          })}
+        </Flex>
+        <AmountInputStyles>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={(values) => {
+              if (values[id] > 0) {
+                const ingredientContextData = {
+                  ...ingredient,
+                  amount: values[id],
+                };
+                setIngredients({
+                  ...ingredients,
+                  [id]: { ...ingredientContextData },
+                });
+              }
+            }}
+          >
+            {(formProps) => (
+              <Form>
+                <Field
+                  type="number"
+                  onBlur={() => formProps.handleSubmit()}
+                  name={id}
+                  placeholder="amount [g]"
+                />
+              </Form>
+            )}
+          </Formik>
+        </AmountInputStyles>
       </Flex>
     </IngredientSearchResultStyles>
   );

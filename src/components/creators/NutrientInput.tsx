@@ -1,8 +1,12 @@
 import React from 'react';
 import NumericInput from '../forms/NumericInput';
-import { INutrient } from './IngredientCreator/IngredientCreator';
+import { ingredientNutrients } from './IngredientCreator/IngredientCreator';
 
-export default function NutrientInput({ name, label, unitName }: INutrient) {
+export default function NutrientInput({
+  name,
+  label,
+  unitName,
+}: typeof ingredientNutrients[number]) {
   const constructedLabel = unitName ? `${label} [ ${unitName} ]` : label;
   return <NumericInput name={name} label={constructedLabel} placeholder={0} />;
 }

@@ -5,29 +5,23 @@ import React, {
   useState,
   Dispatch,
 } from 'react';
+import { IIngredientData } from '../types/ingredients';
 
-interface INutrient {
+interface ISelectedIngredientContextData extends IIngredientData {
   amount: number;
-  unitName: string;
 }
 
-interface ISelectedIngredients {
-  id: string | number;
-  source: 'internal' | 'usda';
-  name: string;
-  protein: INutrient;
-  kcal: INutrient;
-  fats: INutrient;
-  carbs: INutrient;
+export interface ISelectedIngredients {
+  [key: string]: ISelectedIngredientContextData;
 }
 
 export interface IIngredientsSelectorContext {
-  ingredients: ISelectedIngredients[];
-  setIngredients: Dispatch<React.SetStateAction<ISelectedIngredients[]>>;
+  ingredients: ISelectedIngredients;
+  setIngredients: Dispatch<React.SetStateAction<ISelectedIngredients>>;
 }
 
 const IngredientsSelectorContext = createContext<IIngredientsSelectorContext>({
-  ingredients: [],
+  ingredients: {},
   setIngredients: () => {},
 });
 
@@ -36,7 +30,7 @@ export const IngredientSelectorProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [ingredients, setIngredients] = useState<ISelectedIngredients[]>([]);
+  const [ingredients, setIngredients] = useState<ISelectedIngredients>({});
 
   return (
     <IngredientsSelectorContext.Provider

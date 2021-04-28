@@ -1,10 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
 import { v2 as cloudinary } from 'cloudinary';
-import { onCreateIngredient } from '../../lib/db-admin';
+import { onCreateRecipe } from '../../lib/db-admin';
 import { auth } from '../../lib/firebase-admin';
-import { ingredientNutrients } from '../../components/creators/IngredientCreator/IngredientCreator';
-import { NutrientDataType } from '../../types/ingredients';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -35,12 +33,9 @@ export default async function createIngredientApi(
 
   if (req.headers.token) {
     const { uid } = await auth.verifyIdToken(req.headers.token as string);
-
     const { files, values } = data;
-
     const valuesJSON = JSON.parse(values);
-
-    const { name } = valuesJSON;
+    const { name, ingredients } = valuesJSON;
 
     const cloudinaryResponse = await cloudinary.uploader.upload(
       files.path,
@@ -55,33 +50,15 @@ export default async function createIngredientApi(
       }
     );
 
-    // take ingredientNutrients array and take nutrient data from form values and populate the unit name.
-    const nutrients: NutrientDataType = ingredientNutrients.reduce(
-      (acc, nutrient) => {
-        if (!valuesJSON[nutrient.name]) {
-          return { ...acc };
-        }
-        return {
-          ...acc,
-          [nutrient.name]: {
-            value: valuesJSON[nutrient.name],
-            unitName: nutrient.unitName,
-          },
-        };
-      },
-      {} as NutrientDataType
-    );
-
-    // type response
-    const firestoreResponse = await onCreateIngredient({
+    const firestoreResponse = await onCreateRecipe({
       name: name as string,
       authorId: uid as string,
       createdAt: new Date().toISOString(),
-      nutrients,
+      ingredients,
       images: [cloudinaryResponse.secure_url],
     });
     if (firestoreResponse.id) {
-      res.status(200).json({ ingredient: firestoreResponse.id });
+      res.status(200).json({ recipe: firestoreResponse.id });
     }
   }
 }

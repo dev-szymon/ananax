@@ -8,7 +8,7 @@ import {
   PlainButton,
 } from './styles';
 import Link from 'next/link';
-import IngredientSelector from './creators/IngredientsSelector';
+import IngredientSelector from './creators/RecipeCreator/IngredientsSelector';
 import { useClick } from '../lib/customHooks';
 
 const Navi = () => {

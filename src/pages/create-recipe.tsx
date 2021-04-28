@@ -1,6 +1,6 @@
 import React from 'react';
-import IngredientSelector from '../components/creators/IngredientsSelector';
-import RecipeCreator from '../components/creators/RecipeCreator';
+import IngredientSelector from '../components/creators/RecipeCreator/IngredientsSelector';
+import RecipeCreator from '../components/creators/RecipeCreator/RecipeCreator';
 import Layout from '../components/Layout';
 import Loader from '../components/Loader';
 import { useMenu } from '../context/menuContext';
@@ -16,7 +16,7 @@ export default function CreateRecipe() {
         {menu === 'SEARCH_INGREDIENTS' ? (
           <IngredientSelector />
         ) : (
-          <RecipeCreator />
+          <RecipeCreator userToken={user.token} />
         )}
       </Layout>
     );

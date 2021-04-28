@@ -1,5 +1,6 @@
 import { ICreateIngredientValues, IIngredientData } from '../types/ingredients';
-import { db } from './firebase-admin';
+import { ICreateRecipeValues } from '../types/recipes';
+import { db, FieldPath } from './firebase-admin';
 
 const ingredientDefaults = {
   type: 'ingredient',
@@ -17,13 +18,61 @@ export const onCreateIngredient = async (data: ICreateIngredientValues) => {
       ...ingredientDefaults,
       authorUsername: authorData.data()?.username,
     })
-    .then(async function (docRef) {
-      return await docRef.get().then(async function (doc) {
+    .then(async (docRef) => {
+      return await docRef.get().then(async (doc) => {
         const data = doc.data();
         return { id: doc.id, ...data } as IIngredientData;
       });
     })
     .catch(function (error) {
+      console.log(error);
+      return error;
+    });
+};
+
+const recipeDefaults = {
+  type: 'recipe',
+  likesCount: 0,
+  cookbookCount: 0,
+};
+
+export const onCreateRecipe = async (data: ICreateRecipeValues) => {
+  const authorData = await db.collection('users').doc(data.authorId).get();
+
+  return db
+    .collection('nodes')
+    .add({
+      ...data,
+      ...recipeDefaults,
+      authorUsername: authorData.data()?.username,
+    })
+    .then(
+      async (docRef) =>
+        await docRef.get().then(async (doc) => {
+          const data = doc.data();
+
+          if (data) {
+            const ingredientsIds = Object.keys(data.ingredients);
+
+            const ingredientsDocs = await db
+              .collection('nodes')
+              .where(FieldPath.documentId(), 'in', ingredientsIds)
+              .get();
+
+            const batch = db.batch();
+            ingredientsDocs.forEach((doc) => {
+              return batch.update(doc.ref, { [`parentNodes.${doc.id}`]: true });
+            });
+
+            batch.update(doc.ref, { [`parentNodes.${doc.id}`]: true });
+            await batch.commit();
+
+            return { id: doc.id, ...data };
+          }
+        })
+    )
+    .catch((error) => {
+      console.log(error);
       return error;
     });
 };
@@ -34,7 +83,6 @@ export const getUserIngredientsCreated = async (uid: string) => {
     .where('type', '==', 'ingredient')
     .where('authorId', '==', uid)
     .get();
-
   const ingredients: IIngredientData[] = [];
 
   snapshot.forEach((doc) => {
@@ -67,5 +115,22 @@ export const getIngredientsByKeyword = async (keyword: string) => {
     } as IIngredientData);
   });
 
-  return { ingredients };
+  return ingredients;
+};
+export const getAllIngredients = async () => {
+  const snapshot = await db
+    .collection('nodes')
+    .where('type', '==', 'ingredient')
+    .get();
+
+  const ingredients: IIngredientData[] = [];
+
+  snapshot.forEach((doc) => {
+    ingredients.push({
+      id: doc.id,
+      ...doc.data(),
+    } as IIngredientData);
+  });
+
+  return ingredients;
 };

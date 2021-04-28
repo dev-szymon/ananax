@@ -4,6 +4,7 @@ import { ProvideAuth } from '../lib/auth';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { MenuProvider } from '../context/menuContext';
 import GlobalStyle from '../components/styles/GlobalsStyles';
+import { IngredientSelectorProvider } from '../context/ingredientsSelectorContext';
 
 function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
@@ -14,7 +15,9 @@ function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ProvideAuth>
           <MenuProvider>
-            <Component {...pageProps} />
+            <IngredientSelectorProvider>
+              <Component {...pageProps} />
+            </IngredientSelectorProvider>
           </MenuProvider>
         </ProvideAuth>
       </QueryClientProvider>

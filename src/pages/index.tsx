@@ -29,11 +29,20 @@ export default function Home() {
           </BaseInputStyles>
         </div>
       </HomePageContainer>
-      <img
-        style={{ height: '70vh', margin: '0 auto' }}
-        className="landing-image"
-        src="https://res.cloudinary.com/dq104qc4m/image/upload/v1618971081/pineapple_ghqxhw_tjzquq.png"
-      />
+      <div
+        style={{
+          height: '60vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <img
+          style={{ height: '100%' }}
+          className="landing-image"
+          src="https://res.cloudinary.com/dq104qc4m/image/upload/v1618971081/pineapple_ghqxhw_tjzquq.png"
+        />
+      </div>
     </Layout>
   );
 }

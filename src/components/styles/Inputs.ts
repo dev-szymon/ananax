@@ -96,3 +96,25 @@ export const CreatorFieldset = styled.fieldset`
     margin-bottom: 0.25rem;
   }
 `;
+export const AmountInputStyles = styled.div`
+  margin-left: 1rem;
+  input {
+    padding: 0.25rem;
+    background-color: var(--colorLight);
+    border: 1px solid var(--colorPrimary25);
+    border-radius: 0.25rem;
+    width: 80px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: 'none';
+    height: 100%;
+  }
+
+  input:focus {
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0px 0px 0px 4px var(--colorPrimary25);
+    box-shadow: 0px 0px 0px 2px var(--colorPrimary25);
+    background-color: var(--colorLight);
+    border: 1px solid var(--colorPrimary);
+  }
+`;
