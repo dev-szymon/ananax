@@ -1,6 +1,6 @@
 import React from 'react';
-import NumericInput from '../forms/NumericInput';
-import { ingredientNutrients } from './IngredientCreator/IngredientCreator';
+import NumericInput from '../../forms/NumericInput';
+import { ingredientNutrients } from './IngredientCreator';
 
 export default function NutrientInput({
   name,

@@ -14,23 +14,21 @@ import {
   SmallTagElement,
 } from './styles';
 import Image from 'next/image';
-import { IIngredientData } from '../types/ingredients';
-import Link from 'next/link';
+import { IRecipeData } from '../types/recipes';
 
-interface IIngredientCardProps {
-  ingredient: IIngredientData;
+interface IRecipeCardProps {
+  recipe: IRecipeData;
 }
 
-export default function IngredientCard({ ingredient }: IIngredientCardProps) {
+export default function IngredientCard({ recipe }: IRecipeCardProps) {
   const {
     authorUsername,
     name,
     images,
-    nutrients,
+    totalKcal,
     likesCount,
     cookbookCount,
-    id,
-  } = ingredient;
+  } = recipe;
 
   return (
     <CardStyles>
@@ -40,34 +38,16 @@ export default function IngredientCard({ ingredient }: IIngredientCardProps) {
           <More fill="var(--colorTextLight)" />
         </PlainButton>
       </CardElementTop>
-      <Link href={`/ingredients/${id}`}>
-        <CardTitle>{name}</CardTitle>
-      </Link>
+
+      <CardTitle>{name}</CardTitle>
       <CardElementMiddle>
-        <Link href={`/ingredients/${id}`}>
-          <div
-            style={{ width: '30%', position: 'relative', padding: '0 0.25rem' }}
-          >
-            <FourThreeImg>
-              <Image src={images[0]} object-fit="cover" layout="fill"></Image>
-            </FourThreeImg>
-          </div>
-        </Link>
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '0 0.025rem',
-          }}
-        >
-          nutrients
-        </div>
+        <FourThreeImg>
+          <Image src={images[0]} object-fit="cover" layout="fill"></Image>
+        </FourThreeImg>
       </CardElementMiddle>
 
       <CardElementBottom justify="space-between" align="center">
-        <SmallTagElement>{`${nutrients.kcal.value} kcal`}</SmallTagElement>
+        <SmallTagElement>{`${totalKcal} kcal`}</SmallTagElement>
         <CardElementActions justify="center" align="center">
           <Flex align="center">
             <PlainButton

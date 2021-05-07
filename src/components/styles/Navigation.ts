@@ -23,9 +23,14 @@ export const NavigationStyles = styled.nav`
   margin: 0 auto;
   width: 100%;
   max-width: 640px;
+  span {
+    font: var(--typographySubtitle);
+  }
   li {
+    padding: 0.5rem;
     button {
       font: var(--typographyBody);
+      font-weight: var(--typographyBold);
     }
   }
 `;

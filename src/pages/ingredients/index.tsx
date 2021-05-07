@@ -1,30 +1,26 @@
 import React from 'react';
 import { useQuery } from 'react-query';
+import IngredientCard from '../../components/IngredientCard';
 import Layout from '../../components/Layout';
 import Loader from '../../components/Loader';
+import { IIngredientData } from '../../types/ingredients';
 
 export default function IngredientsPage() {
-  const { isLoading, error, data } = useQuery('ingredients', async () => {
-    const response = await fetch(
-      'https://api.nal.usda.gov/fdc/v1/foods/search?api_key=tIhYSTVEHtMz4AcuBgeI0VnGi7ttWl3hfYYluwhV',
-      {
-        body: `{"query": "carrot", "dataType": ["SR Legacy"], "sortBy": "fdcId", "sortOrder": "desc"}`,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-      }
-    );
+  const { isLoading, data } = useQuery('ingredients', async () => {
+    const response = await fetch('/api/search-ingredients', {
+      method: 'GET',
+      credentials: 'same-origin',
+    });
 
     return await response.json();
   });
 
   if (data) {
-    console.log(data);
-
     return (
       <Layout>
-        <div>ingredients</div>
+        {data.ingredients.map((ingredient: IIngredientData) => (
+          <IngredientCard key={ingredient.id} ingredient={ingredient} />
+        ))}
       </Layout>
     );
   }

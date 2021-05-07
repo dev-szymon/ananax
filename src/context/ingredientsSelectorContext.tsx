@@ -7,8 +7,11 @@ import React, {
 } from 'react';
 import { IIngredientData } from '../types/ingredients';
 
-interface ISelectedIngredientContextData extends IIngredientData {
-  amount: number;
+export interface ISelectedIngredientContextData extends IIngredientData {
+  amount: {
+    value: number;
+    unitName: 'g';
+  };
 }
 
 export interface ISelectedIngredients {

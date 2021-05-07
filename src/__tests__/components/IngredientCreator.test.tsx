@@ -1,8 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import IngredientCreator, { ingredientNutrients } from './IngredientCreator';
+import IngredientCreator, {
+  ingredientNutrients,
+} from '../../components/creators/IngredientCreator/IngredientCreator';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { IngredientSelectorProvider } from '../../../context/ingredientsSelectorContext';
+import { IngredientSelectorProvider } from '../../context/ingredientsSelectorContext';
 
 describe('Ingredient Creator', () => {
   test('Ingredient Creator renders all inputs', () => {

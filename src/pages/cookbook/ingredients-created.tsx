@@ -1,7 +1,7 @@
 import React from 'react';
-import IngredientsCreated from '../../../components/cookbook/IngredientsCreated';
-import Layout from '../../../components/Layout';
-import { useAuth } from '../../../lib/auth';
+import IngredientsCreated from '../../components/cookbook/IngredientsCreated';
+import Layout from '../../components/Layout';
+import { useAuth } from '../../lib/auth';
 
 export default function CookbookCreatedPage() {
   const { user } = useAuth();

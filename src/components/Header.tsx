@@ -5,8 +5,6 @@ const HeaderStyles = styled.header`
   height: 3rem;
   background-color: var(--colorLight);
   width: 100%;
-  position: sticky;
-  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,6 +37,7 @@ const HeaderStyles = styled.header`
     top: 0;
     left: 0;
     overflow: hidden;
+    z-index: 500;
   }
 `;
 

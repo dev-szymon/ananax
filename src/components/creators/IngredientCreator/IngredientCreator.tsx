@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import { useDropzone } from 'react-dropzone';
 import { useMutation } from 'react-query';
 import { Persist } from 'formik-persist';
-import NutrientInput from '../NutrientInput';
+import NutrientInput from './NutrientInput';
 
 import { IIngredientCreatorValues } from '../../../types/ingredients';
 import { createIngredientYupSchema } from './validation';

@@ -1,4 +1,3 @@
-import { Formik, Form, Field } from 'formik';
 import React from 'react';
 import { useIngredientsSelector } from '../context/ingredientsSelectorContext';
 import { IIngredientData, NutrientKeys } from '../types/ingredients';
@@ -11,23 +10,26 @@ interface IIngredientSearchResultProps {
   ingredient: IIngredientData;
 }
 
-interface IInitialValues {
-  [key: string]: number;
-}
-
 export default function IngredientSearchResult({
   ingredient,
 }: IIngredientSearchResultProps) {
   const { ingredients, setIngredients } = useIngredientsSelector();
   const { name, nutrients, id } = ingredient;
-  const contextAmount = ingredients[id] ? ingredients[id].amount : 0;
+  const defaultContextAmount: { value: number; unitName: 'g' } = {
+    value: 0,
+    unitName: 'g',
+  };
+  const contextAmount = ingredients[id]
+    ? ingredients[id].amount
+    : defaultContextAmount;
 
-  const initialValues: IInitialValues = { [id]: contextAmount };
   return (
     <IngredientSearchResultStyles
       style={{
         backgroundColor:
-          contextAmount > 0 ? 'var(--colorPrimary25)' : 'var(--colorLight)',
+          contextAmount.value > 0
+            ? 'var(--colorPrimary25)'
+            : 'var(--colorLight)',
       }}
     >
       <h5>{name}</h5>
@@ -50,32 +52,24 @@ export default function IngredientSearchResult({
           })}
         </Flex>
         <AmountInputStyles>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={(values) => {
-              if (values[id] > 0) {
-                const ingredientContextData = {
+          <input
+            style={{ textAlign: 'right', width: '2rem' }}
+            type="number"
+            value={contextAmount.value}
+            onChange={(e) => {
+              setIngredients({
+                ...ingredients,
+                [id]: {
                   ...ingredient,
-                  amount: values[id],
-                };
-                setIngredients({
-                  ...ingredients,
-                  [id]: { ...ingredientContextData },
-                });
-              }
+                  amount: {
+                    value: Number(e.target.value),
+                    unitName: contextAmount.unitName,
+                  },
+                },
+              });
             }}
-          >
-            {(formProps) => (
-              <Form>
-                <Field
-                  type="number"
-                  onBlur={() => formProps.handleSubmit()}
-                  name={id}
-                  placeholder="amount [g]"
-                />
-              </Form>
-            )}
-          </Formik>
+          />
+          {` [ ${contextAmount.unitName} ]`}
         </AmountInputStyles>
       </Flex>
     </IngredientSearchResultStyles>

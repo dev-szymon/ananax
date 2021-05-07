@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import Flex from '../Flex';
 
-export const IngredientCardStyles = styled.div`
+export const CardStyles = styled.div`
   padding: 1rem 0;
 `;
 export const CardElementTop = styled(Flex)`
-  padding: 0.5rem;
+  padding: 0.25rem;
 `;
 export const SmallTagElement = styled.div`
   font: var(--typographySmaller);
@@ -20,21 +20,19 @@ export const CardTitle = styled.h3`
   padding-top: 0;
 `;
 
-export const IngredientCardImage = styled.div`
-  padding: 0 0.5rem;
+export const CardElementMiddle = styled.div`
   display: flex;
   position: relative;
   width: 100%;
 `;
 
-export const Imagine = styled.div`
-  width: 30%;
-  div {
-    position: relative;
-    overflow: hidden;
-    height: 0;
-    padding-top: 75%;
-  }
+export const FourThreeImg = styled.div`
+  position: relative;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 0;
+  padding-top: 75%;
 `;
 
 export const CardElementBottom = styled(Flex)`

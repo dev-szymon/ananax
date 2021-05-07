@@ -5,7 +5,6 @@ export const BaseInputStyles = styled.div`
   margin-bottom: 0.5rem;
   label {
     font: var(--typographySmaller);
-    margin-bottom: 0.25rem;
   }
   input {
     -webkit-appearance: none;
@@ -19,6 +18,7 @@ export const BaseInputStyles = styled.div`
     height: 100%;
     outline: none;
     margin: 0;
+    margin-top: 0.25rem;
   }
 
   input:focus {

@@ -9,6 +9,8 @@ import {
   DropzoneStyles,
   CreatorFieldset,
   IngredientSearchResultStyles,
+  PlainButton,
+  AmountInputStyles,
 } from '../../styles';
 import Textarea from '../../forms/Textarea';
 import { useMenu } from '../../../context/menuContext';
@@ -19,6 +21,7 @@ import { NutrientKeys } from '../../../types/ingredients';
 import Flex from '../../Flex';
 import { createRecipeYupSchema } from './validation';
 import { useMutation } from 'react-query';
+import { Close } from '../../../images/close';
 
 export const initialRecipeValues: IRecipeCreatorValues = {
   name: '',
@@ -119,24 +122,51 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
             </div>
             <div
               style={{
-                marginBottom: '1rem',
+                padding: '1rem 0',
               }}
             >
+              {Object.keys(contextIngredients).length > 0 && (
+                <div>
+                  <h5
+                    style={{
+                      font: 'var(--typographySmallBold)',
+                      marginBottom: '0.5rem',
+                    }}
+                  >
+                    Ingredients
+                  </h5>
+                </div>
+              )}
+
               {Object.keys(contextIngredients).map((ingr) => {
-                const { name, nutrients, id } = contextIngredients[ingr];
+                const { [ingr]: des, ...rest } = contextIngredients;
+                const { name, nutrients, id, amount } = contextIngredients[
+                  ingr
+                ];
                 return (
                   <IngredientSearchResultStyles
                     key={id}
                     style={{
+                      paddingLeft: '0.5rem',
+                      paddingRight: '0.5rem',
+                      marginBottom: '2px',
+                      border: '0.5px solid var(--colorPrimary25)',
                       borderRadius: '0.25rem',
-                      backgroundColor: 'var(--colorPrimary25)',
+                      boxShadow: '0px 1px 4px 0px  rgba(80, 214, 146, 0.4)',
                     }}
                   >
-                    <h5>{name}</h5>
-                    <Flex
-                      justify="space-between"
-                      style={{ width: '100%', maxWidth: '80%' }}
-                    >
+                    <Flex justify="space-between">
+                      <h5>{name}</h5>
+                      <PlainButton
+                        type="button"
+                        style={{ padding: '0 0.5rem' }}
+                        onClick={() => setContextIngredients({ ...rest })}
+                      >
+                        <Close fill="black" />
+                      </PlainButton>
+                    </Flex>
+
+                    <Flex justify="space-between">
                       {DISPLAY_NUTRIENTS.map((nutrientKey) => {
                         const { unitName, value } = nutrients[nutrientKey];
                         const constructedLabel = unitName
@@ -155,6 +185,31 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
                           </Flex>
                         );
                       })}
+                      <Flex direction="column">
+                        <AmountInputStyles>
+                          <input
+                            style={{
+                              textAlign: 'right',
+                              width: '3rem',
+                            }}
+                            type="number"
+                            value={amount.value}
+                            onChange={(e) => {
+                              setContextIngredients({
+                                ...contextIngredients,
+                                [ingr]: {
+                                  ...contextIngredients[ingr],
+                                  amount: {
+                                    value: Number(e.target.value),
+                                    unitName: amount.unitName,
+                                  },
+                                },
+                              });
+                            }}
+                          />
+                          {` [ ${amount.unitName} ]`}
+                        </AmountInputStyles>
+                      </Flex>
                     </Flex>
                   </IngredientSearchResultStyles>
                 );
@@ -162,7 +217,10 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
             </div>
 
             <TertiaryButton
-              style={{ marginBottom: '1rem' }}
+              style={{
+                marginBottom: '1rem',
+                boxShadow: '0px 1px 0.5px rgba(14, 14, 44, 0.2)',
+              }}
               type="button"
               onClick={() => menuHandler('SEARCH_INGREDIENTS')}
             >

@@ -24,40 +24,34 @@ export default function Layout({
   const { user } = useAuth();
   const router = useRouter();
 
-  const isIngredientSelector = menu && menu === 'SEARCH_INGREDIENTS';
-
-  const isMenu = menu && !isIngredientSelector;
-
   const isLoginPage =
     router.pathname === '/login' || router.pathname === '/register';
 
   return (
     <>
-      {!isIngredientSelector && (
-        <Header>
-          <div className="header-inner">
-            <Link href="/">
-              <h2>
-                <Colorlogo />
-              </h2>
-            </Link>
-            <span style={{ font: 'var(--typographySmallBold)' }}>
-              {headerLabel}
-            </span>
-            {!user && !isLoginPage && (
-              <div
-                style={{
-                  textAlign: 'right',
-                  font: 'var(--typographySmallBold)',
-                }}
-              >
-                <Link href="/login">sign in</Link>
-              </div>
-            )}
-          </div>
-        </Header>
-      )}
-      {isMenu && <Navigation />}
+      <Header>
+        <div className="header-inner">
+          <Link href="/">
+            <h2>
+              <Colorlogo />
+            </h2>
+          </Link>
+          <span style={{ font: 'var(--typographySmallBold)' }}>
+            {headerLabel}
+          </span>
+          {!user && !isLoginPage && (
+            <div
+              style={{
+                textAlign: 'right',
+                font: 'var(--typographySmallBold)',
+              }}
+            >
+              <Link href="/login">sign in</Link>
+            </div>
+          )}
+        </div>
+      </Header>
+      {menu && <Navigation />}
       <Main>{children}</Main>
       {user && (
         <BottomBar>

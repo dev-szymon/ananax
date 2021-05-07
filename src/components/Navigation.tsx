@@ -10,9 +10,10 @@ import {
 import Link from 'next/link';
 import IngredientSelector from './creators/RecipeCreator/IngredientsSelector';
 import { useClick } from '../lib/customHooks';
+import Flex from './Flex';
 
 const Navi = () => {
-  const { signout } = useAuth();
+  const { signout, user } = useAuth();
   const { menu, setMenu } = useMenu();
 
   switch (menu) {
@@ -21,11 +22,33 @@ const Navi = () => {
     case 'COOKBOOK':
       return (
         <>
-          <p>cookbook</p>
-          <div>
-            <p>recipes</p>
+          <Flex
+            justify="center"
+            style={{
+              borderBottom: '0.5px solid var(--colorDim)',
+              marginBottom: '0.5rem',
+            }}
+          >
+            <span
+              style={{
+                font: 'var(--typographySmallBold)',
+              }}
+            >
+              cookbook
+            </span>
+          </Flex>
+
+          <div
+            style={{
+              borderBottom: '0.5px solid var(--colorDim)',
+              marginBottom: '0.5rem',
+            }}
+          >
+            <span>recipes</span>
             <ul>
-              <li>created</li>
+              <Link href="/cookbook/recipes-created">
+                <li>created</li>
+              </Link>
               <li>saved</li>
               <li>
                 <PlainButton
@@ -40,34 +63,46 @@ const Navi = () => {
             </ul>
           </div>
           <div>
-            <p>ingredients</p>
+            <span>ingredients</span>
             <ul>
-              <Link href="/cookbook/ingredients/ingredients-created">
+              <Link href="/cookbook/ingredients-created">
                 <li>created</li>
               </Link>
               <li>saved</li>
-              <Link href="/create-ingredient">
-                <li>+ new ingredient</li>
-              </Link>
+              <li>
+                <PlainButton
+                  onClick={() => {
+                    router.push('/create-ingredient');
+                    setMenu(false);
+                  }}
+                >
+                  + new ingredient
+                </PlainButton>
+              </li>
             </ul>
           </div>
         </>
       );
     case 'DEFAULT':
       return (
-        <ul>
-          <li>
-            <PlainButton
-              onClick={() => {
-                signout();
-                router.pathname === '/' ? router.reload() : router.push('/');
-                setMenu(false);
-              }}
-            >
-              logout
-            </PlainButton>
-          </li>
-        </ul>
+        <div>
+          <span style={{ font: 'var(--typographySmall)' }}>
+            {user && user.uid}
+          </span>
+          <ul>
+            <li>
+              <PlainButton
+                onClick={() => {
+                  signout();
+                  router.pathname === '/' ? router.reload() : router.push('/');
+                  setMenu(false);
+                }}
+              >
+                logout
+              </PlainButton>
+            </li>
+          </ul>
+        </div>
       );
     default:
       return (
@@ -95,8 +130,8 @@ export default function Navigation() {
 
   useClick(ref, () => setMenu(false));
   return (
-    <NavigationOutsideStyles ref={ref}>
-      <NavigationStyles>
+    <NavigationOutsideStyles>
+      <NavigationStyles ref={ref}>
         <Navi />
       </NavigationStyles>
     </NavigationOutsideStyles>

@@ -19,6 +19,7 @@ export interface IRecipeData extends Omit<ICreateRecipeValues, 'ingredients'> {
   authorUsername: string;
   likesCount: number;
   cookbookCount: number;
+  totalKcal: number;
   parentNodes?: {
     [key: IRecipeData[id]]: boolean;
   };

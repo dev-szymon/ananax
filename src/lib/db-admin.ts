@@ -1,5 +1,5 @@
 import { ICreateIngredientValues, IIngredientData } from '../types/ingredients';
-import { ICreateRecipeValues } from '../types/recipes';
+import { ICreateRecipeValues, IRecipeData } from '../types/recipes';
 import { db, FieldPath } from './firebase-admin';
 
 const ingredientDefaults = {
@@ -48,8 +48,10 @@ export const onCreateRecipe = async (data: ICreateRecipeValues) => {
     })
     .then(
       async (docRef) =>
-        await docRef.get().then(async (doc) => {
-          const data = doc.data();
+        await docRef.get().then(async (recipeDoc) => {
+          const data = recipeDoc.data();
+
+          let totalKcal = 0;
 
           if (data) {
             const ingredientsIds = Object.keys(data.ingredients);
@@ -61,13 +63,19 @@ export const onCreateRecipe = async (data: ICreateRecipeValues) => {
 
             const batch = db.batch();
             ingredientsDocs.forEach((doc) => {
-              return batch.update(doc.ref, { [`parentNodes.${doc.id}`]: true });
+              totalKcal = totalKcal + doc.data().nutrients.kcal.value;
+              return batch.update(doc.ref, {
+                [`parentNodes.${recipeDoc.id}`]: true,
+              });
             });
 
-            batch.update(doc.ref, { [`parentNodes.${doc.id}`]: true });
+            batch.update(recipeDoc.ref, {
+              [`parentNodes.${recipeDoc.id}`]: true,
+              totalKcal: totalKcal,
+            });
             await batch.commit();
 
-            return { id: doc.id, ...data };
+            return { id: recipeDoc.id, ...data };
           }
         })
     )
@@ -98,6 +106,27 @@ export const getUserIngredientsCreated = async (uid: string) => {
 
   return ingredients;
 };
+export const getUserRecipesCreated = async (uid: string) => {
+  const snapshot = await db
+    .collection('nodes')
+    .where('type', '==', 'recipe')
+    .where('authorId', '==', uid)
+    .get();
+  const recipes: IRecipeData[] = [];
+
+  snapshot.forEach((doc) => {
+    recipes.push({
+      id: doc.id,
+      ...doc.data(),
+    } as IRecipeData);
+  });
+
+  recipes.sort((a, b) => {
+    return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+  });
+
+  return recipes;
+};
 
 export const getIngredientsByKeyword = async (keyword: string) => {
   const snapshot = await db
@@ -117,6 +146,7 @@ export const getIngredientsByKeyword = async (keyword: string) => {
 
   return ingredients;
 };
+
 export const getAllIngredients = async () => {
   const snapshot = await db
     .collection('nodes')
@@ -133,4 +163,9 @@ export const getAllIngredients = async () => {
   });
 
   return ingredients;
+};
+
+export const getSingleIngredient = async (id: string) => {
+  const ingredient = await db.collection('nodes').doc(id).get();
+  return ingredient.data();
 };
