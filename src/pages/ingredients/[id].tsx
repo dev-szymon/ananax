@@ -22,6 +22,9 @@ interface ISingleIngredientPageProps {
 export default function SingleIngredientPage({
   ingredient,
 }: ISingleIngredientPageProps) {
+  if (!ingredient) {
+    return <Layout>ingredient not found</Layout>;
+  }
   const {
     name,
     authorUsername,
@@ -87,10 +90,6 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (params && params.id) {
-    const ingredient = await getSingleIngredient(params.id as string);
-    console.log(ingredient);
-    return { props: { ingredient } };
-  }
-  return { props: { ingredient: 'invalid' } };
+  const ingredient = await getSingleIngredient(params?.id as string);
+  return { props: { ingredient }, revalidate: 1 };
 };
