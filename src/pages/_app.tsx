@@ -16,7 +16,7 @@ function App({ Component, pageProps }: AppProps) {
         <link
           key="roboto_font"
           rel="stylesheet"
-          href={`https://fonts.googleapis.com/css?family=Roboto:400,700,500&display=swap`}
+          href={`https://fonts.googleapis.com/css?family=Lato:400,700,500&display=swap`}
         />
       </Head>
       <GlobalStyle />

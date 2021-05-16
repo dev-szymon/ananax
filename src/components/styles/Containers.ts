@@ -41,16 +41,3 @@ export const Main = styled.main`
   max-width: 640px;
   margin: 0 auto;
 `;
-
-export const HomePageContainer = styled.div`
-  padding: var(--lengthMd1);
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  h1 {
-    font-size: var(--lengthMd3);
-    font-weight: 600;
-    padding: var(--lengthSm3);
-    margin-bottom: var(--lengthMd1);
-  }
-`;

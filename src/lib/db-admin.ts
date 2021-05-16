@@ -147,6 +147,25 @@ export const getIngredientsByKeyword = async (keyword: string) => {
   return ingredients;
 };
 
+export const getRecipesByKeyword = async (keyword: string) => {
+  const snapshot = await db
+    .collection('nodes')
+    .where('type', '==', 'recipe')
+    .where('name', '==', keyword)
+    .get();
+
+  const recipes: IRecipeData[] = [];
+
+  snapshot.forEach((doc) => {
+    recipes.push({
+      id: doc.id,
+      ...doc.data(),
+    } as IRecipeData);
+  });
+
+  return recipes;
+};
+
 export const getAllIngredients = async () => {
   const snapshot = await db
     .collection('nodes')
@@ -163,6 +182,23 @@ export const getAllIngredients = async () => {
   });
 
   return ingredients;
+};
+export const getAllRecipes = async () => {
+  const snapshot = await db
+    .collection('nodes')
+    .where('type', '==', 'recipe')
+    .get();
+
+  const recipes: IRecipeData[] = [];
+
+  snapshot.forEach((doc) => {
+    recipes.push({
+      id: doc.id,
+      ...doc.data(),
+    } as IRecipeData);
+  });
+
+  return recipes;
 };
 
 export const getSingleIngredient = async (id: string) => {

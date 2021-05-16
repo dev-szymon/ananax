@@ -15,12 +15,6 @@ interface IFlexProps extends HTMLAttributes<HTMLDivElement> {
 
 export const FlexStyles = styled.div`
   display: flex;
-
-  /* For some reason styled components don't pass the props, might be to related ssr classes bug, need to see to that*/
-
-  /* justify-content: ${(props: IFlexProps) => props.justify};
-  align-items: ${(props: IFlexProps) => props.align};
-  flex-direction: ${(props: IFlexProps) => props.direction}; */
 `;
 
 export default function Flex({

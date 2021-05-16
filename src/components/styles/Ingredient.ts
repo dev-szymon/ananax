@@ -17,6 +17,12 @@ export const IngredientSearchResultStyles = styled.div`
   }
 `;
 
+export const IngredientSearchResultDataContainer = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+`;
+
 export const SingleIngredient = styled.div`
   padding: var(--lengthMd1);
   h2 {

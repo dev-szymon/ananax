@@ -18,7 +18,7 @@ export default function CookbookCreatedPage() {
   if (!loading && user) {
     return (
       <Layout headerLabel="ingredients created">
-        <RecipesCreated userToken={user.token} />
+        <RecipesCreated userToken={user.token} id={user.uid} />
       </Layout>
     );
   }

@@ -6,7 +6,7 @@ import Loader from '../../components/Loader';
 import { IIngredientData } from '../../types/ingredients';
 
 export default function IngredientsPage() {
-  const { isLoading, data } = useQuery('ingredients', async () => {
+  const { isLoading, data } = useQuery('allIngredients', async () => {
     const response = await fetch('/api/search-ingredients', {
       method: 'GET',
       credentials: 'same-origin',
@@ -25,6 +25,6 @@ export default function IngredientsPage() {
     );
   }
   if (isLoading) {
-    return <Loader></Loader>;
+    return <Loader />;
   }
 }

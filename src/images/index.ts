@@ -7,3 +7,4 @@ export * from './close';
 export * from './more-horizontal';
 export * from './heart';
 export * from './more';
+export * from './github';

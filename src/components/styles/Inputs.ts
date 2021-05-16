@@ -13,7 +13,7 @@ export const BaseInputStyles = styled.div`
     border: 1px solid var(--colorDim);
     padding: 0.75rem 1rem;
     background-color: var(--colorWhite);
-    box-shadow: none;
+    box-shadow: var(--lightShadow);
     width: 100%;
     height: 100%;
     outline: none;
@@ -79,6 +79,7 @@ export const DropzoneStyles = styled.div`
   background-color: var(--colorWhite);
   border: 1px dashed var(--colorPrimary);
   outline-color: var(--colorPrimary25);
+  box-shadow: var(--lightShadow);
   overflow: hidden;
   img {
     min-width: 100%;
@@ -97,13 +98,13 @@ export const CreatorFieldset = styled.fieldset`
   }
 `;
 export const AmountInputStyles = styled.div`
+  position: relative;
   margin-left: 1rem;
   input {
     padding: 0.25rem;
     background-color: var(--colorLight);
     border: 1px solid var(--colorPrimary25);
     border-radius: 0.25rem;
-    width: 80px;
     outline: none;
     appearance: none;
     -webkit-appearance: 'none';

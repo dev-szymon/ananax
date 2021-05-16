@@ -8,6 +8,7 @@ import { Colorlogo, CalendarDates, Home, Book, More } from '../images';
 import { useAuth } from '../lib/auth';
 import { MenuEnum, useMenu } from '../context/menuContext';
 import { useRouter } from 'next/router';
+import Flex from './Flex';
 
 interface LayoutProps {
   children: ReactNode;

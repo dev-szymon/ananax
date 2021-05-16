@@ -38,6 +38,7 @@ export const SecondaryButton = styled(BaseButton)`
 export const TertiaryButton = styled(BaseButton)`
   background-color: #fff;
   color: var(--colorDark);
+  box-shadow: var(--lightShadow);
   border: 1px solid var(--colorPrimary25);
 `;
 

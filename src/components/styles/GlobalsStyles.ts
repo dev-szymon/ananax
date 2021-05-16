@@ -5,7 +5,7 @@ const GlobalStyle = createGlobalStyle`
 :root {
   /* ------------ */
   /* typography */
-  --fontPrimary: Roboto, -apple-system, BlinkMacSystemFont, Oxygen, Ubuntu,
+  --fontPrimary: Lato, -apple-system, BlinkMacSystemFont, Oxygen, Ubuntu,
     Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --typographyHeader1: normal 500 2rem/137.5% var(--fontPrimary);
   --typographyHeader2: normal 500 1.5rem/137.5% var(--fontPrimary);
@@ -37,6 +37,10 @@ const GlobalStyle = createGlobalStyle`
   --colorWhite: #ffffff;
   /* ------------ */
 
+  /* shadows */
+  --lightShadow: 0px 2px 4px -1px var(--colorDim);
+  /*  */
+  
   --colorDisabled: #e1dfe9;
   --colorOutline: rgb(96, 128, 244);
   --lengthSm1: 0.25rem;
@@ -105,7 +109,6 @@ fieldset {
 fieldset:disabled {
   opacity: 0.5;
 }
-
 `;
 
 export default GlobalStyle;

@@ -11,6 +11,7 @@ import {
   IngredientSearchResultStyles,
   PlainButton,
   AmountInputStyles,
+  IngredientSearchResultDataContainer,
 } from '../../styles';
 import Textarea from '../../forms/Textarea';
 import { useMenu } from '../../../context/menuContext';
@@ -140,9 +141,8 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
 
               {Object.keys(contextIngredients).map((ingr) => {
                 const { [ingr]: des, ...rest } = contextIngredients;
-                const { name, nutrients, id, amount } = contextIngredients[
-                  ingr
-                ];
+                const { name, nutrients, id, amount } =
+                  contextIngredients[ingr];
                 return (
                   <IngredientSearchResultStyles
                     key={id}
@@ -151,22 +151,22 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
                       paddingRight: '0.5rem',
                       marginBottom: '2px',
                       border: '0.5px solid var(--colorPrimary25)',
+                      backgroundColor: 'var(--colorWhite)',
                       borderRadius: '0.25rem',
-                      boxShadow: '0px 1px 4px 0px  rgba(80, 214, 146, 0.4)',
+                      boxShadow: 'var(--lightShadow)',
                     }}
                   >
                     <Flex justify="space-between">
                       <h5>{name}</h5>
                       <PlainButton
                         type="button"
-                        style={{ padding: '0 0.5rem' }}
                         onClick={() => setContextIngredients({ ...rest })}
                       >
                         <Close fill="black" />
                       </PlainButton>
                     </Flex>
 
-                    <Flex justify="space-between">
+                    <IngredientSearchResultDataContainer>
                       {DISPLAY_NUTRIENTS.map((nutrientKey) => {
                         const { unitName, value } = nutrients[nutrientKey];
                         const constructedLabel = unitName
@@ -178,19 +178,23 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
                             align="flex-start"
                             key={nutrientKey}
                           >
-                            <p className="nutrient-label">{constructedLabel}</p>
+                            <span className="nutrient-label">
+                              {constructedLabel}
+                            </span>
                             <div className="nutrient-value">{`${
                               value || 'n/a'
                             }`}</div>
                           </Flex>
                         );
                       })}
-                      <Flex direction="column">
+                      <Flex direction="column" align="flex-end">
+                        <span className="nutrient-label">{` [ ${amount.unitName} ]`}</span>
                         <AmountInputStyles>
                           <input
                             style={{
+                              backgroundColor: 'var(--colorWhite)',
                               textAlign: 'right',
-                              width: '3rem',
+                              width: '100%',
                             }}
                             type="number"
                             value={amount.value}
@@ -207,10 +211,9 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
                               });
                             }}
                           />
-                          {` [ ${amount.unitName} ]`}
                         </AmountInputStyles>
                       </Flex>
-                    </Flex>
+                    </IngredientSearchResultDataContainer>
                   </IngredientSearchResultStyles>
                 );
               })}
@@ -219,7 +222,6 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
             <TertiaryButton
               style={{
                 marginBottom: '1rem',
-                boxShadow: '0px 1px 0.5px rgba(14, 14, 44, 0.2)',
               }}
               type="button"
               onClick={() => menuHandler('SEARCH_INGREDIENTS')}

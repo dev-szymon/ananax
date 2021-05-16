@@ -2,7 +2,11 @@ import React from 'react';
 import { useIngredientsSelector } from '../context/ingredientsSelectorContext';
 import { IIngredientData, NutrientKeys } from '../types/ingredients';
 import Flex from './Flex';
-import { AmountInputStyles, IngredientSearchResultStyles } from './styles';
+import {
+  AmountInputStyles,
+  IngredientSearchResultDataContainer,
+  IngredientSearchResultStyles,
+} from './styles';
 
 const DISPLAY_NUTRIENTS: NutrientKeys[] = ['kcal', 'protein', 'fats', 'carbs'];
 
@@ -33,45 +37,42 @@ export default function IngredientSearchResult({
       }}
     >
       <h5>{name}</h5>
-      <Flex justify="space-between">
-        <Flex
-          justify="space-between"
-          style={{ width: '100%', maxWidth: '80%' }}
-        >
-          {DISPLAY_NUTRIENTS.map((nutrientKey) => {
-            const { unitName, value } = nutrients[nutrientKey];
-            const constructedLabel = unitName
-              ? `${nutrientKey} [ ${unitName} ]`
-              : nutrientKey;
-            return (
-              <Flex direction="column" align="flex-start" key={nutrientKey}>
-                <p className="nutrient-label">{constructedLabel}</p>
-                <div className="nutrient-value">{`${value || 'n/a'}`}</div>
-              </Flex>
-            );
-          })}
-        </Flex>
-        <AmountInputStyles>
-          <input
-            style={{ textAlign: 'right', width: '2rem' }}
-            type="number"
-            value={contextAmount.value}
-            onChange={(e) => {
-              setIngredients({
-                ...ingredients,
-                [id]: {
-                  ...ingredient,
-                  amount: {
-                    value: Number(e.target.value),
-                    unitName: contextAmount.unitName,
+      <IngredientSearchResultDataContainer>
+        {DISPLAY_NUTRIENTS.map((nutrientKey) => {
+          const { unitName, value } = nutrients[nutrientKey];
+          const constructedLabel = unitName
+            ? `${nutrientKey} [ ${unitName} ]`
+            : nutrientKey;
+          return (
+            <Flex direction="column" align="flex-start" key={nutrientKey}>
+              <span className="nutrient-label">{constructedLabel}</span>
+              <div className="nutrient-value">{`${value || 'n/a'}`}</div>
+            </Flex>
+          );
+        })}
+        <Flex direction="column" align="flex-end">
+          <span className="nutrient-label">{` [ ${contextAmount.unitName} ]`}</span>
+          <AmountInputStyles>
+            <input
+              style={{ textAlign: 'right', width: '100%' }}
+              type="number"
+              value={contextAmount.value}
+              onChange={(e) => {
+                setIngredients({
+                  ...ingredients,
+                  [id]: {
+                    ...ingredient,
+                    amount: {
+                      value: Number(e.target.value),
+                      unitName: contextAmount.unitName,
+                    },
                   },
-                },
-              });
-            }}
-          />
-          {` [ ${contextAmount.unitName} ]`}
-        </AmountInputStyles>
-      </Flex>
+                });
+              }}
+            />
+          </AmountInputStyles>
+        </Flex>
+      </IngredientSearchResultDataContainer>
     </IngredientSearchResultStyles>
   );
 }

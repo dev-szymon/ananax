@@ -21,14 +21,9 @@ interface IRecipeCardProps {
 }
 
 export default function IngredientCard({ recipe }: IRecipeCardProps) {
-  const {
-    authorUsername,
-    name,
-    images,
-    totalKcal,
-    likesCount,
-    cookbookCount,
-  } = recipe;
+  const { authorUsername, name, images, totalKcal, likesCount, cookbookCount } =
+    recipe;
+  console.log(recipe);
 
   return (
     <CardStyles>
