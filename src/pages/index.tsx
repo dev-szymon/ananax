@@ -20,6 +20,11 @@ const HomeSection = styled.section`
     margin-bottom: 0.5rem;
   }
 
+  li ul {
+    padding-left: 1rem;
+    font: var(--typographySmall);
+  }
+
   .stack-list {
     padding: 1rem;
     padding-top: 0;
@@ -58,7 +63,13 @@ export default function Home() {
           <li>Typescript</li>
           <li>Next.js</li>
           <li>Firebase</li>
-          <li>React Query</li>
+          <li>
+            React Query
+            <ul>
+              <li>+ infinite query</li>
+            </ul>
+          </li>
+
           <li>Styled Components</li>
           <li>Jest</li>
           <li>React Testing Library</li>

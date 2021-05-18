@@ -76,7 +76,7 @@ export default async function createIngredientApi(
     const firestoreResponse = await onCreateIngredient({
       name: name as string,
       authorId: uid as string,
-      createdAt: new Date().toISOString(),
+      createdAt: Date.parse(new Date().toISOString()),
       nutrients,
       images: [cloudinaryResponse.secure_url],
     });

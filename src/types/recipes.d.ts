@@ -9,7 +9,7 @@ export interface ICreateRecipeValues {
   name: string;
   authorId: string;
   images: string[] | [];
-  createdAt: string;
+  createdAt: number;
   ingredients: { [key: IIngredientData['id']]: number };
 }
 

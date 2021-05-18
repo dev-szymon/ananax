@@ -21,7 +21,7 @@ export interface ICreateIngredientValues {
   name: string;
   authorId: string;
   images: string[] | [];
-  createdAt: string;
+  createdAt: number;
   nutrients: NutrientDataType;
 }
 

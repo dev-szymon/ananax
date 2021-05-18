@@ -63,7 +63,9 @@ const Navi = () => {
             </ul>
           </div>
           <div>
-            <span>ingredients</span>
+            <Link href="/ingredients">
+              <span>ingredients</span>
+            </Link>
             <ul>
               <Link href="/cookbook/ingredients-created">
                 <li>created</li>

@@ -101,7 +101,7 @@ export const getUserIngredientsCreated = async (uid: string) => {
   });
 
   ingredients.sort((a, b) => {
-    return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+    return a.createdAt - b.createdAt;
   });
 
   return ingredients;
@@ -121,9 +121,7 @@ export const getUserRecipesCreated = async (uid: string) => {
     } as IRecipeData);
   });
 
-  recipes.sort((a, b) => {
-    return Date.parse(a.createdAt) - Date.parse(b.createdAt);
-  });
+  recipes.sort((a, b) => b.createdAt - a.createdAt);
 
   return recipes;
 };
@@ -166,22 +164,39 @@ export const getRecipesByKeyword = async (keyword: string) => {
   return recipes;
 };
 
-export const getAllIngredients = async () => {
+export const getAllIngredients = async (cursor: number = 0) => {
+  const limit = 2;
   const snapshot = await db
     .collection('nodes')
     .where('type', '==', 'ingredient')
     .get();
 
-  const ingredients: IIngredientData[] = [];
+  let nodes: IIngredientData[] = [];
 
   snapshot.forEach((doc) => {
-    ingredients.push({
+    nodes.push({
       id: doc.id,
       ...doc.data(),
     } as IIngredientData);
   });
 
-  return ingredients;
+  nodes = nodes
+    .sort((a, b) => b.createdAt - a.createdAt)
+    // if cursor exists return oonly nodes that were created before cursor, otherwise return all nodes
+    .filter((node) => (cursor > 0 ? node.createdAt < cursor : node))
+    // return one more than limit. The extra one determines next cursor and is removed later
+    .slice(0, limit + 1);
+
+  const nextCursor = nodes[nodes.length - 1]?.createdAt;
+  // removes extra node that was used to generate next cursor
+  const ingredients = nodes.slice(0, limit);
+
+  console.log(nextCursor);
+
+  return {
+    ingredients,
+    nextCursor,
+  };
 };
 export const getAllRecipes = async () => {
   const snapshot = await db
@@ -197,6 +212,8 @@ export const getAllRecipes = async () => {
       ...doc.data(),
     } as IRecipeData);
   });
+
+  recipes.sort((a, b) => b.createdAt - a.createdAt);
 
   return recipes;
 };
