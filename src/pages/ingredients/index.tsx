@@ -6,8 +6,10 @@ import Loader from '../../components/Loader';
 import { TertiaryButton } from '../../components/styles';
 import { IIngredientData } from '../../types/ingredients';
 
+type Cursor = number;
+
 export default function IngredientsPage() {
-  const fetchIngr = async ({ pageParam }: { pageParam?: any }) => {
+  const fetchIngr = async ({ pageParam }: { pageParam?: Cursor }) => {
     const response = await fetch(
       `/api/search-ingredients?cursor=${pageParam}`,
       {
@@ -27,15 +29,13 @@ export default function IngredientsPage() {
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery('allIngredientz', fetchIngr, {
+  } = useInfiniteQuery('allIngredients', fetchIngr, {
     getNextPageParam: (lastPage, pages) => {
       return lastPage.nextCursor;
     },
   });
 
   if (data) {
-    console.log(data);
-    console.log(hasNextPage);
     return (
       <Layout>
         {data.pages.map((page, i) => {
@@ -43,9 +43,11 @@ export default function IngredientsPage() {
             <IngredientCard key={ingredient.id} ingredient={ingredient} />
           ));
         })}
-        <TertiaryButton onClick={() => fetchNextPage()}>
-          fetch more...
-        </TertiaryButton>
+        {hasNextPage && (
+          <TertiaryButton onClick={() => fetchNextPage()}>
+            fetch more...
+          </TertiaryButton>
+        )}
       </Layout>
     );
   }

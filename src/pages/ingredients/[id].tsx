@@ -25,13 +25,8 @@ export default function SingleIngredientPage({
   if (!ingredient) {
     return <Layout>ingredient not found</Layout>;
   }
-  const {
-    name,
-    authorUsername,
-    images,
-    likesCount,
-    cookbookCount,
-  } = ingredient;
+  const { name, authorUsername, images, likesCount, cookbookCount } =
+    ingredient;
 
   return (
     <Layout>
@@ -76,7 +71,7 @@ export default function SingleIngredientPage({
 }
 
 export const getStaticPaths = async () => {
-  const ingredients = await getAllIngredients();
+  const { ingredients } = await getAllIngredients();
   const paths = ingredients.map((ingre) => ({
     params: {
       id: ingre.id.toString(),

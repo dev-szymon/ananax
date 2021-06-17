@@ -15,17 +15,20 @@ export default function IngredientsCreated({
   id,
   userToken,
 }: IRecipesCreatedProps) {
-  const { isLoading, data } = useQuery(`${id}-recipes-created`, async () => {
-    const response = await fetch('/api/cookbook/recipes-created', {
-      method: 'GET',
-      headers: {
-        token: userToken,
-      },
-      credentials: 'same-origin',
-    });
+  const { isLoading, data } = useQuery(
+    `user-${id}-recipes-created`,
+    async () => {
+      const response = await fetch('/api/cookbook/recipes-created', {
+        method: 'GET',
+        headers: {
+          token: userToken,
+        },
+        credentials: 'same-origin',
+      });
 
-    return await response.json();
-  });
+      return await response.json();
+    }
+  );
 
   if (isLoading) {
     return <Loader />;

@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext, createContext, useState } from 'react';
 
-export type MenuEnum = 'SEARCH_INGREDIENTS' | 'COOKBOOK' | 'DEFAULT';
+export type MenuEnum = 'SEARCH_INGREDIENTS' | 'NAVIGATION';
 
 interface IMenuContext {
   menu: MenuEnum | false;

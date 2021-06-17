@@ -1,48 +1,69 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 
 import { IIngredientData } from '../../types/ingredients';
 import EmptyState from '../EmptyState';
 import IngredientCard from '../IngredientCard';
 import Loader from '../Loader';
+import { TertiaryButton } from '../styles';
 
 interface IIngredientsCreatedProps {
   userToken: string;
   id: string;
 }
 
+type Cursor = number;
+
 export default function IngredientsCreated({
   id,
   userToken,
 }: IIngredientsCreatedProps) {
-  const { isLoading, data } = useQuery(
-    `${id}-ingredients-created`,
-    async () => {
-      const response = await fetch('/api/cookbook/ingredients-created', {
+  const fetchIngr = async ({ pageParam }: { pageParam?: Cursor }) => {
+    const response = await fetch(
+      `/api/cookbook/ingredients-created?cursor=${pageParam}`,
+      {
         method: 'GET',
         headers: {
           token: userToken,
         },
         credentials: 'same-origin',
-      });
+      }
+    );
 
-      return await response.json();
-    }
-  );
+    return await response.json();
+  };
 
-  if (isLoading) {
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery(`user-${id}-ingredients-created`, fetchIngr, {
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.nextCursor;
+    },
+  });
+
+  if (status === 'loading') {
     return <Loader />;
   }
-
-  return (
-    <>
-      {data.ingredients.length > 0 ? (
-        data.ingredients.map((ingredient: IIngredientData) => (
-          <IngredientCard key={ingredient.id} ingredient={ingredient} />
-        ))
-      ) : (
-        <EmptyState />
-      )}
-    </>
-  );
+  if (data) {
+    return (
+      <>
+        {data.pages.map((page, i) => {
+          return page.ingredients.map((ingredient: IIngredientData) => (
+            <IngredientCard key={ingredient.id} ingredient={ingredient} />
+          ));
+        })}
+        {hasNextPage && (
+          <TertiaryButton onClick={() => fetchNextPage()}>
+            fetch more...
+          </TertiaryButton>
+        )}
+      </>
+    );
+  }
 }

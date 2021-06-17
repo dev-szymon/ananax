@@ -48,14 +48,14 @@ export default function Home() {
           style={{ marginBottom: '1rem', color: 'var(--colorAccent)' }}
         >
           <Link href="https://github.com/dev-szymon/ananax">
-            <>
+            <div>
               <div
                 style={{ width: '2rem', height: '2rem', marginRight: '1rem' }}
               >
                 <Github fill="var(--colorText)" />
               </div>
               github repository
-            </>
+            </div>
           </Link>
         </Flex>
         <h3>What's in here?</h3>
@@ -74,7 +74,7 @@ export default function Home() {
           <li>Jest</li>
           <li>React Testing Library</li>
           <br></br>
-          <li>... lot's to improve as I'm kind of playing around here</li>
+          <li>... a lot to improve as I'm kind of playing around here</li>
         </ul>
         <h3>
           Login to guest account and take a look{' '}

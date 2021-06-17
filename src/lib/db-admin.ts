@@ -1,6 +1,7 @@
 import { ICreateIngredientValues, IIngredientData } from '../types/ingredients';
 import { ICreateRecipeValues, IRecipeData } from '../types/recipes';
 import { db, FieldPath } from './firebase-admin';
+import { getInfiniteIngredients } from './infiniteQuery';
 
 const ingredientDefaults = {
   type: 'ingredient',
@@ -85,27 +86,38 @@ export const onCreateRecipe = async (data: ICreateRecipeValues) => {
     });
 };
 
-export const getUserIngredientsCreated = async (uid: string) => {
+export const getUserIngredientsCreated = async (
+  uid: string,
+  cursor: number = 0
+) => {
+  const limit = 2;
   const snapshot = await db
     .collection('nodes')
     .where('type', '==', 'ingredient')
     .where('authorId', '==', uid)
     .get();
-  const ingredients: IIngredientData[] = [];
+
+  let nodes: IIngredientData[] = [];
 
   snapshot.forEach((doc) => {
-    ingredients.push({
+    nodes.push({
       id: doc.id,
       ...doc.data(),
     } as IIngredientData);
   });
 
-  ingredients.sort((a, b) => {
-    return a.createdAt - b.createdAt;
-  });
+  const { outputNodes, nextCursor } = getInfiniteIngredients(
+    nodes,
+    cursor,
+    limit
+  );
 
-  return ingredients;
+  return {
+    ingredients: outputNodes,
+    nextCursor,
+  };
 };
+
 export const getUserRecipesCreated = async (uid: string) => {
   const snapshot = await db
     .collection('nodes')
@@ -180,24 +192,18 @@ export const getAllIngredients = async (cursor: number = 0) => {
     } as IIngredientData);
   });
 
-  nodes = nodes
-    .sort((a, b) => b.createdAt - a.createdAt)
-    // if cursor exists return oonly nodes that were created before cursor, otherwise return all nodes
-    .filter((node) => (cursor > 0 ? node.createdAt < cursor : node))
-    // return one more than limit. The extra one determines next cursor and is removed later
-    .slice(0, limit + 1);
-
-  const nextCursor = nodes[nodes.length - 1]?.createdAt;
-  // removes extra node that was used to generate next cursor
-  const ingredients = nodes.slice(0, limit);
-
-  console.log(nextCursor);
+  const { outputNodes, nextCursor } = getInfiniteIngredients(
+    nodes,
+    cursor,
+    limit
+  );
 
   return {
-    ingredients,
+    ingredients: outputNodes,
     nextCursor,
   };
 };
+
 export const getAllRecipes = async () => {
   const snapshot = await db
     .collection('nodes')

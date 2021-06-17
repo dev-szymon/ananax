@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getUserRecipesCreated } from '../../../lib/db-admin';
 import { auth } from '../../../lib/firebase-admin';
 
-export default async function createIngredientApi(
+export default async function recipesCreatedApi(
   req: NextApiRequest,
   res: NextApiResponse
 ) {

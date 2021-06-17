@@ -3,12 +3,11 @@ import React, { ReactNode } from 'react';
 import Link from 'next/link';
 
 import Navigation from '../components/Navigation';
-import { PlainButton, BottomBar, Main } from './styles';
-import { Colorlogo, CalendarDates, Home, Book, More } from '../images';
+import { PlainButton, Main } from './styles';
+import { Colorlogo, More } from '../images';
 import { useAuth } from '../lib/auth';
 import { MenuEnum, useMenu } from '../context/menuContext';
 import { useRouter } from 'next/router';
-import Flex from './Flex';
 
 interface LayoutProps {
   children: ReactNode;
@@ -32,6 +31,9 @@ export default function Layout({
     <>
       <Header>
         <div className="header-inner">
+          <PlainButton onClick={() => menuHandler('NAVIGATION')}>
+            <More fill="var(--colorText)" />
+          </PlainButton>
           <Link href="/">
             <h2>
               <Colorlogo />
@@ -54,31 +56,6 @@ export default function Layout({
       </Header>
       {menu && <Navigation />}
       <Main>{children}</Main>
-      {user && (
-        <BottomBar>
-          <div className="innerBottomBar">
-            <Link href="/" passHref>
-              <div>
-                <Home />
-              </div>
-            </Link>
-            <CalendarDates />
-            <PlainButton onClick={() => menuHandler('COOKBOOK')}>
-              <div style={{ width: '24px', height: '24px' }}>
-                <Book fill={'black'} />
-              </div>
-            </PlainButton>
-            <PlainButton
-              type="button"
-              onClick={() => menuHandler(menuType || 'DEFAULT')}
-            >
-              <div style={{ width: '2rem' }}>
-                <More fill="var(--colorText)" />
-              </div>
-            </PlainButton>
-          </div>
-        </BottomBar>
-      )}
     </>
   );
 }
