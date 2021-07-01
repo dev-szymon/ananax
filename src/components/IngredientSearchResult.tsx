@@ -1,12 +1,7 @@
 import React from 'react';
 import { useIngredientsSelector } from '../context/ingredientsSelectorContext';
 import { IIngredientData, NutrientKeys } from '../types/ingredients';
-import Flex from './Flex';
-import {
-  AmountInputStyles,
-  IngredientSearchResultDataContainer,
-  IngredientSearchResultStyles,
-} from './styles';
+import { Box, Flex } from '@chakra-ui/react';
 
 const DISPLAY_NUTRIENTS: NutrientKeys[] = ['kcal', 'protein', 'fats', 'carbs'];
 
@@ -28,7 +23,7 @@ export default function IngredientSearchResult({
     : defaultContextAmount;
 
   return (
-    <IngredientSearchResultStyles
+    <Flex
       style={{
         backgroundColor:
           contextAmount.value > 0
@@ -37,7 +32,7 @@ export default function IngredientSearchResult({
       }}
     >
       <h5>{name}</h5>
-      <IngredientSearchResultDataContainer>
+      <Box>
         {DISPLAY_NUTRIENTS.map((nutrientKey) => {
           const { unitName, value } = nutrients[nutrientKey];
           const constructedLabel = unitName
@@ -52,7 +47,7 @@ export default function IngredientSearchResult({
         })}
         <Flex direction="column" align="flex-end">
           <span className="nutrient-label">{` [ ${contextAmount.unitName} ]`}</span>
-          <AmountInputStyles>
+          <Box>
             <input
               style={{ textAlign: 'right', width: '100%' }}
               type="number"
@@ -70,9 +65,9 @@ export default function IngredientSearchResult({
                 });
               }}
             />
-          </AmountInputStyles>
+          </Box>
         </Flex>
-      </IngredientSearchResultDataContainer>
-    </IngredientSearchResultStyles>
+      </Box>
+    </Flex>
   );
 }

@@ -1,19 +1,12 @@
 import { GetStaticProps } from 'next';
 import React from 'react';
 import Layout from '../../components/Layout';
-import {
-  CardElementActions,
-  CardElementBottom,
-  Count,
-  FourThreeImg,
-  PlainButton,
-  SmallTagElement,
-} from '../../components/styles';
+
 import Image from 'next/image';
 import { getAllIngredients, getSingleIngredient } from '../../lib/db-admin';
 import { IIngredientData } from '../../types/ingredients';
-import Flex from '../../components/Flex';
-import { Heart, Book } from '../../images';
+import { AspectRatio, Flex, Heading, Text } from '@chakra-ui/react';
+import { StarIcon, DownloadIcon } from '@chakra-ui/icons';
 
 interface ISingleIngredientPageProps {
   ingredient: IIngredientData;
@@ -31,40 +24,29 @@ export default function SingleIngredientPage({
   return (
     <Layout>
       <article>
-        <h1
-          style={{
-            font: 'var(--typographyHeader2)',
-            padding: '0 0.25rem',
-            margin: '0',
-          }}
-        >
+        <Heading as="h4" fontSize="1rem" p="0.5rem 0">
           {name}
-        </h1>
-        <FourThreeImg>
+        </Heading>
+        <AspectRatio ratio={4 / 3}>
           <Image src={images[0]} object-fit="cover" layout="fill"></Image>
-        </FourThreeImg>
-        <CardElementBottom justify="space-between" align="center">
-          <SmallTagElement>{`@${authorUsername}`}</SmallTagElement>
-          <CardElementActions justify="center" align="center">
-            <Flex align="center">
-              <PlainButton
-                style={{
-                  width: '1.2rem',
-                  height: '1.2rem',
-                }}
-              >
-                <Heart isActive={false} />
-              </PlainButton>
-              <Count>{likesCount}</Count>
+        </AspectRatio>
+        <Flex justify="space-between" align="center">
+          <Text as="span" fontSize="12px">{`@${authorUsername}`}</Text>
+          <Flex align="center">
+            <Flex p="0 0.5rem" align="center">
+              <StarIcon />
+              <Text as="span" fontSize="10px" paddingLeft="0.5rem">
+                {likesCount}
+              </Text>
             </Flex>
-            <Flex align="center">
-              <PlainButton style={{ width: '1.2rem', height: '1.2rem' }}>
-                <Book fill="var(--colorTextLight)" />
-              </PlainButton>
-              <Count>{cookbookCount}</Count>
+            <Flex p="0 0.5rem" align="center">
+              <DownloadIcon />
+              <Text as="span" fontSize="10px" paddingLeft="0.5rem">
+                {cookbookCount}
+              </Text>
             </Flex>
-          </CardElementActions>
-        </CardElementBottom>
+          </Flex>
+        </Flex>
       </article>
     </Layout>
   );

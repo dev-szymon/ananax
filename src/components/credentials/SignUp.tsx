@@ -1,7 +1,7 @@
 import { Formik, Form } from 'formik';
-import InputField from './TextInput';
-import { PrimaryButton } from '../styles';
+import InputField from '../forms/TextInput';
 import { useAuth } from '../../lib/auth';
+import { Button } from '@chakra-ui/react';
 
 interface ISignUpValues {
   username: string;
@@ -45,10 +45,21 @@ export default function SignIn() {
               name="email"
               label="email"
             />
-            <InputField type="password" name="password" label="password" />
-            <PrimaryButton style={{ marginTop: '1rem' }} type="submit">
+            <InputField
+              type="password"
+              name="password"
+              label="password"
+              placeholder="8 characters +"
+            />
+            <Button
+              colorScheme="green"
+              type="submit"
+              w="100%"
+              marginTop="1rem"
+              textAlign="center"
+            >
               sign up
-            </PrimaryButton>
+            </Button>
           </fieldset>
         </Form>
       </Formik>

@@ -1,8 +1,8 @@
+import { Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import IngredientCreator from '../components/creators/IngredientCreator/IngredientCreator';
 import Layout from '../components/Layout';
-import Loader from '../components/Loader';
 import { useAuth } from '../lib/auth';
 
 export default function CreateIngredient() {
@@ -11,7 +11,7 @@ export default function CreateIngredient() {
 
   if (!loading && !user) {
     router.push('/login');
-    return <Loader />;
+    return <Spinner />;
   }
 
   if (!loading && user) {
@@ -22,5 +22,5 @@ export default function CreateIngredient() {
     );
   }
 
-  return <Loader />;
+  return <Spinner />;
 }

@@ -1,10 +1,10 @@
 import Layout from '../components/Layout';
-import SignIn from '../components/forms/SignIn';
+import SignIn from '../components/credentials/SignIn';
 import React from 'react';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { useAuth } from '../lib/auth';
-import Loader from '../components/Loader';
 import { useRouter } from 'next/router';
+import { Box, Link, Spinner } from '@chakra-ui/react';
 
 export default function SignInPage() {
   const { user, loading } = useAuth();
@@ -12,25 +12,27 @@ export default function SignInPage() {
 
   if (!loading && user) {
     router.push('/');
-    return <Loader />;
+    return <Spinner />;
   }
 
   if (!loading && !user) {
     return (
-      <Layout headerLabel="login">
-        <div style={{ margin: '0 auto', maxWidth: '300px' }}>
+      <Layout>
+        <Box margin="3rem auto 3rem" maxWidth="300px">
           <SignIn />
-          <div style={{ font: 'var(--typographySmall)', marginTop: '1rem' }}>
+          <Box marginTop="1rem">
             <p>
               <span>Don't have an account yet?</span>
-              <span style={{ marginLeft: '4px' }}>
-                <Link href="/register">sign up!</Link>
-              </span>
+              <NextLink href="/register" passHref>
+                <Link marginLeft="0.5rem" fontWeight="bold" color="pink.900">
+                  sign up!
+                </Link>
+              </NextLink>
             </p>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Layout>
     );
   }
-  return <Loader />;
+  return <Spinner />;
 }

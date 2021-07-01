@@ -1,9 +1,9 @@
+import { Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import IngredientSelector from '../components/creators/RecipeCreator/IngredientsSelector';
 import RecipeCreator from '../components/creators/RecipeCreator/RecipeCreator';
 import Layout from '../components/Layout';
-import Loader from '../components/Loader';
 import { useMenu } from '../context/menuContext';
 import { useAuth } from '../lib/auth';
 
@@ -14,7 +14,7 @@ export default function CreateRecipe() {
 
   if (!loading && !user) {
     router.push('/login');
-    return <Loader />;
+    return <Spinner />;
   }
 
   if (!loading && user) {
@@ -28,5 +28,5 @@ export default function CreateRecipe() {
       </Layout>
     );
   }
-  return <Loader />;
+  return <Spinner />;
 }

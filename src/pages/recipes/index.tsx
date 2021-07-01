@@ -1,8 +1,8 @@
+import { Box, Spinner } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
 import Layout from '../../components/Layout';
-import Loader from '../../components/Loader';
-import RecipeCard from '../../components/RecipeCard';
+import Card from '../../components/Card';
 import { IRecipeData } from '../../types/recipes';
 
 export default function RecipesPage() {
@@ -18,13 +18,15 @@ export default function RecipesPage() {
   if (data) {
     return (
       <Layout>
-        {data.recipes.map((recipe: IRecipeData) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
-        ))}
+        <Box as="section" maxW="400px">
+          {data.recipes.map((recipe: IRecipeData) => (
+            <Card key={recipe.id} node={recipe} />
+          ))}
+        </Box>
       </Layout>
     );
   }
   if (isLoading) {
-    return <Loader />;
+    return <Spinner />;
   }
 }

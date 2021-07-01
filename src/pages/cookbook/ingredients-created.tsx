@@ -1,7 +1,7 @@
+import { Spinner } from '@chakra-ui/react';
 import React from 'react';
 import IngredientsCreated from '../../components/cookbook/IngredientsCreated';
 import Layout from '../../components/Layout';
-import Loader from '../../components/Loader';
 import { useAuth } from '../../lib/auth';
 
 export default function CookbookCreatedPage() {
@@ -10,13 +10,13 @@ export default function CookbookCreatedPage() {
   if (loading) {
     return (
       <Layout>
-        <Loader />
+        <Spinner />
       </Layout>
     );
   }
   if (!loading && user) {
     return (
-      <Layout headerLabel="ingredients created">
+      <Layout>
         <IngredientsCreated userToken={user.token} id={user.uid} />
       </Layout>
     );

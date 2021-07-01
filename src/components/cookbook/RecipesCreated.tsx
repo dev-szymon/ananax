@@ -2,9 +2,9 @@ import React from 'react';
 import { useQuery } from 'react-query';
 
 import { IRecipeData } from '../../types/recipes';
-import RecipeCard from '../RecipeCard';
-import Loader from '../Loader';
+import Card from '../Card';
 import EmptyState from '../EmptyState';
+import { Spinner } from '@chakra-ui/react';
 
 interface IRecipesCreatedProps {
   userToken: string;
@@ -31,14 +31,14 @@ export default function IngredientsCreated({
   );
 
   if (isLoading) {
-    return <Loader />;
+    return <Spinner />;
   }
 
   return (
     <>
       {data.recipes.length > 0 ? (
         data.recipes.map((recipe: IRecipeData) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
+          <Card key={recipe.id} node={recipe} />
         ))
       ) : (
         <EmptyState />

@@ -1,36 +1,56 @@
-import { Field, ErrorMessage } from 'formik';
-import { BaseInputStyles } from '../styles';
+import {
+  FormControl,
+  FormLabel,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  FormErrorMessage,
+} from '@chakra-ui/react';
+import { Field, FieldProps } from 'formik';
+import React from 'react';
 
 export default function NumericInput({
   className,
   name,
   label,
   placeholder,
-  step = '0.1',
+  step = 0.1,
   ...rest
 }: {
   placeholder?: number;
   className?: string;
-  step?: string;
+  step?: number;
   name: string;
   label: string;
 }) {
   return (
-    <BaseInputStyles className={className}>
-      <label htmlFor={name}>{label}</label>
-      <Field
-        id={name}
-        type="number"
-        name={name}
-        min={0}
-        autoComplete="off"
-        step={step}
-        placeholder={placeholder}
-        {...rest}
-      />
-      <div className="error-msg">
-        <ErrorMessage name={name} />
-      </div>
-    </BaseInputStyles>
+    <>
+      <Field name={name} id={name} {...rest}>
+        {({ field, form }: FieldProps) => {
+          return (
+            <FormControl>
+              <FormLabel>{label}</FormLabel>
+              <NumberInput
+                step={step}
+                min={0}
+                autoComplete="off"
+                focusBorderColor="green.900"
+                {...field}
+                onChange={(val) => form.setFieldValue(field.name, val)}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+              <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+            </FormControl>
+          );
+        }}
+      </Field>
+    </>
   );
 }

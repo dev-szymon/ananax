@@ -1,34 +1,53 @@
-import { Field, ErrorMessage } from 'formik';
-import { BaseInputStyles } from '../styles';
+import { Field, FieldProps } from 'formik';
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  InputProps,
+} from '@chakra-ui/react';
+import React from 'react';
+
+interface TextInputProps extends InputProps {
+  type: string;
+  name: string;
+  label: string;
+  placeholder?: string;
+}
 
 export default function TextInput({
   type,
-  className,
   name,
   label,
   placeholder,
   ...rest
-}: {
-  type: string;
-  className?: string;
-  name: string;
-  label: string;
-  placeholder?: string;
-}) {
+}: TextInputProps) {
   return (
-    <BaseInputStyles className={className}>
-      <label htmlFor={name}>{label}</label>
-      <Field
-        id={name}
-        type={type}
-        name={name}
-        autoComplete="off"
-        placeholder={placeholder}
-        {...rest}
-      />
-      <div className="error-msg">
-        <ErrorMessage name={name} />
-      </div>
-    </BaseInputStyles>
+    <Field name={name}>
+      {({ field, form }: FieldProps) => {
+        return (
+          <FormControl
+            paddingBottom="1rem"
+            isInvalid={!!form.errors[name] && !!form.touched[name]}
+          >
+            <FormLabel m={0} htmlFor={name}>
+              {label}
+            </FormLabel>
+            <Input
+              {...field}
+              type={type}
+              id={name}
+              name={name}
+              autoComplete="off"
+              placeholder={placeholder}
+              focusBorderColor="green.900"
+              {...rest}
+            />
+
+            <FormErrorMessage m={0}>{form.errors[name]}</FormErrorMessage>
+          </FormControl>
+        );
+      }}
+    </Field>
   );
 }

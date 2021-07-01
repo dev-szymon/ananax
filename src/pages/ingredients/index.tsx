@@ -1,10 +1,9 @@
 import React from 'react';
 import { useInfiniteQuery } from 'react-query';
-import IngredientCard from '../../components/IngredientCard';
 import Layout from '../../components/Layout';
-import Loader from '../../components/Loader';
-import { TertiaryButton } from '../../components/styles';
 import { IIngredientData } from '../../types/ingredients';
+import { Spinner, Button } from '@chakra-ui/react';
+import Card from '../../components/Card';
 
 type Cursor = number;
 
@@ -40,18 +39,16 @@ export default function IngredientsPage() {
       <Layout>
         {data.pages.map((page, i) => {
           return page.ingredients.map((ingredient: IIngredientData) => (
-            <IngredientCard key={ingredient.id} ingredient={ingredient} />
+            <Card key={ingredient.id} node={ingredient} />
           ));
         })}
         {hasNextPage && (
-          <TertiaryButton onClick={() => fetchNextPage()}>
-            fetch more...
-          </TertiaryButton>
+          <Button onClick={() => fetchNextPage()}>fetch more...</Button>
         )}
       </Layout>
     );
   }
   if (status === 'loading') {
-    return <Loader />;
+    return <Spinner />;
   }
 }

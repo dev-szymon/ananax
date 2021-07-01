@@ -1,7 +1,7 @@
 import { Field, ErrorMessage } from 'formik';
-import { TextareaStyles } from '../styles';
+import { Textarea } from '@chakra-ui/react';
 
-export default function Textarea({
+export default function TextareaInput({
   className,
   name,
   label,
@@ -14,18 +14,18 @@ export default function Textarea({
   placeholder: string;
 }) {
   return (
-    <TextareaStyles className={className}>
-      <label htmlFor={name}>{label}</label>
+    <>
       <Field
         id={name}
         as="textarea"
         name={name}
         placeholder={placeholder}
+        component={<Textarea />}
         {...rest}
       />
       <div className="error-msg">
         <ErrorMessage name={name} />
       </div>
-    </TextareaStyles>
+    </>
   );
 }

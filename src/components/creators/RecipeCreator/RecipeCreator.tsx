@@ -1,28 +1,18 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Formik, Form } from 'formik';
-import TitleInput from '../../forms/TitleInput';
 import NumericInput from '../../forms/NumericInput';
-import {
-  PrimaryButton,
-  TertiaryButton,
-  DropzoneStyles,
-  CreatorFieldset,
-  IngredientSearchResultStyles,
-  PlainButton,
-  AmountInputStyles,
-  IngredientSearchResultDataContainer,
-} from '../../styles';
+
 import Textarea from '../../forms/Textarea';
 import { useMenu } from '../../../context/menuContext';
 import { useIngredientsSelector } from '../../../context/ingredientsSelectorContext';
 import { Persist } from 'formik-persist';
 import { IRecipeCreatorValues } from '../../../types/recipes';
 import { NutrientKeys } from '../../../types/ingredients';
-import Flex from '../../Flex';
 import { createRecipeYupSchema } from './validation';
 import { useMutation } from 'react-query';
-import { Close } from '../../../images/close';
+import { Box, Button, CloseButton, Flex } from '@chakra-ui/react';
+import TextInput from '../../forms/TextInput';
 
 export const initialRecipeValues: IRecipeCreatorValues = {
   name: '',
@@ -98,9 +88,14 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
     >
       {(formProps) => (
         <Form>
-          <CreatorFieldset aria-busy={loading} disabled={loading}>
-            <TitleInput type="text" placeholder="Recipe name..." name="name" />
-            <DropzoneStyles {...getRootProps()}>
+          <fieldset aria-busy={loading} disabled={loading}>
+            <TextInput
+              type="text"
+              placeholder="Recipe name..."
+              name="name"
+              label="name"
+            />
+            <Box {...getRootProps()}>
               {files[0] ? (
                 <img
                   style={{ width: '60%' }}
@@ -113,7 +108,7 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
                 </a>
               )}
               <input type="file" {...getInputProps()} multiple={false} />
-            </DropzoneStyles>
+            </Box>
             <div style={{ maxWidth: '180px' }}>
               <NumericInput
                 label="preparation time"
@@ -144,29 +139,16 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
                 const { name, nutrients, id, amount } =
                   contextIngredients[ingr];
                 return (
-                  <IngredientSearchResultStyles
-                    key={id}
-                    style={{
-                      paddingLeft: '0.5rem',
-                      paddingRight: '0.5rem',
-                      marginBottom: '2px',
-                      border: '0.5px solid var(--colorPrimary25)',
-                      backgroundColor: 'var(--colorWhite)',
-                      borderRadius: '0.25rem',
-                      boxShadow: 'var(--lightShadow)',
-                    }}
-                  >
+                  <Box>
                     <Flex justify="space-between">
                       <h5>{name}</h5>
-                      <PlainButton
-                        type="button"
+                      <CloseButton
+                        size="sm"
                         onClick={() => setContextIngredients({ ...rest })}
-                      >
-                        <Close fill="black" />
-                      </PlainButton>
+                      />
                     </Flex>
 
-                    <IngredientSearchResultDataContainer>
+                    <Box>
                       {DISPLAY_NUTRIENTS.map((nutrientKey) => {
                         const { unitName, value } = nutrients[nutrientKey];
                         const constructedLabel = unitName
@@ -189,7 +171,7 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
                       })}
                       <Flex direction="column" align="flex-end">
                         <span className="nutrient-label">{` [ ${amount.unitName} ]`}</span>
-                        <AmountInputStyles>
+                        <Box>
                           <input
                             style={{
                               backgroundColor: 'var(--colorWhite)',
@@ -211,31 +193,29 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
                               });
                             }}
                           />
-                        </AmountInputStyles>
+                        </Box>
                       </Flex>
-                    </IngredientSearchResultDataContainer>
-                  </IngredientSearchResultStyles>
+                    </Box>
+                  </Box>
                 );
               })}
             </div>
 
-            <TertiaryButton
-              style={{
-                marginBottom: '1rem',
-              }}
+            <Button
+              marginBottom="1rem"
               type="button"
               onClick={() => menuHandler('SEARCH_INGREDIENTS')}
             >
               + add ingredients
-            </TertiaryButton>
+            </Button>
 
-            <Textarea
+            {/* <Textarea
               name="description"
               label="preparation"
               placeholder="Recipe preparation..."
-            />
+            /> */}
 
-            <PrimaryButton
+            <Button
               type="submit"
               disabled={
                 !formProps.isValid &&
@@ -244,9 +224,9 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
               }
             >
               create recipe
-            </PrimaryButton>
-            <TertiaryButton
-              style={{ marginLeft: '1rem' }}
+            </Button>
+            <Button
+              marginLeft="1rem"
               onClick={() => {
                 formProps.handleReset();
                 setFiles([]);
@@ -255,8 +235,8 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
               type="reset"
             >
               clear
-            </TertiaryButton>
-          </CreatorFieldset>
+            </Button>
+          </fieldset>
           <Persist name="recipe-creator" />
         </Form>
       )}

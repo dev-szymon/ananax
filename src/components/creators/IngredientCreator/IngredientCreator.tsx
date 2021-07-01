@@ -7,13 +7,8 @@ import NutrientInput from './NutrientInput';
 
 import { IIngredientCreatorValues } from '../../../types/ingredients';
 import { createIngredientYupSchema } from './validation';
-import {
-  DropzoneStyles,
-  PrimaryButton,
-  CreatorFieldset,
-  TertiaryButton,
-} from '../../styles';
-import TitleInput from '../../forms/TitleInput';
+import { Box, Button } from '@chakra-ui/react';
+import TextInput from '../../forms/TextInput';
 
 // ************
 // Component renders input for each nutrient available in the array, tests check number of inputs depending on the array length + name + img. (arr.len + 2)
@@ -87,13 +82,14 @@ export default function IngredientCreator({
     >
       {(formProps) => (
         <Form>
-          <CreatorFieldset aria-busy={loading} disabled={loading}>
-            <TitleInput
+          <fieldset aria-busy={loading} disabled={loading}>
+            <TextInput
+              label="name"
               type="text"
               placeholder="Ingredient name..."
               name="name"
             />
-            <DropzoneStyles {...getRootProps()}>
+            <Box {...getRootProps()}>
               {files[0] ? (
                 <img
                   style={{ width: '60%' }}
@@ -104,7 +100,7 @@ export default function IngredientCreator({
                 <a>Upload image ...</a>
               )}
               <input type="file" {...getInputProps()} multiple={false} />
-            </DropzoneStyles>
+            </Box>
             <h5
               style={{
                 font: 'var(--typographySmallBold',
@@ -121,14 +117,13 @@ export default function IngredientCreator({
                 />
               ))}
             </div>
-            <PrimaryButton
-              type="submit"
-              disabled={!isFile && !formProps.isValid}
-            >
+            <Button type="submit" disabled={!isFile && !formProps.isValid}>
               create ingredient
-            </PrimaryButton>
-            <TertiaryButton
-              style={{ marginLeft: '1rem' }}
+            </Button>
+            <Button
+              marginLeft="1rem"
+              colorScheme="orange"
+              variant="outline"
               onClick={() => {
                 formProps.handleReset();
                 setFiles([]);
@@ -136,8 +131,8 @@ export default function IngredientCreator({
               type="reset"
             >
               clear
-            </TertiaryButton>
-          </CreatorFieldset>
+            </Button>
+          </fieldset>
           <Persist name="ingredient-creator" />
         </Form>
       )}

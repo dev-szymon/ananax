@@ -1,11 +1,8 @@
 import React from 'react';
-import { useInfiniteQuery, useQuery } from 'react-query';
-
+import { useInfiniteQuery } from 'react-query';
 import { IIngredientData } from '../../types/ingredients';
-import EmptyState from '../EmptyState';
-import IngredientCard from '../IngredientCard';
-import Loader from '../Loader';
-import { TertiaryButton } from '../styles';
+import Card from '../Card';
+import { Button, Spinner } from '@chakra-ui/react';
 
 interface IIngredientsCreatedProps {
   userToken: string;
@@ -48,22 +45,23 @@ export default function IngredientsCreated({
   });
 
   if (status === 'loading') {
-    return <Loader />;
+    return <Spinner />;
   }
+  if (!data) return <Spinner />;
+
   if (data) {
     return (
       <>
         {data.pages.map((page, i) => {
           return page.ingredients.map((ingredient: IIngredientData) => (
-            <IngredientCard key={ingredient.id} ingredient={ingredient} />
+            <Card key={ingredient.id} node={ingredient} />
           ));
         })}
         {hasNextPage && (
-          <TertiaryButton onClick={() => fetchNextPage()}>
-            fetch more...
-          </TertiaryButton>
+          <Button onClick={() => fetchNextPage()}>fetch more...</Button>
         )}
       </>
     );
   }
+  return null;
 }

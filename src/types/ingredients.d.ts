@@ -31,6 +31,7 @@ export interface IIngredientData extends ICreateIngredientValues {
   authorUsername: string;
   likesCount: number;
   cookbookCount: number;
+  totalKcal: number;
   parentNodes?: {
     [key: IRecipeData[id]]: boolean;
   };

@@ -1,35 +1,17 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { Field, Form, Formik } from 'formik';
 
 import { useMenu } from '../../../context/menuContext';
 import { IIngredientData } from '../../../types/ingredients';
-import { BaseInputStyles, PlainButton } from '../../styles';
 import IngredientSearchResult from '../../IngredientSearchResult';
-import Flex from '../../Flex';
-
-const IngredientSelectorStyles = styled.div`
-  padding: 4px 0 0 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  background-color: var(--colorLight);
-  width: 100%;
-  height: 100%;
-  .ingredient-selector_search {
-    padding: 0 0.25rem;
-    padding-top: 4px;
-    background-color: var(--colorLight);
-  }
-`;
+import { Box, Button, Flex } from '@chakra-ui/react';
 
 const IngredientSelector = () => {
   const [results, setResults] = useState<any[] | null>(null);
   const { menuHandler } = useMenu();
 
   return (
-    <IngredientSelectorStyles>
+    <Box>
       <div style={{ maxWidth: '640px', margin: '0 auto' }}>
         <div className="ingredient-selector_search">
           <Formik
@@ -39,34 +21,22 @@ const IngredientSelector = () => {
                 `/api/search-ingredients/${values.search}`
               );
 
-              const {
-                ingredients,
-              }: { ingredients: IIngredientData[] } = await response.json();
+              const { ingredients }: { ingredients: IIngredientData[] } =
+                await response.json();
 
               setResults([...ingredients]);
             }}
           >
             <Form>
               <Flex align="center" justify="space-between">
-                <BaseInputStyles>
-                  <Field
-                    type="search"
-                    name="search"
-                    placeholder="search ingredients..."
-                    autoComplete={'off'}
-                  />
-                </BaseInputStyles>
-                <PlainButton
-                  style={{
-                    color: 'var(--colorPrimary)',
-                    fontWeight: 'bold',
-                    padding: '0 0.25rem',
-                  }}
-                  type="submit"
-                >
-                  search
-                </PlainButton>
-                <PlainButton
+                <Field
+                  type="search"
+                  name="search"
+                  placeholder="search ingredients..."
+                  autoComplete={'off'}
+                />
+                <Button type="submit">search</Button>
+                <Button
                   style={{
                     padding: '0 0.25rem',
                   }}
@@ -74,7 +44,7 @@ const IngredientSelector = () => {
                   onClick={() => menuHandler(false)}
                 >
                   cancel
-                </PlainButton>
+                </Button>
               </Flex>
             </Form>
           </Formik>
@@ -90,7 +60,7 @@ const IngredientSelector = () => {
             ))}
         </div>
       </div>
-    </IngredientSelectorStyles>
+    </Box>
   );
 };
 

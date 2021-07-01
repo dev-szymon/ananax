@@ -1,49 +1,120 @@
-import React, { useRef } from 'react';
+import React, { MutableRefObject } from 'react';
 import router from 'next/router';
-import { useMenu } from '../context/menuContext';
+import {
+  Box,
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Link,
+  List,
+  ListIcon,
+  ListItem,
+} from '@chakra-ui/react';
+import NextLink from 'next/link';
+import { AddIcon, SearchIcon } from '@chakra-ui/icons';
 import { useAuth } from '../lib/auth';
-import Navi2 from './Nav';
-import { NavigationStyles, PlainButton } from './styles';
-import IngredientSelector from './creators/RecipeCreator/IngredientsSelector';
-import { useClick } from '../lib/customHooks';
 
-const Navi = () => {
-  const { signout, user } = useAuth();
-  const { menu, setMenu } = useMenu();
+interface NavigationProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onOpen: () => void;
+  btnRef: MutableRefObject<null>;
+}
 
-  switch (menu) {
-    case 'SEARCH_INGREDIENTS':
-      return <IngredientSelector />;
-    case 'NAVIGATION':
-      return <Navi2 />;
-    default:
-      return (
-        <ul>
-          <li>
-            <PlainButton
+export default function Navigation({
+  isOpen,
+  onClose,
+  btnRef,
+}: NavigationProps) {
+  const { user, signout } = useAuth();
+
+  return (
+    <Drawer
+      isOpen={isOpen}
+      placement="right"
+      onClose={onClose}
+      finalFocusRef={btnRef}
+    >
+      <DrawerOverlay />
+      <DrawerContent>
+        <Flex justify="flex-end" p="1rem">
+          <DrawerCloseButton />
+        </Flex>
+        <DrawerHeader>{user?.email}</DrawerHeader>
+
+        <DrawerBody>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents="none"
+              children={<SearchIcon color="gray.300" />}
+            />
+            <Input
+              type="search"
+              placeholder="search..."
+              focusBorderColor="green.900"
+            />
+          </InputGroup>
+          <Box h="3rem" />
+          <List spacing="0.5rem" fontSize="1.25rem">
+            <ListItem>
+              <NextLink href="/recipes" passHref>
+                <Link _hover={{ color: 'pink.900' }}>recipes</Link>
+              </NextLink>
+            </ListItem>
+            <ListItem>ingredients</ListItem>
+            <Box h="2rem" />
+
+            {user && (
+              <>
+                <ListItem>cookbook</ListItem>
+
+                <Box h="2rem" />
+
+                <ListItem>
+                  <NextLink href="/create-recipe" passHref>
+                    <Link>
+                      <ListIcon as={AddIcon} size="sm" />
+                      new recipe
+                    </Link>
+                  </NextLink>
+                </ListItem>
+                <ListItem>
+                  <NextLink href="/create-ingredient" passHref>
+                    <Link>
+                      <ListIcon as={AddIcon} />
+                      new ingredient
+                    </Link>
+                  </NextLink>
+                </ListItem>
+              </>
+            )}
+          </List>
+        </DrawerBody>
+
+        <DrawerFooter>
+          {user && (
+            <Button
+              variant="ghost"
               onClick={() => {
                 signout();
-                setMenu(false);
+                onClose();
                 router.pathname === '/' ? router.reload() : router.push('/');
               }}
             >
               logout
-            </PlainButton>
-          </li>
-        </ul>
-      );
-  }
-};
-
-export default function Navigation() {
-  const { setMenu } = useMenu();
-
-  const ref = useRef(null);
-
-  useClick(ref, () => setMenu(false));
-  return (
-    <NavigationStyles ref={ref}>
-      <Navi />
-    </NavigationStyles>
+            </Button>
+          )}
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 }
