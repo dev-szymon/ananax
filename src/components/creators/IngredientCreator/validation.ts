@@ -8,13 +8,10 @@ export const createIngredientYupSchema = yup.object().shape({
     .string()
     .min(3, 'At least 3 characters...')
     .required('Please provide ingredient name...'),
-  kcal: yup.number().positive(positiveNumberMsg).required(nutrientRequiredMsg),
-  carbs: yup.number().positive(positiveNumberMsg).required(nutrientRequiredMsg),
-  protein: yup
-    .number()
-    .positive(positiveNumberMsg)
-    .required(nutrientRequiredMsg),
-  fats: yup.number().positive(positiveNumberMsg).required(nutrientRequiredMsg),
+  kcal: yup.number().min(0).required(nutrientRequiredMsg),
+  carbs: yup.number().min(0).required(nutrientRequiredMsg),
+  protein: yup.number().min(0).required(nutrientRequiredMsg),
+  fats: yup.number().min(0).required(nutrientRequiredMsg),
   glycemicIndex: yup
     .number()
     .min(

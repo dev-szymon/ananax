@@ -17,5 +17,8 @@ export const theme = extendTheme({
       600: '#CFCFCB',
       200: '#F4ECEF',
     },
+    pale: {
+      400: '#E2F2F1',
+    },
   },
 });

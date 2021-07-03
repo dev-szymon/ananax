@@ -18,7 +18,7 @@ export default function RecipesPage() {
   if (data) {
     return (
       <Layout>
-        <Box as="section" maxW="400px">
+        <Box as="section" maxW="600px" m="0 auto">
           {data.recipes.map((recipe: IRecipeData) => (
             <Card key={recipe.id} node={recipe} />
           ))}

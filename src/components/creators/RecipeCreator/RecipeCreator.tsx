@@ -4,14 +4,13 @@ import { Formik, Form } from 'formik';
 import NumericInput from '../../forms/NumericInput';
 
 import Textarea from '../../forms/Textarea';
-import { useMenu } from '../../../context/menuContext';
 import { useIngredientsSelector } from '../../../context/ingredientsSelectorContext';
 import { Persist } from 'formik-persist';
 import { IRecipeCreatorValues } from '../../../types/recipes';
 import { NutrientKeys } from '../../../types/ingredients';
 import { createRecipeYupSchema } from './validation';
 import { useMutation } from 'react-query';
-import { Box, Button, CloseButton, Flex } from '@chakra-ui/react';
+import { AspectRatio, Box, Button, CloseButton, Flex } from '@chakra-ui/react';
 import TextInput from '../../forms/TextInput';
 
 export const initialRecipeValues: IRecipeCreatorValues = {
@@ -27,7 +26,6 @@ interface IRecipeCreatorProps {
 }
 
 export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
-  const { menuHandler } = useMenu();
   const {
     ingredients: contextIngredients,
     setIngredients: setContextIngredients,
@@ -90,37 +88,42 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
         <Form>
           <fieldset aria-busy={loading} disabled={loading}>
             <TextInput
+              p="0.5rem"
+              marginLeft="-0.5rem"
+              fontSize="1.5rem"
+              fontWeight="bold"
               type="text"
               placeholder="Recipe name..."
+              border="none"
               name="name"
-              label="name"
             />
-            <Box {...getRootProps()}>
-              {files[0] ? (
-                <img
-                  style={{ width: '60%' }}
-                  src={URL.createObjectURL(files[0])}
-                  alt="upload preview"
-                ></img>
-              ) : (
-                <a style={{ font: 'var(--typographySmall)' }}>
-                  upload image ...
-                </a>
-              )}
-              <input type="file" {...getInputProps()} multiple={false} />
-            </Box>
-            <div style={{ maxWidth: '180px' }}>
-              <NumericInput
-                label="preparation time"
-                name="prepTime"
-                placeholder={0}
-              />
-            </div>
-            <div
-              style={{
-                padding: '1rem 0',
-              }}
+            <AspectRatio
+              border={isFile ? 'none' : '2px dashed'}
+              borderColor="pink.900"
+              marginBottom="2rem"
+              borderRadius="0.5rem"
+              overflow="hidden"
+              ratio={4 / 3}
+              {...getRootProps()}
             >
+              <Box>
+                {files[0] ? (
+                  <img
+                    src={URL.createObjectURL(files[0])}
+                    alt="upload preview"
+                  ></img>
+                ) : (
+                  <a style={{ font: 'var(--typographySmall)' }}>
+                    Upload image ...
+                  </a>
+                )}
+                <input type="file" {...getInputProps()} multiple={false} />
+              </Box>
+            </AspectRatio>
+            <div style={{ maxWidth: '180px' }}>
+              <NumericInput label="preparation time" name="prepTime" />
+            </div>
+            <Box>
               {Object.keys(contextIngredients).length > 0 && (
                 <div>
                   <h5
@@ -199,43 +202,47 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
                   </Box>
                 );
               })}
-            </div>
+            </Box>
 
             <Button
               marginBottom="1rem"
               type="button"
-              onClick={() => menuHandler('SEARCH_INGREDIENTS')}
+              onClick={() => console.log('add ingredients')}
             >
               + add ingredients
             </Button>
 
-            {/* <Textarea
+            <Textarea
               name="description"
               label="preparation"
               placeholder="Recipe preparation..."
-            /> */}
-
-            <Button
-              type="submit"
-              disabled={
-                !formProps.isValid &&
-                !isFile &&
-                Object.keys(contextIngredients).length > 1
-              }
-            >
-              create recipe
-            </Button>
-            <Button
-              marginLeft="1rem"
-              onClick={() => {
-                formProps.handleReset();
-                setFiles([]);
-                setContextIngredients({});
-              }}
-              type="reset"
-            >
-              clear
-            </Button>
+            />
+            <Flex justify="space-between">
+              <Button
+                type="submit"
+                colorScheme="pink"
+                w="100%"
+                disabled={
+                  !formProps.isValid &&
+                  !isFile &&
+                  Object.keys(contextIngredients).length < 1
+                }
+              >
+                create recipe
+              </Button>
+              <Button
+                marginLeft="1rem"
+                variant="ghost"
+                onClick={() => {
+                  formProps.handleReset();
+                  setFiles([]);
+                  setContextIngredients({});
+                }}
+                type="reset"
+              >
+                clear
+              </Button>
+            </Flex>
           </fieldset>
           <Persist name="recipe-creator" />
         </Form>

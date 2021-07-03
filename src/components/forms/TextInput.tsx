@@ -11,7 +11,7 @@ import React from 'react';
 interface TextInputProps extends InputProps {
   type: string;
   name: string;
-  label: string;
+  label?: string;
   placeholder?: string;
 }
 

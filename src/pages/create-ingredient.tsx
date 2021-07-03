@@ -1,4 +1,4 @@
-import { Spinner } from '@chakra-ui/react';
+import { Box, Flex, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import IngredientCreator from '../components/creators/IngredientCreator/IngredientCreator';
@@ -17,7 +17,9 @@ export default function CreateIngredient() {
   if (!loading && user) {
     return (
       <Layout>
-        <IngredientCreator userToken={user.token} />
+        <Box as="section" p="1rem" w="100%" maxW="640px" m="0 auto">
+          <IngredientCreator userToken={user.token} />
+        </Box>
       </Layout>
     );
   }

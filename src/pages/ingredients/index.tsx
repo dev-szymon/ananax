@@ -2,7 +2,7 @@ import React from 'react';
 import { useInfiniteQuery } from 'react-query';
 import Layout from '../../components/Layout';
 import { IIngredientData } from '../../types/ingredients';
-import { Spinner, Button } from '@chakra-ui/react';
+import { Spinner, Button, Box } from '@chakra-ui/react';
 import Card from '../../components/Card';
 
 type Cursor = number;
@@ -37,14 +37,16 @@ export default function IngredientsPage() {
   if (data) {
     return (
       <Layout>
-        {data.pages.map((page, i) => {
-          return page.ingredients.map((ingredient: IIngredientData) => (
-            <Card key={ingredient.id} node={ingredient} />
-          ));
-        })}
-        {hasNextPage && (
-          <Button onClick={() => fetchNextPage()}>fetch more...</Button>
-        )}
+        <Box as="section" maxW="600px" m="0 auto">
+          {data.pages.map((page, i) => {
+            return page.ingredients.map((ingredient: IIngredientData) => (
+              <Card key={ingredient.id} node={ingredient} />
+            ));
+          })}
+          {hasNextPage && (
+            <Button onClick={() => fetchNextPage()}>fetch more...</Button>
+          )}
+        </Box>
       </Layout>
     );
   }

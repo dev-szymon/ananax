@@ -2,7 +2,6 @@ import React, { ReactNode, useRef } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import {
-  Button,
   useDisclosure,
   Flex,
   Box,
@@ -32,13 +31,19 @@ export default function Layout({ children }: LayoutProps) {
       <Flex
         as="header"
         borderBottomWidth="1px"
-        p="1rem"
+        p="0.5rem"
         justify="space-between"
         align="center"
       >
         <NextLink href="/" passHref>
           <Link>
-            <Heading as="h1" fontFamily="Rock Salt" fontSize="1rem">
+            <Heading
+              as="h1"
+              lineHeight="250%"
+              fontFamily="Rock Salt"
+              fontSize="1rem"
+              h="2.5rem"
+            >
               Munch
             </Heading>
           </Link>
@@ -68,7 +73,6 @@ export default function Layout({ children }: LayoutProps) {
         onOpen={onOpen}
         btnRef={btnRef}
       />
-
       <Box as="main">{children}</Box>
     </>
   );

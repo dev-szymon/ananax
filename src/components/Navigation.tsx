@@ -60,6 +60,7 @@ export default function Navigation({
             <Input
               type="search"
               placeholder="search..."
+              variant="filled"
               focusBorderColor="green.900"
             />
           </InputGroup>
@@ -67,7 +68,14 @@ export default function Navigation({
           <List spacing="0.5rem" fontSize="1.25rem">
             <ListItem>
               <NextLink href="/recipes" passHref>
-                <Link _hover={{ color: 'pink.900' }}>recipes</Link>
+                <Link
+                  _hover={{
+                    color: 'pink.900',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  recipes
+                </Link>
               </NextLink>
             </ListItem>
             <ListItem>ingredients</ListItem>
@@ -81,15 +89,15 @@ export default function Navigation({
 
                 <ListItem>
                   <NextLink href="/create-recipe" passHref>
-                    <Link>
-                      <ListIcon as={AddIcon} size="sm" />
+                    <Link _hover={{ color: 'pink.900', fontWeight: 'bold' }}>
+                      <ListIcon as={AddIcon} />
                       new recipe
                     </Link>
                   </NextLink>
                 </ListItem>
                 <ListItem>
                   <NextLink href="/create-ingredient" passHref>
-                    <Link>
+                    <Link _hover={{ color: 'pink.900', fontWeight: 'bold' }}>
                       <ListIcon as={AddIcon} />
                       new ingredient
                     </Link>

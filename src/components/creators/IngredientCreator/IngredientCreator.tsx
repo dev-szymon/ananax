@@ -3,12 +3,12 @@ import { Formik, Form } from 'formik';
 import { useDropzone } from 'react-dropzone';
 import { useMutation } from 'react-query';
 import { Persist } from 'formik-persist';
-import NutrientInput from './NutrientInput';
 
 import { IIngredientCreatorValues } from '../../../types/ingredients';
 import { createIngredientYupSchema } from './validation';
-import { Box, Button } from '@chakra-ui/react';
+import { AspectRatio, Box, Button, Flex } from '@chakra-ui/react';
 import TextInput from '../../forms/TextInput';
+import NumericInput from '../../forms/NumericInput';
 
 // ************
 // Component renders input for each nutrient available in the array, tests check number of inputs depending on the array length + name + img. (arr.len + 2)
@@ -84,23 +84,36 @@ export default function IngredientCreator({
         <Form>
           <fieldset aria-busy={loading} disabled={loading}>
             <TextInput
-              label="name"
+              p="0.5rem"
+              marginLeft="-0.5rem"
+              fontSize="1.5rem"
+              fontWeight="bold"
               type="text"
               placeholder="Ingredient name..."
+              border="none"
               name="name"
             />
-            <Box {...getRootProps()}>
-              {files[0] ? (
-                <img
-                  style={{ width: '60%' }}
-                  src={URL.createObjectURL(files[0])}
-                  alt="ingredient upload preview"
-                ></img>
-              ) : (
-                <a>Upload image ...</a>
-              )}
-              <input type="file" {...getInputProps()} multiple={false} />
-            </Box>
+            <AspectRatio
+              border={isFile ? 'none' : '2px dashed'}
+              marginBottom="2rem"
+              borderColor="pink.900"
+              borderRadius="0.5rem"
+              overflow="hidden"
+              ratio={4 / 3}
+              {...getRootProps()}
+            >
+              <Box>
+                {files[0] ? (
+                  <img
+                    src={URL.createObjectURL(files[0])}
+                    alt="ingredient upload preview"
+                  ></img>
+                ) : (
+                  <a>Upload image ...</a>
+                )}
+                <input type="file" {...getInputProps()} multiple={false} />
+              </Box>
+            </AspectRatio>
             <h5
               style={{
                 font: 'var(--typographySmallBold',
@@ -109,29 +122,43 @@ export default function IngredientCreator({
             >
               Nutrients in 100g
             </h5>
-            <div style={{ width: '50%', maxWidth: '200px' }}>
-              {ingredientNutrients.map((nutrient) => (
-                <NutrientInput
-                  key={`${nutrient.name}/${nutrient.unitName}`}
-                  {...nutrient}
-                />
-              ))}
-            </div>
-            <Button type="submit" disabled={!isFile && !formProps.isValid}>
-              create ingredient
-            </Button>
-            <Button
-              marginLeft="1rem"
-              colorScheme="orange"
-              variant="outline"
-              onClick={() => {
-                formProps.handleReset();
-                setFiles([]);
-              }}
-              type="reset"
-            >
-              clear
-            </Button>
+            <Box maxWidth="200px">
+              {ingredientNutrients.map((nutrient) => {
+                const { name, unitName, label } = nutrient;
+                const constructedLabel = unitName
+                  ? `${label} [ ${unitName} ]`
+                  : label;
+                return (
+                  <NumericInput
+                    key={`${name}/${unitName}`}
+                    {...nutrient}
+                    label={constructedLabel}
+                  />
+                );
+              })}
+            </Box>
+            <Flex justify="space-between">
+              <Button
+                type="submit"
+                colorScheme="pink"
+                w="100%"
+                maxW="200px"
+                disabled={!isFile && !formProps.isValid}
+              >
+                create ingredient
+              </Button>
+              <Button
+                marginLeft="1rem"
+                variant="ghost"
+                onClick={() => {
+                  formProps.handleReset();
+                  setFiles([]);
+                }}
+                type="reset"
+              >
+                clear
+              </Button>
+            </Flex>
           </fieldset>
           <Persist name="ingredient-creator" />
         </Form>

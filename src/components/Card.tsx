@@ -1,7 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
 import { IRecipeData } from '../types/recipes';
-import { Flex, Text, AspectRatio, Heading, IconButton } from '@chakra-ui/react';
+import {
+  Flex,
+  Text,
+  AspectRatio,
+  Heading,
+  IconButton,
+  Box,
+} from '@chakra-ui/react';
 import { ChevronDownIcon, DownloadIcon, StarIcon } from '@chakra-ui/icons';
 import { IIngredientData } from '../types/ingredients';
 

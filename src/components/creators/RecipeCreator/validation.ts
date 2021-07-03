@@ -11,7 +11,5 @@ export const createRecipeYupSchema = yup.object().shape({
     .number()
     .positive(positiveNumberMsg)
     .required('Please provide preparation time.'),
-  description: yup
-    .string()
-    .required('Please tell others how to prepare the dish.'),
+  description: yup.string().required(),
 });
