@@ -85,7 +85,6 @@ export default function IngredientCreator({
           <fieldset aria-busy={loading} disabled={loading}>
             <TextInput
               p="0.5rem"
-              marginLeft="-0.5rem"
               fontSize="1.5rem"
               fontWeight="bold"
               type="text"
@@ -99,6 +98,7 @@ export default function IngredientCreator({
               borderColor="pink.900"
               borderRadius="0.5rem"
               overflow="hidden"
+              cursor="pointer"
               ratio={4 / 3}
               {...getRootProps()}
             >
@@ -142,7 +142,6 @@ export default function IngredientCreator({
                 type="submit"
                 colorScheme="pink"
                 w="100%"
-                maxW="200px"
                 disabled={!isFile && !formProps.isValid}
               >
                 create ingredient

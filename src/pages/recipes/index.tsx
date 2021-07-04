@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import Layout from '../../components/Layout';
 import Card from '../../components/Card';
 import { IRecipeData } from '../../types/recipes';
+import EmptyState from '../../components/EmptyState';
 
 export default function RecipesPage() {
   const { isLoading, data } = useQuery('allRecipes', async () => {
@@ -19,9 +20,13 @@ export default function RecipesPage() {
     return (
       <Layout>
         <Box as="section" maxW="600px" m="0 auto">
-          {data.recipes.map((recipe: IRecipeData) => (
-            <Card key={recipe.id} node={recipe} />
-          ))}
+          {data.recipes.length > 0 ? (
+            data.recipes.map((recipe: IRecipeData) => (
+              <Card key={recipe.id} node={recipe} />
+            ))
+          ) : (
+            <EmptyState />
+          )}
         </Box>
       </Layout>
     );

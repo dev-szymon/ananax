@@ -35,7 +35,6 @@ interface IAuthContext {
 interface IUserState {
   uid: string;
   email: string | null;
-  photoUrl: string | null;
   token: string;
 }
 
@@ -71,7 +70,6 @@ function useProvideAuth() {
           onCreateUser(user.uid, {
             username: username,
             email: restUser.email,
-            photoUrl: restUser.photoUrl,
           });
 
           setUser(formattedUser);
@@ -142,7 +140,6 @@ const formatUser = async (user: firebase.User): Promise<IUserState> => {
   return {
     uid: user.uid,
     email: user.email,
-    photoUrl: user.photoURL,
     token,
   };
 };

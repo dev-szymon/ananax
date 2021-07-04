@@ -31,37 +31,45 @@ export default function SignIn() {
           }
         }}
       >
-        <Form>
-          <fieldset>
-            <InputField
-              placeholder="username"
-              type="text"
-              name="username"
-              label="username"
-            />
-            <InputField
-              placeholder="register@account.com"
-              type="email"
-              name="email"
-              label="email"
-            />
-            <InputField
-              type="password"
-              name="password"
-              label="password"
-              placeholder="8 characters +"
-            />
-            <Button
-              colorScheme="green"
-              type="submit"
-              w="100%"
-              marginTop="1rem"
-              textAlign="center"
-            >
-              sign up
-            </Button>
-          </fieldset>
-        </Form>
+        {({ isValid, touched }) => {
+          return (
+            <Form>
+              <fieldset>
+                <InputField
+                  placeholder="username"
+                  type="text"
+                  name="username"
+                  label="username"
+                  variant="filled"
+                />
+                <InputField
+                  placeholder="register@account.com"
+                  type="email"
+                  name="email"
+                  label="email"
+                  variant="filled"
+                />
+                <InputField
+                  type="password"
+                  name="password"
+                  label="password"
+                  variant="filled"
+                  placeholder="8 characters +"
+                />
+                <Button
+                  colorScheme="green"
+                  type="submit"
+                  w="100%"
+                  marginTop="1rem"
+                  textAlign="center"
+                  disabled={!isValid || (!touched.email && !touched.password)}
+                >
+                  sign up
+                </Button>
+              </fieldset>
+            </Form>
+          );
+        }}
       </Formik>
     </>
   );

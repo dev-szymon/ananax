@@ -43,6 +43,7 @@ export default function Navigation({
       placement="right"
       onClose={onClose}
       finalFocusRef={btnRef}
+      size="full"
     >
       <DrawerOverlay />
       <DrawerContent>
@@ -78,12 +79,37 @@ export default function Navigation({
                 </Link>
               </NextLink>
             </ListItem>
-            <ListItem>ingredients</ListItem>
+            <ListItem>
+              <NextLink href="/ingredients" passHref>
+                <Link
+                  _hover={{
+                    color: 'pink.900',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  ingredients
+                </Link>
+              </NextLink>
+            </ListItem>
             <Box h="2rem" />
 
             {user && (
               <>
                 <ListItem>cookbook</ListItem>
+                <ListItem>
+                  <NextLink href="/cookbook/recipes-created" passHref>
+                    <Link _hover={{ color: 'pink.900', fontWeight: 'bold' }}>
+                      recipes created
+                    </Link>
+                  </NextLink>
+                </ListItem>
+                <ListItem>
+                  <NextLink href="/cookbook/ingredients-created" passHref>
+                    <Link _hover={{ color: 'pink.900', fontWeight: 'bold' }}>
+                      ingredients created
+                    </Link>
+                  </NextLink>
+                </ListItem>
 
                 <Box h="2rem" />
 

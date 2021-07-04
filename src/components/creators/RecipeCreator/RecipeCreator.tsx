@@ -89,7 +89,6 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
           <fieldset aria-busy={loading} disabled={loading}>
             <TextInput
               p="0.5rem"
-              marginLeft="-0.5rem"
               fontSize="1.5rem"
               fontWeight="bold"
               type="text"
@@ -103,6 +102,7 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
               marginBottom="2rem"
               borderRadius="0.5rem"
               overflow="hidden"
+              cursor="pointer"
               ratio={4 / 3}
               {...getRootProps()}
             >
