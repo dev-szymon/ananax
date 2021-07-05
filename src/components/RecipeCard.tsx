@@ -1,22 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 import { IRecipeData } from '../types/recipes';
-import {
-  Flex,
-  Text,
-  AspectRatio,
-  Heading,
-  IconButton,
-  Box,
-} from '@chakra-ui/react';
+import { Flex, Text, AspectRatio, Heading, IconButton } from '@chakra-ui/react';
 import { ChevronDownIcon, DownloadIcon, StarIcon } from '@chakra-ui/icons';
-import { IIngredientData } from '../types/ingredients';
 
-interface ICardProps {
-  node: IRecipeData | IIngredientData;
+interface RecipeCardProps {
+  node: IRecipeData;
 }
-
-export default function RecipeCard({ node }: ICardProps) {
+export default function RecipeCard({ node }: RecipeCardProps) {
   const { authorUsername, name, images, likesCount, cookbookCount } = node;
   const totalKcal = node.totalKcal || 0;
   return (
@@ -34,10 +25,10 @@ export default function RecipeCard({ node }: ICardProps) {
         {name}
       </Heading>
       <AspectRatio ratio={4 / 3} borderRadius="0.3rem" overflow="hidden">
-        <Image src={images[0]} object-fit="cover" layout="fill"></Image>
+        <Image src={images[0]} objectFit="cover" layout="fill"></Image>
       </AspectRatio>
       <Flex justify="space-between" p="0.5rem 0">
-        <Text as="span" fontSize="10px">{`${totalKcal} kcal`}</Text>
+        <Text as="span" fontSize="12px">{`${totalKcal} kcal`}</Text>
         <Flex align="center">
           <Flex p="0 0.5rem" align="center">
             <IconButton
@@ -46,7 +37,7 @@ export default function RecipeCard({ node }: ICardProps) {
               icon={<StarIcon />}
               size="xs"
             />
-            <Text as="span" fontSize="10px" paddingLeft="0.5rem">
+            <Text as="span" fontSize="12px" paddingLeft="0.5rem">
               {likesCount}
             </Text>
           </Flex>
@@ -57,7 +48,7 @@ export default function RecipeCard({ node }: ICardProps) {
               icon={<DownloadIcon />}
               size="xs"
             />
-            <Text as="span" fontSize="10px" paddingLeft="0.5rem">
+            <Text as="span" fontSize="12px" paddingLeft="0.5rem">
               {cookbookCount}
             </Text>
           </Flex>

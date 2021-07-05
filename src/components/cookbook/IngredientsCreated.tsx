@@ -1,8 +1,8 @@
 import React from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { IIngredientData } from '../../types/ingredients';
-import Card from '../Card';
 import { Button, Spinner } from '@chakra-ui/react';
+import IngredientCard from '../IngredientCard';
 
 interface IIngredientsCreatedProps {
   userToken: string;
@@ -47,14 +47,13 @@ export default function IngredientsCreated({
   if (status === 'loading') {
     return <Spinner />;
   }
-  if (!data) return <Spinner />;
 
   if (data) {
     return (
       <>
         {data.pages.map((page, i) => {
           return page.ingredients.map((ingredient: IIngredientData) => (
-            <Card key={ingredient.id} node={ingredient} />
+            <IngredientCard key={ingredient.id} node={ingredient} />
           ));
         })}
         {hasNextPage && (

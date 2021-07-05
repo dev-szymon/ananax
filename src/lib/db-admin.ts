@@ -1,7 +1,8 @@
 import { ICreateIngredientValues, IIngredientData } from '../types/ingredients';
+import { INode } from '../types/nodes';
 import { ICreateRecipeValues, IRecipeData } from '../types/recipes';
 import { db, FieldPath } from './firebase-admin';
-import { getInfiniteIngredients } from './infiniteQuery';
+import { formatInfiniteNodes } from './infiniteQuery';
 
 const ingredientDefaults = {
   type: 'ingredient',
@@ -106,11 +107,7 @@ export const getUserIngredientsCreated = async (
     } as IIngredientData);
   });
 
-  const { outputNodes, nextCursor } = getInfiniteIngredients(
-    nodes,
-    cursor,
-    limit
-  );
+  const { outputNodes, nextCursor } = formatInfiniteNodes(nodes, cursor, limit);
 
   return {
     ingredients: outputNodes,
@@ -118,24 +115,28 @@ export const getUserIngredientsCreated = async (
   };
 };
 
-export const getUserRecipesCreated = async (uid: string) => {
+export const getUserRecipesCreated = async (
+  uid: string,
+  cursor: number = 0
+) => {
+  const limit = 2;
   const snapshot = await db
     .collection('nodes')
     .where('type', '==', 'recipe')
     .where('authorId', '==', uid)
     .get();
-  const recipes: IRecipeData[] = [];
+  let nodes: IRecipeData[] = [];
 
   snapshot.forEach((doc) => {
-    recipes.push({
+    nodes.push({
       id: doc.id,
       ...doc.data(),
     } as IRecipeData);
   });
 
-  recipes.sort((a, b) => b.createdAt - a.createdAt);
+  const { outputNodes, nextCursor } = formatInfiniteNodes(nodes, cursor, limit);
 
-  return recipes;
+  return { recipes: outputNodes, nextCursor };
 };
 
 export const getIngredientsByKeyword = async (keyword: string) => {
@@ -176,7 +177,7 @@ export const getRecipesByKeyword = async (keyword: string) => {
   return recipes;
 };
 
-export const getAllIngredients = async (cursor: number = 0) => {
+export const getInfiniteIngredients = async (cursor: number = 0) => {
   const limit = 2;
   const snapshot = await db
     .collection('nodes')
@@ -192,11 +193,7 @@ export const getAllIngredients = async (cursor: number = 0) => {
     } as IIngredientData);
   });
 
-  const { outputNodes, nextCursor } = getInfiniteIngredients(
-    nodes,
-    cursor,
-    limit
-  );
+  const { outputNodes, nextCursor } = formatInfiniteNodes(nodes, cursor, limit);
 
   return {
     ingredients: outputNodes,
@@ -204,27 +201,50 @@ export const getAllIngredients = async (cursor: number = 0) => {
   };
 };
 
-export const getAllRecipes = async () => {
+export const getInfiniteRecipes = async (cursor: number = 0) => {
+  const limit = 2;
   const snapshot = await db
     .collection('nodes')
     .where('type', '==', 'recipe')
     .get();
 
-  const recipes: IRecipeData[] = [];
+  let nodes: IRecipeData[] = [];
 
   snapshot.forEach((doc) => {
-    recipes.push({
+    nodes.push({
       id: doc.id,
       ...doc.data(),
     } as IRecipeData);
   });
 
-  recipes.sort((a, b) => b.createdAt - a.createdAt);
-
-  return recipes;
+  const { outputNodes, nextCursor } = formatInfiniteNodes(nodes, cursor, limit);
+  return {
+    recipes: outputNodes,
+    nextCursor,
+  };
 };
 
-export const getSingleIngredient = async (id: string) => {
-  const ingredient = await db.collection('nodes').doc(id).get();
-  return ingredient.data();
+type NodeOutput<Type> = Type extends 'recipe' ? IRecipeData : IIngredientData;
+
+export const getAllNodesOfType = async (type: 'recipe' | 'ingredient') => {
+  const snapshot = await db
+    .collection('nodes')
+    .where('type', '==', 'recipe')
+    .get();
+
+  let nodes: NodeOutput<typeof type>[] = [];
+
+  snapshot.forEach((doc) => {
+    nodes.push({
+      id: doc.id,
+      ...doc.data,
+    } as NodeOutput<typeof type>);
+  });
+
+  return { nodes };
+};
+
+export const getSingleNode = async (id: INode['id']) => {
+  const node = await db.collection('nodes').doc(id).get();
+  return node.data();
 };

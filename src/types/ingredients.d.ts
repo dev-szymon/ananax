@@ -1,4 +1,6 @@
 import { ingredientNutrients } from '../components/creators/IngredientCreator/IngredientCreator';
+import { INode } from './nodes';
+import { IRecipeData } from './recipes';
 
 type NutrientKeys = typeof ingredientNutrients[number]['name'];
 
@@ -17,22 +19,20 @@ export type NutrientDataType = {
   };
 };
 
-export interface ICreateIngredientValues {
-  name: string;
+export interface ICreateIngredientValues extends Omit<INode, 'id'> {
   authorId: string;
   images: string[] | [];
-  createdAt: number;
   nutrients: NutrientDataType;
 }
 
-export interface IIngredientData extends ICreateIngredientValues {
-  id: string;
+export interface IIngredientData extends ICreateIngredientValues, INode {
+  // id: INode['id'];
   type: 'ingredient';
   authorUsername: string;
   likesCount: number;
   cookbookCount: number;
   totalKcal: number;
   parentNodes?: {
-    [key: IRecipeData[id]]: boolean;
+    [key: IRecipeData['id']]: boolean;
   };
 }

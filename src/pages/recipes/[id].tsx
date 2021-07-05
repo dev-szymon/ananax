@@ -24,11 +24,11 @@ export default function SingleIngredientPage({
   return (
     <Layout>
       <Box as="article">
-        <Heading as="h4" fontSize="1.5rem" p="0.5rem 0">
+        <Heading as="h4" fontSize="1rem" p="0.5rem 0">
           {name}
         </Heading>
         <AspectRatio ratio={4 / 3}>
-          <Image src={images[0]} objectFit="cover" layout="fill"></Image>
+          <Image src={images[0]} object-fit="cover" layout="fill"></Image>
         </AspectRatio>
         <Flex justify="space-between" align="center">
           <Text as="span" fontSize="12px">{`@${authorUsername}`}</Text>
@@ -53,10 +53,10 @@ export default function SingleIngredientPage({
 }
 
 export const getStaticPaths = async () => {
-  const { nodes } = await getAllNodesOfType('ingredient');
-  const paths = nodes.map((ingre) => ({
+  const { nodes } = await getAllNodesOfType('recipe');
+  const paths = nodes.map((recipe) => ({
     params: {
-      id: ingre.id.toString(),
+      id: recipe.id.toString(),
     },
   }));
 

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getAllIngredients } from '../../../lib/db-admin';
+import { getInfiniteIngredients } from '../../../lib/db-admin';
 
 export default async function createIngredientApi(
   req: NextApiRequest,
@@ -8,6 +8,6 @@ export default async function createIngredientApi(
   const queryCursor = Number(req.query?.cursor);
   const cursor = queryCursor > 0 ? queryCursor : undefined;
 
-  const ingredients = await getAllIngredients(cursor);
+  const ingredients = await getInfiniteIngredients(cursor);
   res.status(200).json({ ...ingredients });
 }

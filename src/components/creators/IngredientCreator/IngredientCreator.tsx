@@ -3,12 +3,12 @@ import { Formik, Form } from 'formik';
 import { useDropzone } from 'react-dropzone';
 import { useMutation } from 'react-query';
 import { Persist } from 'formik-persist';
-
 import { IIngredientCreatorValues } from '../../../types/ingredients';
 import { createIngredientYupSchema } from './validation';
-import { AspectRatio, Box, Button, Flex } from '@chakra-ui/react';
+import { AspectRatio, Box, Button, Flex, Heading } from '@chakra-ui/react';
 import TextInput from '../../forms/TextInput';
 import NumericInput from '../../forms/NumericInput';
+import { useRouter } from 'next/router';
 
 // ************
 // Component renders input for each nutrient available in the array, tests check number of inputs depending on the array length + name + img. (arr.len + 2)
@@ -39,6 +39,7 @@ export default function IngredientCreator({
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const isFile: boolean = files.length > 0;
+  const router = useRouter();
 
   const onDrop = (acceptedFiles: File[]) => {
     return setFiles(acceptedFiles);
@@ -60,8 +61,8 @@ export default function IngredientCreator({
     },
     {
       onSuccess: async (data) => {
+        router.push(`/ingredients/${data.ingredient}`);
         setLoading(false);
-        console.log(data);
       },
     }
   );
@@ -114,14 +115,9 @@ export default function IngredientCreator({
                 <input type="file" {...getInputProps()} multiple={false} />
               </Box>
             </AspectRatio>
-            <h5
-              style={{
-                font: 'var(--typographySmallBold',
-                marginBottom: '1rem',
-              }}
-            >
+            <Heading as="h5" fontSize="1rem" marginBottom="1rem">
               Nutrients in 100g
-            </h5>
+            </Heading>
             <Box maxWidth="200px">
               {ingredientNutrients.map((nutrient) => {
                 const { name, unitName, label } = nutrient;

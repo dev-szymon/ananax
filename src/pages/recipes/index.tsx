@@ -1,37 +1,55 @@
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Button, Spinner } from '@chakra-ui/react';
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import Layout from '../../components/Layout';
-import Card from '../../components/Card';
+import RecipeCard from '../../components/RecipeCard';
 import { IRecipeData } from '../../types/recipes';
-import EmptyState from '../../components/EmptyState';
 
 export default function RecipesPage() {
-  const { isLoading, data } = useQuery('allRecipes', async () => {
-    const response = await fetch('/api/search-recipes', {
+  const fetchRecipes = async ({ pageParam }: { pageParam?: number }) => {
+    const response = await fetch(`/api/search-recipes?cursor=${pageParam}`, {
       method: 'GET',
       credentials: 'same-origin',
     });
 
     return await response.json();
+  };
+
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery('allIngredients', fetchRecipes, {
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.nextCursor;
+    },
   });
 
   if (data) {
     return (
       <Layout>
         <Box as="section" maxW="600px" m="0 auto">
-          {data.recipes.length > 0 ? (
-            data.recipes.map((recipe: IRecipeData) => (
-              <Card key={recipe.id} node={recipe} />
-            ))
-          ) : (
-            <EmptyState />
+          {data.pages.map((page) => {
+            return page.recipes.map((recipe: IRecipeData) => (
+              <RecipeCard key={recipe.id} node={recipe} />
+            ));
+          })}
+          {hasNextPage && (
+            <Button onClick={() => fetchNextPage()}>fetch more...</Button>
           )}
         </Box>
       </Layout>
     );
   }
-  if (isLoading) {
-    return <Spinner />;
+  if (status === 'loading') {
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
   }
 }

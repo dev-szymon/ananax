@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Formik, Form } from 'formik';
 import NumericInput from '../../forms/NumericInput';
-
 import Textarea from '../../forms/Textarea';
 import { useIngredientsSelector } from '../../../context/ingredientsSelectorContext';
 import { Persist } from 'formik-persist';
@@ -10,16 +9,22 @@ import { IRecipeCreatorValues } from '../../../types/recipes';
 import { NutrientKeys } from '../../../types/ingredients';
 import { createRecipeYupSchema } from './validation';
 import { useMutation } from 'react-query';
-import { AspectRatio, Box, Button, CloseButton, Flex } from '@chakra-ui/react';
+import {
+  AspectRatio,
+  Box,
+  Button,
+  CloseButton,
+  Flex,
+  Heading,
+} from '@chakra-ui/react';
 import TextInput from '../../forms/TextInput';
+import IngredientSelector from './IngredientsSelector';
 
 export const initialRecipeValues: IRecipeCreatorValues = {
   name: '',
   description: '',
   prepTime: '',
 };
-
-const DISPLAY_NUTRIENTS: NutrientKeys[] = ['kcal', 'protein', 'fats', 'carbs'];
 
 interface IRecipeCreatorProps {
   userToken: string;
@@ -120,97 +125,11 @@ export default function RecipeCreator({ userToken }: IRecipeCreatorProps) {
                 <input type="file" {...getInputProps()} multiple={false} />
               </Box>
             </AspectRatio>
-            <div style={{ maxWidth: '180px' }}>
+            <Box maxW="200px">
               <NumericInput label="preparation time" name="prepTime" />
-            </div>
-            <Box>
-              {Object.keys(contextIngredients).length > 0 && (
-                <div>
-                  <h5
-                    style={{
-                      font: 'var(--typographySmallBold)',
-                      marginBottom: '0.5rem',
-                    }}
-                  >
-                    Ingredients
-                  </h5>
-                </div>
-              )}
-
-              {Object.keys(contextIngredients).map((ingr) => {
-                const { [ingr]: des, ...rest } = contextIngredients;
-                const { name, nutrients, id, amount } =
-                  contextIngredients[ingr];
-                return (
-                  <Box>
-                    <Flex justify="space-between">
-                      <h5>{name}</h5>
-                      <CloseButton
-                        size="sm"
-                        onClick={() => setContextIngredients({ ...rest })}
-                      />
-                    </Flex>
-
-                    <Box>
-                      {DISPLAY_NUTRIENTS.map((nutrientKey) => {
-                        const { unitName, value } = nutrients[nutrientKey];
-                        const constructedLabel = unitName
-                          ? `${nutrientKey} [ ${unitName} ]`
-                          : nutrientKey;
-                        return (
-                          <Flex
-                            direction="column"
-                            align="flex-start"
-                            key={nutrientKey}
-                          >
-                            <span className="nutrient-label">
-                              {constructedLabel}
-                            </span>
-                            <div className="nutrient-value">{`${
-                              value || 'n/a'
-                            }`}</div>
-                          </Flex>
-                        );
-                      })}
-                      <Flex direction="column" align="flex-end">
-                        <span className="nutrient-label">{` [ ${amount.unitName} ]`}</span>
-                        <Box>
-                          <input
-                            style={{
-                              backgroundColor: 'var(--colorWhite)',
-                              textAlign: 'right',
-                              width: '100%',
-                            }}
-                            type="number"
-                            value={amount.value}
-                            onChange={(e) => {
-                              setContextIngredients({
-                                ...contextIngredients,
-                                [ingr]: {
-                                  ...contextIngredients[ingr],
-                                  amount: {
-                                    value: Number(e.target.value),
-                                    unitName: amount.unitName,
-                                  },
-                                },
-                              });
-                            }}
-                          />
-                        </Box>
-                      </Flex>
-                    </Box>
-                  </Box>
-                );
-              })}
             </Box>
 
-            <Button
-              marginBottom="1rem"
-              type="button"
-              onClick={() => console.log('add ingredients')}
-            >
-              + add ingredients
-            </Button>
+            <IngredientSelector />
 
             <Textarea
               name="description"

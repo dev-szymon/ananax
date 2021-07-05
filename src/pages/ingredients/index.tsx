@@ -3,7 +3,7 @@ import { useInfiniteQuery } from 'react-query';
 import Layout from '../../components/Layout';
 import { IIngredientData } from '../../types/ingredients';
 import { Spinner, Button, Box } from '@chakra-ui/react';
-import Card from '../../components/Card';
+import IngredientCard from '../../components/IngredientCard';
 
 type Cursor = number;
 
@@ -38,9 +38,9 @@ export default function IngredientsPage() {
     return (
       <Layout>
         <Box as="section" maxW="600px" m="0 auto">
-          {data.pages.map((page, i) => {
+          {data.pages.map((page) => {
             return page.ingredients.map((ingredient: IIngredientData) => (
-              <Card key={ingredient.id} node={ingredient} />
+              <IngredientCard key={ingredient.id} node={ingredient} />
             ));
           })}
           {hasNextPage && (
@@ -51,6 +51,10 @@ export default function IngredientsPage() {
     );
   }
   if (status === 'loading') {
-    return <Spinner />;
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
   }
 }

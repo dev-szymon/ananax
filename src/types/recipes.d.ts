@@ -1,20 +1,19 @@
 import { IIngredientData } from './ingredients';
+import { INode } from './nodes';
 
 export interface IRecipeCreatorValues {
   name: string;
   description: string;
   prepTime: number | '';
 }
-export interface ICreateRecipeValues {
-  name: string;
+export interface ICreateRecipeValues extends Omit<INode, 'id'> {
   authorId: string;
   images: string[] | [];
-  createdAt: number;
   ingredients: { [key: IIngredientData['id']]: number };
 }
 
 export interface IRecipeData extends Omit<ICreateRecipeValues, 'ingredients'> {
-  id: string;
+  id: INode['id'];
   type: 'recipe';
   authorUsername: string;
   likesCount: number;
