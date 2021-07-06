@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
-import { AspectRatio, Heading, Text } from '@chakra-ui/react';
+import { AspectRatio, Heading } from '@chakra-ui/react';
 import Image from 'next/image';
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
         />
       </AspectRatio>
       <Heading as="h1" fontSize="3rem" p="1rem">
-        Produkty i przepisy w przeglądarce
+        Recipes and ingredients app.
       </Heading>
     </Layout>
   );
