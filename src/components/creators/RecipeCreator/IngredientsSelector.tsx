@@ -21,6 +21,8 @@ import {
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { useIngredientsSelector } from '../../../context/ingredientsSelectorContext';
+import { useInfiniteQuery } from 'react-query';
+import { fetchAllIngredients } from '../../../lib/infiniteQuery';
 
 const DISPLAY_NUTRIENTS: NutrientKeys[] = ['kcal', 'protein', 'fats', 'carbs'];
 
@@ -32,6 +34,20 @@ const IngredientSelector = () => {
   const [results, setResults] = useState<any[] | null>(null);
   const btnRef = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery('allIngredients', fetchAllIngredients, {
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.nextCursor;
+    },
+  });
 
   return (
     <>
@@ -129,7 +145,7 @@ const IngredientSelector = () => {
                 const { ingredients }: { ingredients: IIngredientData[] } =
                   await response.json();
 
-                setResults([...ingredients]);
+                return setResults([...ingredients]);
               }}
             >
               <Form>

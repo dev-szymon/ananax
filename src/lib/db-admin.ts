@@ -154,6 +154,7 @@ export const getIngredientsByKeyword = async (keyword: string) => {
       ...doc.data(),
     } as IIngredientData);
   });
+  console.log(ingredients);
 
   return ingredients;
 };

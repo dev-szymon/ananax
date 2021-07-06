@@ -4,22 +4,9 @@ import Layout from '../../components/Layout';
 import { IIngredientData } from '../../types/ingredients';
 import { Spinner, Button, Box } from '@chakra-ui/react';
 import IngredientCard from '../../components/IngredientCard';
-
-type Cursor = number;
+import { fetchAllIngredients } from '../../lib/infiniteQuery';
 
 export default function IngredientsPage() {
-  const fetchIngr = async ({ pageParam }: { pageParam?: Cursor }) => {
-    const response = await fetch(
-      `/api/search-ingredients?cursor=${pageParam}`,
-      {
-        method: 'GET',
-        credentials: 'same-origin',
-      }
-    );
-
-    return await response.json();
-  };
-
   const {
     data,
     error,
@@ -28,7 +15,7 @@ export default function IngredientsPage() {
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery('allIngredients', fetchIngr, {
+  } = useInfiniteQuery('allIngredients', fetchAllIngredients, {
     getNextPageParam: (lastPage, pages) => {
       return lastPage.nextCursor;
     },

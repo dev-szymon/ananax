@@ -18,3 +18,18 @@ export const formatInfiniteNodes = <T extends INode>(
     nextCursor,
   };
 };
+
+type Cursor = number;
+
+export const fetchAllIngredients = async ({
+  pageParam,
+}: {
+  pageParam?: Cursor;
+}) => {
+  const response = await fetch(`/api/search-ingredients?cursor=${pageParam}`, {
+    method: 'GET',
+    credentials: 'same-origin',
+  });
+
+  return await response.json();
+};

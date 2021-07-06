@@ -9,8 +9,9 @@ export default async function createIngredientApi(
 
   if (typeof keyword === 'string') {
     const ingredients = await getIngredientsByKeyword(keyword);
-    res.status(200).json({ ingredients });
+    console.log(ingredients);
+    return res.status(200).json({ ingredients });
   }
 
-  res.status(400).json({ message: 'invalid query' });
+  return res.status(400).json({ message: 'invalid query' });
 }
