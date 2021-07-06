@@ -6,7 +6,7 @@ export interface IRecipeCreatorValues {
   description: string;
   prepTime: number | '';
 }
-export interface ICreateRecipeValues extends Omit<INode, 'id'> {
+export interface ICreateRecipeValues extends Omit<INode, 'id' | 'type'> {
   authorId: string;
   images: string[] | [];
   ingredients: { [key: IIngredientData['id']]: number };

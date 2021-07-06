@@ -19,7 +19,7 @@ export type NutrientDataType = {
   };
 };
 
-export interface ICreateIngredientValues extends Omit<INode, 'id'> {
+export interface ICreateIngredientValues extends Omit<INode, 'id' | 'type'> {
   authorId: string;
   images: string[] | [];
   nutrients: NutrientDataType;
